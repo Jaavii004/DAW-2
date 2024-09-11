@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let now = new Date();
+
+        let horaAct = now.getHours();
+
+        let horasMas = prompt(`que horas quieres sumarle a ${horaAct}`);
+
+        
+        console.log("la hora actual es " + horaAct);
+        let sumtot = (parseInt(horasMas)+horaAct)
+        if (sumtot > 23) {
+            sumtot -= 24;
+        }
+        alert("la suma es "+sumtot);
+    </script>
+</body>
+</html>
