@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let nt = prompt("Notas separadas por comas");
+  
+        function sepnotas(nt) {
+            let listaNotas = nt.split(",");
+            return listaNotas;
+        }
+
+        let array = sepnotas(nt);
+        let sum = 0;
+
+
+        for (let index = 0; index < array.length; index++) {
+            sum += parseInt(array[index]);
+        }
+        
+        const nummax = array.length;
+
+        console.log(sum/nummax)
+    </script>
+</body>
+</html>
