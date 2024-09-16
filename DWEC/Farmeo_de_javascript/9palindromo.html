@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let palindromo = "";
+        palindromo += prompt("Dime un palindromo ");
+        let palisalida = "";
+
+        for (let index = palindromo.length - 1; index >= 0; index--) {
+            console.log(palindromo[index]);
+            palisalida += palindromo[index];
+        }
+
+        if (palindromo == palisalida) {
+            console.log("Enhorabuena, es un palindromo, lo encontraste.!!!!")
+        } else {
+            console.log("Lo siento, no es un palindromo.")
+        }
+    </script>
+</body>
+</html>
