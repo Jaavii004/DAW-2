@@ -1,11 +1,34 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
 <body>
-    
+    <script>
+        let lados = prompt("Dime los 3 lados separados por comas")
+
+        // Quitamos todos los espacios por nada
+        lados = lados.replace(/\s/g, '');
+
+        let arrayLados = lados.split(",").map(Number);
+
+        if (arrayLados[0] + arrayLados[1] > arrayLados[2] && arrayLados[0] + arrayLados[2] > arrayLados[1] && arrayLados[1] + arrayLados[2] > arrayLados[0]) {
+            // Equilatero
+            if (arrayLados[0] == arrayLados[1] == arrayLados[2]) {
+                console.log("Es equilatero");
+            } else{
+                // escaleno
+                if (arrayLados[0] != arrayLados[1] != arrayLados) {
+                    console.log("Es escaleno");
+                } else {
+                    console.log("Isosceles");
+                }
+            }
+        } else {
+            console.log("no es valido el triángulo.");
+        }
+    </script>
 </body>
 </html>
