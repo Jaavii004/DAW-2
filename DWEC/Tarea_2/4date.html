@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>date</title>
+</head>
+<body>
+    <script>
+        function esDate(arg) {
+            return arg instanceof Date;
+        }
+
+        let date = new Date;
+
+        if (esDate(date)) {
+            console.log("Es date");
+        } else {
+            console.log("No es date");
+        }
+
+        let noDate = "String";
+
+        if (esDate(noDate)) {
+            console.log("Es date");
+        } else {
+            console.log("No es date");
+        }
+    </script>
+</body>
+</html>

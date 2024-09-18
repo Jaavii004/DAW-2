@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Numeros Feliz</title>
+</head>
+<body>
+    <script>
+        function cuadrado(numero) {
+            return numero*numero;
+        }
+
+        let numeroAcomprobar = prompt("Dime que numero quieres comprobar si es feliz: ");
+        let numeroAC_Array;
+        let esfeliz = false;
+
+        for (let index = 0; index < 8; index++) {
+            numeroAC_Array = numeroAcomprobar.split("");
+            let sumaTot = 0;
+            for (let j = 0; j < numeroAC_Array.length; j++) {
+                sumaTot+=cuadrado(parseInt(numeroAC_Array[j]));
+            }
+            if (sumaTot == 1) {
+                index = 9;
+                esfeliz = true;
+            }
+            numeroAcomprobar = sumaTot.toString();
+        }
+        if (esfeliz) {
+            console.log("Es Feliz");
+        } else{
+            console.log("No es feliz");
+        }
+    </script>
+</body>
+</html>

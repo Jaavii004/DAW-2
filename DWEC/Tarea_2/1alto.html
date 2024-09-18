@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alto</title>
+</head>
+<body>
+    <script>
+        let longitudElementos = prompt("Cuantos numeros vas a querer decirme: ");
+        let numeroAct;
+
+        longitudElementos = parseInt(longitudElementos);
+        let numMayor = 0;
+        for (let index = 0; index < longitudElementos; index++) {
+            numeroAct = prompt("dime el numero: ");
+            if (numeroAct > numMayor) {
+                numMayor = numeroAct;
+            }
+        }
+
+        console.log("El numero mayor es: "+numMayor);
+
+    </script>
+</body>
+</html>
