@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>patrón</title>
+</head>
+<body>
+    <script>
+        function patrón(num_repes, mostrar) {
+            var stringret = "";
+            for (let index = 0; index < num_repes; index++) {
+                stringret += mostrar + " ";
+                
+            }
+            return stringret;
+        }
+
+        for (let index = 1; index <= 10; index++) {
+            console.log(patrón(index, "*"));
+        }
+    </script>
+</body>
+</html>

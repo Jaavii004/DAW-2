@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DiaMes</title>
+</head>
+<body>
+    <script>
+        function obtenerDiasMes(mes, anio) {
+            // el 0 hace que sea el mes pasado ya que enero es el 0
+            return new Date(anio, mes, 0).getDate();
+        }
+
+        document.write(obtenerDiasMes(1, 2012));
+    </script>
+</body>
+</html>
