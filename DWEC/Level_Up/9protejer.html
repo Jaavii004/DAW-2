@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Protejer Email</title>
+</head>
+<body>
+    <script>
+        function extraer_inicio(string, principioNum) {
+            return string.slice(0, principioNum);
+        }
+
+        function ContarCaracteres(str) {
+            return str.split("").length;
+        }
+
+        function protejerEmail(email) {
+            let emailSeparado = email.split("@");
+
+            let dominioSalida = "@"+emailSeparado[1]
+
+            let contarCaracteres = ContarCaracteres(emailSeparado[0]);
+
+            let emailprot = extraer_inicio(emailSeparado[0], (contarCaracteres/2))+"...";
+            let salida = emailprot + dominioSalida;
+            return salida;
+        }
+
+        document.write(protejerEmail("diego.garcia@ieslasenia.org"));
+
+        document.write("<br>");
+
+        document.write(protejerEmail("javierpuertas2004@ieslasenia.org"));
+    </script>
+</body>
+</html>

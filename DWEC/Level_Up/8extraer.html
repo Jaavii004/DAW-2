@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>extraer</title>
+</head>
+<body>
+    <script>
+        function extraer(string, principioNum, inicio_o_fin) {
+            if (inicio_o_fin == "fin") {
+                return string.slice(-principioNum);
+            } if (inicio_o_fin == "inicio") {
+                return string.slice(0, principioNum);
+            } else {
+                return "No valid";
+            }
+        }
+
+        console.log(extraer("messi apesta", 4, "fin"));
+        console.log(extraer("messi apesta", 5, "inicio"));
+    </script>
+</body>
+</html>

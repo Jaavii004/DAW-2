@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>camelCase</title>
+</head>
+<body>
+    <script>
+        function primera_mayuscula(str) {
+            return str[0].toUpperCase()+ str.substring(1);
+        }
+
+        function camelCase(str) {
+            let palabras = str.split(" ");
+            
+            let salida = palabras[0];
+
+            for (let index = 1; index < palabras.length; index++) {
+                salida += primera_mayuscula(palabras[index]);
+            }
+            return salida;
+        }
+
+        document.write(camelCase("superman es Débil"));
+    </script>
+</body>
+</html>
