@@ -16,7 +16,9 @@
             return stringret;
         }
 
-        for (let index = 1; index <= 10; index++) {
+        let num_repes = prompt("Cuantos * quires mostrar");
+
+        for (let index = 1; index <= parseInt(num_repes); index++) {
             console.log(patrón(index, "*"));
         }
     </script>
