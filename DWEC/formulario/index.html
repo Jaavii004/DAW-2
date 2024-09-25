@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="script.js"></script>
+    <style>
+        input[type="submit"] {
+            background-color: #4CAF50;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <label for="nombre">Nombre:</label>
+        <input id="nombre" name="nombre" onblur="compNombre()"><br><br>
+        <label for="apellidos">Apellidos:</label>
+        <input id="apellidos" name="apellidos" onblur="compApellidos()"><br><br>
+        <label for="email">e-mail:</label>
+        <input id="email" name="email" onblur="compEmail()"><br><br>
+        <label for="dni">DNI:</label>
+        <input id="dni" name="dni" onblur="comp_Dni()"><br><br>
+        <label for="password">Password:</label>
+        <input id="password" name="password" onkeypress="ocultarpass('password')" onblur="passwordSecure('password')"><br><br>
+        <label for="repetir_password">Repetir password:</label>
+        <input id="repetir_password" name="repetir_password" onkeypress="ocultarpass('repetir_password')" onblur="passwordSecure('repetir_password')"><br><br>
+        <label for="ip_equipo">IP Equipo:</label>
+        <input id="ip_equipo" name="ip_equipo" onblur="compEsNumero()"><br><br>
+        <input type="submit" value="Enviar">
+    </form>
+</body>
+</html>

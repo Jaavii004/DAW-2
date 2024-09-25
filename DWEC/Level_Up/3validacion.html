@@ -10,10 +10,15 @@
         // EL + símbolo significa "uno o más" del conjunto anterior.
         function comp_Dni(dni) {
             if (dni.length !== 9) {
-                return false;
+            return false;
             }
-            const regex = /^\d{8}[A-Za-z]$/;
-            return regex.test(dni);
+            const regex = /^\d{8}[A-Za-z]$/i;
+            if (!regex.test(dni)) {
+            return false;
+            }
+            const letras = 'TRWAGMYFPDXBNJZSQVHLCKE';
+            const letra = letras.charAt(parseInt(dni.substr(0, 8)) % 23);
+            return letra === dni.charAt(8).toUpperCase();
         }
 
         function comp_email(email) {
