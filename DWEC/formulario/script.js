@@ -77,8 +77,9 @@ function passwordSecure(id) {
     let password = document.getElementById(id);
     if (password.value.length >= 8) {
         pintar_acierto(password);
+    } else {
+        pintar_error(password);
     }
-    pintar_error(password);
 }
 
 
