@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Calculadora Bonita</title>
+        <style>
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                background-color: #f0f0f0;
+                font-family: Arial, sans-serif;
+            }
+
+            .calculator {
+                background-color: #ffffff;
+                border-radius: 10px;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+                padding: 20px;
+                width: 300px;
+            }
+
+            #display {
+                width: 100%;
+                height: 40px;
+                font-size: 24px;
+                text-align: right;
+                border: none;
+                border-radius: 5px;
+                padding: 5px;
+                margin-bottom: 10px;
+                background-color: #e9ecef;
+            }
+
+            .buttons {
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 10px;
+            }
+
+            button {
+                height: 50px;
+                font-size: 18px;
+                border: none;
+                border-radius: 5px;
+                background-color: #007bff;
+                color: white;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+
+            button:hover {
+                background-color: #0056b3;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="calculator">
+            <input type="text" id="display" disabled />
+            <div class="buttons">
+                <button onclick="limpDisplay()">C</button>
+                <button onclick="appendDisplay('7')">7</button>
+                <button onclick="appendDisplay('8')">8</button>
+                <button onclick="appendDisplay('9')">9</button>
+                <button onclick="appendDisplay('/')">/</button>
+                <button onclick="appendDisplay('4')">4</button>
+                <button onclick="appendDisplay('5')">5</button>
+                <button onclick="appendDisplay('6')">6</button>
+                <button onclick="appendDisplay('*')">*</button>
+                <button onclick="appendDisplay('1')">1</button>
+                <button onclick="appendDisplay('2')">2</button>
+                <button onclick="appendDisplay('3')">3</button>
+                <button onclick="appendDisplay('-')">-</button>
+                <button onclick="appendDisplay('0')">0</button>
+                <button onclick="appendDisplay('+')">+</button>
+                <button onclick="calc()">=</button>
+            </div>
+        </div>
+
+        <script src="script.js"></script>
+    </body>
+</html>
