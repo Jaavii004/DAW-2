@@ -74,14 +74,38 @@ function ocultarpass(id) {
 }
 
 function passwordSecure(id) {
-    let password = document.getElementById(id);
-    if (password.value.length >= 8) {
-        pintar_acierto(password);
+    let password = document.getElementById(id).value;
+
+    if (password.length < 8) {
+        pintar_error(document.getElementById(id));
+        return;
+    }
+
+    let hasUppercase = false;
+    let hasLowercase = false;
+    let hasNumber = false;
+    let hasSpecialChar = false;
+    let specialChars = "!@#$%^&*";
+
+    for (let i = 0; i < password.length; i++) {
+        let char = password[i];
+        if (char >= 'A' && char <= 'Z') {
+            hasUppercase = true;
+        } else if (char >= 'a' && char <= 'z') {
+            hasLowercase = true;
+        } else if (char >= '0' && char <= '9') {
+            hasNumber = true;
+        } else if (specialChars.includes(char)) {
+            hasSpecialChar = true;
+        }
+    }
+
+    if (hasUppercase && hasLowercase && hasNumber && hasSpecialChar) {
+        pintar_acierto(document.getElementById(id));
     } else {
-        pintar_error(password);
+        pintar_error(document.getElementById(id));
     }
 }
-
 
 
 function compEmail() {
