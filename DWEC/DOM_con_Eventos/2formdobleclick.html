@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form id="form">
+        <label for="nombre">Nombre:</label>
+        <input type="text" id="nombre" name="nombre" onblur="comp_Nom()"><br><br>
+        
+        <label for="dni">DNI:</label>
+        <input type="text" id="dni" name="dni" onblur="comp_Dni()"><br><br>
+        
+        <label for="email">E-mail:</label>
+        <input type="email" id="email" name="email" onblur="comp_email()"><br><br>
+        
+        <button type="button" onclick="copiar()">Copiar</button>
+    </form>
+
+    <div id="copiar" ondblclick="cambiarContenido()"></div>
+    
+    <script>
+        function comp_Nom() {
+            let nombre = document.getElementById("nombre").value;
+            if (nombre.length <= 1) {
+                pintar_error(document.getElementById("nombre"));
+            } else {
+                pintar_acierto(document.getElementById("nombre"));
+                return true;
+            }
+            return false;
+        }
+
+        function comp_Dni() {
+            let dnit = document.getElementById("dni");
+            let dni = dnit.value;
+            if (dni.length !== 9) {
+                pintar_error(dnit);
+                return false;
+            }
+            const regex = /^\d{8}[A-Za-z]$/i;
+            if (!regex.test(dni)) {
+                pintar_error(dnit);
+                return false;
+            }
+            const letras = 'TRWAGMYFPDXBNJZSQVHLCKE';
+            const letra = letras.charAt(parseInt(dni.substr(0, 8)) % 23);
+            if (letra === dni.charAt(8).toUpperCase()) {
+                pintar_acierto(dnit);
+                return true;
+            } else {
+                pintar_error(dnit);
+            }
+            return false;
+        }
+
+        function comp_email() {
+            let email = document.getElementById("email").value;
+            const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+            if (regex.test(email)) {
+                pintar_acierto(document.getElementById("email"));
+                return true;
+            } else {
+                pintar_error(document.getElementById("email"));
+            }
+            return false;
+        }
+
+        function pintar_acierto(input) {
+            input.style.color = "green";
+            input.style.border = "2px solid green";
+        }
+
+        function pintar_error(input) {
+            input.style.color = "red";
+            input.style.border = "2px solid red";
+        }
+
+        function copiar() {
+            let nombre = document.getElementById("nombre").value;
+            let dni = document.getElementById("dni").value;
+            let email = document.getElementById("email").value;
+
+            let div = document.getElementById("copiar");
+
+            if (comp_Dni() && comp_Nom() && comp_email()) {
+                let p = document.createElement("p");
+                p.textContent = nombre + " con DNI " + dni + " y e-mail " + email;
+                div.appendChild(p);
+                document.getElementById("form").reset();
+            } else {
+                alert("Existen campos vacíos en el formulario o incorrectos");
+            }
+        }
+
+        function cambiarContenido() {
+            let div = document.getElementById("copiar");
+            let text = div.textContent;
+            let nuevoContenido = prompt("Ingrese nuevo contenido para el DIV:", text);
+            if (nuevoContenido !== null) {
+                div.innerHTML = "<p>" + nuevoContenido + "</p>";
+            }
+        }
+    </script>
+</body>
+</html>
