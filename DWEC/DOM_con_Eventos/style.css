@@ -1,0 +1,31 @@
+#copiar {
+    background-color: #c0c0c0;
+}
+
+#list-1 {
+    float: left;
+    width: 50%;
+    text-align: center;
+    background-color: #c1c1;
+}
+
+#list-2 {
+    float: right;
+    width: 50%;
+    text-align: center;
+    background-color: #c0c0c0;
+}
+
+#list-3 {
+    float: left;
+    width: 50%;
+    text-align: center;
+    background-color: antiquewhite;
+}
+
+#list-4 {
+    float: right;
+    width: 50%;
+    text-align: center;
+    background-color: aqua;
+}

@@ -17,14 +17,26 @@
         <label for="email">E-mail:</label>
         <input type="email" id="email" name="email" onblur="comp_email()"><br><br>
 
+        <label for="lista">Selecciona una lista:</label>
+        <select id="lista">
+            <option value="">--Seleccionar--</option>
+            <option value="list-1">Lista 1</option>
+            <option value="list-2">Lista 2</option>
+        </select><br><br>
+
         <button type="button" onclick="copiar()">Copiar</button>
-        <button type="button" ondblclick="cambiarContenido()">Copiar ondblclick</button>
     </form>
 
-    <div id="copiar"></div>
+    <div id="list-1">
+        <h1>Lista 1</h1>
+    </div>
+    <div id="list-2">
+        <h1>Lista 2</h1>
+    </div>
 
     <script>
         let cont = 0;
+
         function comp_Nom() {
             let nombre = document.getElementById("nombre").value;
             if (nombre.length <= 1) {
@@ -85,37 +97,25 @@
             let nombre = document.getElementById("nombre").value;
             let dni = document.getElementById("dni").value;
             let email = document.getElementById("email").value;
+            let lista = document.getElementById("lista").value;
 
-            let div = document.getElementById("copiar");
+            
+            if (!lista) {
+                alert("Por favor, selecciona una lista.");
+                return;
+            }
+            
+            let div = document.getElementById(lista);
 
             if (comp_Dni() && comp_Nom() && comp_email()) {
-                (cont++);
+                cont++;
                 let p = document.createElement("p");
                 p.id = cont;
                 p.textContent = nombre + " con DNI " + dni + " y e-mail " + email;
                 p.style.backgroundColor = "white";
                 div.appendChild(p);
                 document.getElementById("form").reset();
-            } else {
-                alert("Existen campos vacíos en el formulario o incorrectos");
-            }
-        }
-
-        function cambiarContenido() {
-            if (comp_Dni() && comp_Nom() && comp_email()) {
-                let div = document.getElementById("copiar");
-                div.innerHTML = "";
-                let nombre = document.getElementById("nombre").value;
-                let dni = document.getElementById("dni").value;
-                let email = document.getElementById("email").value;
-                for (let i = 1; i <= cont; i++) {
-                    let p = document.createElement("p");
-                    p.id = i;
-                    p.textContent = nombre + " con DNI " + dni + " y e-mail " + email;
-                    p.style.backgroundColor = "white";
-                    div.appendChild(p);
-                    document.getElementById("form").reset();
-                }
+                document.getElementById("lista").selectedIndex = 0;
             } else {
                 alert("Existen campos vacíos en el formulario o incorrectos");
             }
