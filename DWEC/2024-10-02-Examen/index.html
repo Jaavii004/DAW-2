@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Un mundo feliz</title>
+    <link rel="stylesheet" href="./styles/styles.css">
+</head>
+<body>
+    <div class="caja-superior"> Nº Inicial
+        <div class="numero-superior"><input id="numero-inicial" type="number" class="numero-superior" value="1" onchange="NumeroInicial()"></input></div>
+    </div>
+    <div class="caja-superior"> Cantidad
+        <div class="numero-superior"><input id="numero-cantidad" type="number" class="numero-superior" value="3" onchange="NumeroInicial()"></div>
+    </div>
+    <div class="caja-superior"> Nº Clickado
+        <div class="numero-superior" id="numero-Clickado">-</div>
+    </div>
+    <div class="container">
+        <div id="columna-izquierda" class="columna izquierda">
+            Número Feliz
+        </div>
+        <div id="columna-derecha" class="columna derecha"> 
+            Cantidad de números infelices (hasta encontrarlo)
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
