@@ -8,16 +8,19 @@ $numeros = [];
 
 system('clear');
 
-$contnum = readline("Cuantos numeros quieres: ");
+$contnum = readline("Cuantos números quieres:(mínimo 5) ");
 
 for ($i=0; $i < $contnum; $i++) { 
     $num = readline("Dime el numero ".($i+1).": ");
     array_push($numeros, $num);
 }
 
-//print_r($numeros);
+echo "Suma ". round(array_sum($numeros))."\n";
 
-echo "Suma ". array_sum($numeros);
+echo "Números introducidos: " . implode(", ", $numeros) . "\n";
 
+$media = array_sum($numeros) / count($numeros);
 
-?>
+echo "Media sin redondear: " . $media . "\n";
+
+echo "Media redondeada: " . round($media) . "\n";
