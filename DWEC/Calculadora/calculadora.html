@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <title>calculadora</title>
+        <link rel="stylesheet" type="text/css" media="screen" href="calculadora.css" />
+        <script src="calculadora.js"></script>
+    </head>
+    <body>
+        <div id="contenedor">
+            <div class="pantalla">
+                <input id="pantalla" type="text" maxlength="13" value="0" disabled>
+            </div>
+            <div class="boton" onclick="limpìar_pantalla()" >
+                C
+            </div>
+            <div class="boton" onclick="añadirPantalla(this)">
+                %
+            </div>
+            <div class="boton" onclick="eliminar_ultimo()">
+                &laquo;
+            </div>
+            <div class="boton" onclick="añadirPantalla(this)">
+                /
+            </div>
+            <div class="boton" onclick="añadirPantalla(this)">
+                7
+            </div>
+            <div class="boton" onclick="añadirPantalla(this)">
+                8
+            </div>
+            <div class="boton" onclick="añadirPantalla(this)">
+                9
+            </div>
+            <div class="boton" onclick="añadirPantalla(this)">
+                x
+            </div>
+            <div class="boton" onclick="añadirPantalla(this)">
+                4
+            </div>
+            <div class="boton" onclick="añadirPantalla(this)">
+                5
+            </div>
+            <div class="boton" onclick="añadirPantalla(this)">
+                6
+            </div>
+            <div class="boton" onclick="añadirPantalla(this)">
+                -
+            </div>
+            <div class="boton" onclick="añadirPantalla(this)">
+                1
+            </div>
+            <div class="boton" onclick="añadirPantalla(this)">
+                2
+            </div>
+            <div class="boton" onclick="añadirPantalla(this)">
+                3
+            </div>
+            <div class="boton" onclick="añadirPantalla(this)">
+                +
+            </div>
+            <div class="boton infIzq" onclick="añadirPantalla(this)">
+                0
+            </div>
+            <div class="boton" onclick="añadirPantalla(this)">
+                .
+            </div>
+            <div class="boton" onclick="añadirPantalla(this)">
+                ()
+            </div>
+            <div class="boton infDer" onclick="calcular()">
+                =
+            </div>
+            <div style="clear:both"></div>
+        </div>
+    </body>
+</html>
