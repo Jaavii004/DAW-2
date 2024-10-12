@@ -4,24 +4,21 @@
  * @Author: Javier Puertas
  */
 
-
 // Escribe una función que calcule todas las potencias de un número hasta llegar al exponente
 // indicado, las almacene en un vector y muestre el resultado de cada potencia indicando además
 // la suma de todas las potencias incluyendo la del exponente indicado.
 
-
 function calcularPotencias($numero, $exponente) {
     $potencias = [];
-    $suma = 0;
 
-    for ($i = 0; $i <= $exponente; $i++) {
+    for ($i = 1; $i <= $exponente; $i++) {
         $potencia = $numero ** $i;
-        $potencias[] = $potencia;
-        $suma += $potencia;
-        echo "Potencia de $numero elevado a $i: $potencia\n";
+        array_push($potencias, $potencia);
     }
 
-    echo "Suma de todas las potencias: $suma\n";
+    echo "Potencias: ";
+    print_r($potencias);
+    echo "\n Suma de todas las potencias: " . array_sum($potencias) . "\n";
 }
 
 $numero = readline("Ingrese un número: ");

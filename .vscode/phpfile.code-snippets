@@ -1,5 +1,17 @@
 {
     // Snippet básico para crear un archivo PHP con encabezado.
+    "Funcion php": {
+        "prefix": "funcionphp",
+        "body": [
+            "function ${1:nombreFuncion}(${2:parametros}) {",
+            "    ${3:// Código de la función}",
+            "",
+            "    return ${4:resultado};",
+            "}"
+        ],
+        "description": "Crea una función PHP básica."
+    },
+    // Snippet básico para crear un archivo PHP con encabezado.
     "Plantilla de archivo PHP": {
         "prefix": "phpfile",
         "body": [
