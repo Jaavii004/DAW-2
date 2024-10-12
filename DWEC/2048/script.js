@@ -68,38 +68,7 @@ document.addEventListener('keydown', function(event) {
         // añade un nuevo numero para seguir jugando
         if (!añadirNumeroNuevo()) {
             // vamos a mostrar un mensaje de que has perdido
-            const div = document.createElement("div");
-            div.style.position = "fixed";
-            div.style.top = "50%";
-            div.style.left = "50%";
-            div.style.transform = "translate(-50%, -50%)";
-            div.style.padding = "20px";
-            div.style.backgroundColor = "#f8d7da";
-            div.style.color = "#721c24";
-            div.style.border = "1px solid #f5c6cb";
-            div.style.borderRadius = "5px";
-            div.style.boxShadow = "0 4px 8px rgba(0, 0, 0, 0.1)";
-            div.style.textAlign = "center";
-
-            const message = document.createElement("p");
-            message.innerText = "Has perdido";
-            div.appendChild(message);
-
-            const button = document.createElement("button");
-            button.innerText = "Reintentar";
-            button.style.marginTop = "10px";
-            button.style.padding = "10px 20px";
-            button.style.backgroundColor = "#007bff";
-            button.style.color = "#fff";
-            button.style.border = "none";
-            button.style.borderRadius = "5px";
-            button.style.cursor = "pointer";
-            button.addEventListener("click", function() {
-                location.reload();
-            });
-            div.appendChild(button);
-
-            document.body.appendChild(div);
+            alert("Has perdido");
 
         }
         // mostramos el tablero y por consola
