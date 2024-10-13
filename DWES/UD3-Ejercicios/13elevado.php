@@ -4,6 +4,7 @@
  * @Author: Javier Puertas
  */
 
+// Escribe una función que calcule A elevado a B, siendo A y B números enteros.
 
 $a = readline("Numero A: ");
 $b = readline("Numero B: ");

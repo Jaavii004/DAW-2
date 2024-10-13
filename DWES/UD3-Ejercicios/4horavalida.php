@@ -4,6 +4,9 @@
  * @Author: Javier Puertas
  */
 
+// Elabora un programa para determinar si una hora leída en la forma horas, minutos y segundos
+// está correctamente expresada. 
+
 $horas = readline("Introduce las horas: ");
 $minutos = readline("Introduce los minutos: ");
 $segundos = readline("Introduce los segundos: ");

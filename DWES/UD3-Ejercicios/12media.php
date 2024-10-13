@@ -4,6 +4,9 @@
  * @Author: Javier Puertas
  */
 
+// Crea un programa para leer las notas de los alumnos de una clase, y que informe del número de
+// alumnos cuya nota sea mayor de la media de la clase.
+
 $numeroAlumnos = readline("Dime el numero ");
 
 $notas = [];

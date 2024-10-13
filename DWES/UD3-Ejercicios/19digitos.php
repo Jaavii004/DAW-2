@@ -6,7 +6,6 @@
 
 // Realiza un programa que nos diga cuántos dígitos tiene un número dado
 
-
 $numero = readline("Dime un numero: ");
 
 $numero_separado = str_split($numero);

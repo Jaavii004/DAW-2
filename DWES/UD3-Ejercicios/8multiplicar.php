@@ -4,6 +4,8 @@
  * @Author: Javier Puertas
  */
 
+// Crea la tabla de multiplicar a partir de un número
+
 $numero = readline("Ingrese un número: ");
 
 if (!is_numeric($numero)) {
