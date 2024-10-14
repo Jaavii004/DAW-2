@@ -97,7 +97,7 @@ document.addEventListener('keydown', function(event) {
     } else if (event.key === 'ArrowUp') {
         añadirNumeroNuevo();
     } else if (event.key === 'ArrowLeft') {
-        // funcion que baja los numeros
+        // funcion que mueve los numeros a la izquierda
         moverIzq();
         // añade un nuevo numero para seguir jugando
         if (!añadirNumeroNuevo()) {
