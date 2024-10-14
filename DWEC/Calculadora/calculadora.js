@@ -6,10 +6,15 @@ function añadirPantalla(elemento) {
     if (elemento.innerText == "()") {
         pantalla.value = "(" +  pantalla.value + ")";
     } else {
-        if (pantalla.value == 0) {
-            pantalla.value = elemento.innerText;
+        if (elemento.innerText == "%") {
+            pantalla.value = eval(pantalla.value.replace(/x/g, '*')).toFixed(2);
+            pantalla.value = eval(pantalla.value.replace(/x/g, '*')/100).toFixed(2);
         } else {
-            pantalla.value += elemento.innerText;
+            if (pantalla.value == 0) {
+                pantalla.value = elemento.innerText;
+            } else {
+                pantalla.value += elemento.innerText;
+            }
         }
     }
 }
@@ -38,7 +43,11 @@ function calcular() {
 
 // Aprendido con cristian https://gitlab.com/jaavii_04/lighting-designer/-/blob/main/public/js/key-bindings.js?ref_type=heads
 document.addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') {
+    const teclasNumericas = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
+    if (teclasNumericas.includes(event.key)) {
+        event.preventDefault();
+        añadirPantalla({ innerText: event.key });
+    } else if (event.key === 'Enter') {
         event.preventDefault();
         calcular();
     } else if (event.key === 'Escape' || event.key.toLowerCase() === 'c') {
