@@ -10,6 +10,7 @@
     <div class="game-container">
         <h1 class="titulo">2048</h1>
         <div class="grid">
+            <div class="cell" id="cel0"></div>
             <div class="cell" id="cel1"></div>
             <div class="cell" id="cel2"></div>
             <div class="cell" id="cel3"></div>
@@ -25,9 +26,17 @@
             <div class="cell" id="cel13"></div>
             <div class="cell" id="cel14"></div>
             <div class="cell" id="cel15"></div>
-            <div class="cell" id="cel16"></div>
         </div>
         <div class="score">Score: <span id="score">4</span></div>
+    </div>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span class="close" id="closeModal">&times;</span>
+            <h2>¡Juego Terminado!</h2>
+            <p>No hay más movimientos posibles.</p>
+            <button id="undoButton">Rehacer último movimiento</button>
+            <button id="restartButton">Reiniciar</button>
+        </div>
     </div>
     <script src="script.js"></script>
 </body>
