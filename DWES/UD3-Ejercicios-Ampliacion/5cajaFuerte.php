@@ -9,7 +9,7 @@
 // “Lo siento, esa no es la combinación” y si acertamos se nos dirá “La caja fuerte se ha abierto
 // satisfactoriamente”. Tendremos cuatro oportunidades para abrir la caja fuerte.
 
-$combinacionCorrecta = 1234;
+$combinacionCorrecta = 2004;
 $intentos = 4;
 
 for ($i = 1; $i <= $intentos; $i++) {
