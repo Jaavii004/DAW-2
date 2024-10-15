@@ -43,45 +43,107 @@ function añadirNumeroNuevo() {
 }
 
 function moverBajo() {
-    // Move numbers down
-    for (let i = 15; i >= 0; i--) {
-        if (arraynum[i] === "") {
-            for (let j = i - 4; j >= 0; j -= 4) {
-                if (arraynum[j] !== "") {
-                    // Move number down to current cell
-                    arraynum[i] = arraynum[j];
-                    // Empty the original cell
-                    arraynum[j] = "";
-                }
+    for (let col = 0; col < 4; col++) {
+        let temp = [];
+        for (let row = 3; row >= 0; row--) {
+            if (arraynum[row * 4 + col] !== "") {
+                temp.push(arraynum[row * 4 + col]);
             }
         }
-    }
 
-    // Combine numbers
-    for (let i = 15; i >= 4; i--) {
-        if (arraynum[i] !== "" && arraynum[i] === arraynum[i - 4]) {
-            arraynum[i] *= 2; // Double the value
-            arraynum[i - 4] = ""; // Empty the upper cell
+        for (let i = 0; i < temp.length; i++) {
+            if (temp[i] === temp[i + 1]) {
+                temp[i] *= 2;
+                temp.splice(i + 1, 1);
+            }
         }
-    }
 
-    // Move again to fill empty spaces
-    for (let i = 15; i >= 0; i--) {
-        if (arraynum[i] === "") {
-            for (let j = i - 4; j >= 0; j -= 4) {
-                if (arraynum[j] !== "") {
-                    arraynum[i] = arraynum[j];
-                    arraynum[j] = "";
-                    break; // Exit the loop
-                }
+        for (let i = 0; i < 4; i++) {
+            if (i < temp.length) {
+                arraynum[(3 - i) * 4 + col] = temp[i];
+            } else {
+                arraynum[(3 - i) * 4 + col] = "";
             }
         }
     }
 }
 
+function moverArriba() {
+    for (let col = 0; col < 4; col++) {
+        let temp = [];
+        for (let row = 0; row < 4; row++) {
+            if (arraynum[row * 4 + col] !== "") {
+                temp.push(arraynum[row * 4 + col]);
+            }
+        }
+
+        for (let i = 0; i < temp.length; i++) {
+            if (temp[i] === temp[i + 1]) {
+                temp[i] *= 2;
+                temp.splice(i + 1, 1);
+            }
+        }
+
+        for (let i = 0; i < 4; i++) {
+            if (i < temp.length) {
+                arraynum[i * 4 + col] = temp[i];
+            } else {
+                arraynum[i * 4 + col] = "";
+            }
+        }
+    }
+}
 
 function moverIzq() {
-    
+    for (let row = 0; row < 4; row++) {
+        let temp = [];
+        for (let col = 0; col < 4; col++) {
+            if (arraynum[row * 4 + col] !== "") {
+                temp.push(arraynum[row * 4 + col]);
+            }
+        }
+
+        for (let i = 0; i < temp.length; i++) {
+            if (temp[i] === temp[i + 1]) {
+                temp[i] *= 2;
+                temp.splice(i + 1, 1);
+            }
+        }
+
+        for (let col = 0; col < 4; col++) {
+            if (col < temp.length) {
+                arraynum[row * 4 + col] = temp[col];
+            } else {
+                arraynum[row * 4 + col] = "";
+            }
+        }
+    }
+}
+
+function moverDerecha() {
+    for (let row = 0; row < 4; row++) {
+        let temp = [];
+        for (let col = 3; col >= 0; col--) {
+            if (arraynum[row * 4 + col] !== "") {
+                temp.push(arraynum[row * 4 + col]);
+            }
+        }
+
+        for (let i = 0; i < temp.length; i++) {
+            if (temp[i] === temp[i + 1]) {
+                temp[i] *= 2;
+                temp.splice(i + 1, 1);
+            }
+        }
+
+        for (let col = 0; col < 4; col++) {
+            if (col < temp.length) {
+                arraynum[row * 4 + (3 - col)] = temp[col];
+            } else {
+                arraynum[row * 4 + (3 - col)] = "";
+            }
+        }
+    }
 }
 
 // Aprendido con cristian https://gitlab.com/jaavii_04/lighting-designer/-/blob/main/public/js/key-bindings.js?ref_type=heads
@@ -95,7 +157,13 @@ document.addEventListener('keydown', function(event) {
             mostrarModal();
         }
     } else if (event.key === 'ArrowUp') {
-        añadirNumeroNuevo();
+        // funcion que mueve los numeros a la izquierda
+        moverArriba();
+        // añade un nuevo numero para seguir jugando
+        if (!añadirNumeroNuevo()) {
+            // vamos a mostrar un mensaje de que has perdido
+            mostrarModal();
+        }
     } else if (event.key === 'ArrowLeft') {
         // funcion que mueve los numeros a la izquierda
         moverIzq();
@@ -105,7 +173,13 @@ document.addEventListener('keydown', function(event) {
             mostrarModal();
         }
     } else if (event.key === 'ArrowRight') {
-        añadirNumeroNuevo();
+        // funcion que mueve los numeros a la izquierda
+        moverDerecha();
+        // añade un nuevo numero para seguir jugando
+        if (!añadirNumeroNuevo()) {
+            // vamos a mostrar un mensaje de que has perdido
+            mostrarModal();
+        }
     }
 });
 
@@ -121,7 +195,6 @@ document.getElementById("restartButton").onclick = function() {
 function mostrarTablero() {
     let suma = 0;
     for (let i = 0; i < arraynum.length; i++) {
-        console.log(arraynum[i]);
         document.getElementById("cel" + i).innerText = arraynum[i];
         document.getElementById("cel" + i).dataset.value = arraynum[i];
         if (arraynum[i] !== "") {
