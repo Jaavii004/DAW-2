@@ -4,12 +4,15 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     height: 100vh;
     margin: 0;
 }
 
-.container {
-    text-align: center;
+.contenedor {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 h1 {
@@ -17,18 +20,19 @@ h1 {
     margin-bottom: 20px;
 }
 
-.grid {
+.cuadrícula {
     display: grid;
     grid-template-rows: repeat(6, 60px);
     grid-template-columns: repeat(5, 60px);
     gap: 10px;
+    margin-bottom: 20px;
 }
 
-.row {
-    display: contents; /* Permite que las celdas se alineen en la cuadrícula */
+.fila {
+    display: contents;
 }
 
-.cell {
+.celda {
     width: 60px;
     height: 60px;
     background-color: #fff;
@@ -41,21 +45,86 @@ h1 {
     transition: background-color 0.3s;
 }
 
-.cell:hover {
+.celda:hover {
     background-color: #e0e0e0;
 }
 
-.cell.correct {
+.celda.correcta {
     background-color: #6aaa64;
     color: white;
 }
 
-.cell.present {
+.celda.presente {
     background-color: #c9b458;
     color: white;
 }
 
-.cell.absent {
+.celda.absente {
     background-color: #787c7e;
     color: white;
+}
+
+.teclado {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.fila-teclado {
+    display: flex;
+    justify-content: center;
+    margin: 5px 0;
+}
+
+.tecla {
+    width: 40px;
+    height: 40px;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    margin: 0 5px;
+    transition: background-color 0.3s;
+    cursor: pointer;
+}
+
+.tecla:hover {
+    background-color: #e0e0e0;
+}
+
+.tecla.especial {
+    width: 80px; 
+}
+
+.verde {
+    background-color: green;
+    color: white;
+}
+
+.amarillo {
+    background-color: yellow;
+    color: black;
+}
+
+.gris {
+    background-color: gray;
+    color: white;
+}
+
+
+/* animacion para saber donde estas*/
+.blink {
+    animation: blink-animation 1.3s infinite alternate;
+}
+
+@keyframes blink-animation {
+    from {
+        background-color: #fff;
+    }
+    to {
+        background-color: #e0e0e0;
+    }
 }

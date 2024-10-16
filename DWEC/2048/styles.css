@@ -4,12 +4,12 @@ body {
     align-items: center;
     height: 100vh;
     background-color: #faf8ef;
-    margin: 0;
-    font-family: 'Arial', sans-serif;
 }
 
 .game-container {
     position: relative;
+    display: flex;
+    flex-direction: column;
 }
 
 .grid {
@@ -35,17 +35,49 @@ body {
     transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.cell[data-value="2"] { background-color: #eee4da; }
-.cell[data-value="4"] { background-color: #ede0c8; }
-.cell[data-value="8"] { background-color: #f2b179; }
-.cell[data-value="16"] { background-color: #f59563; }
-.cell[data-value="32"] { background-color: #f67c5f; }
-.cell[data-value="64"] { background-color: #f67c5f; }
-.cell[data-value="128"] { background-color: #f9f686; }
-.cell[data-value="256"] { background-color: #f9f86e; }
-.cell[data-value="512"] { background-color: #c2c3b2; }
-.cell[data-value="1024"] { background-color: #ffeb8a; }
-.cell[data-value="2048"] { background-color: #ffda8c; }
+.cell[data-value="2"] {
+    background-color: #eee4da;
+}
+
+.cell[data-value="4"] {
+    background-color: #ede0c8;
+}
+
+.cell[data-value="8"] {
+    background-color: #f2b179;
+}
+
+.cell[data-value="16"] {
+    background-color: #f59563;
+}
+
+.cell[data-value="32"] {
+    background-color: #f67c5f;
+}
+
+.cell[data-value="64"] {
+    background-color: #f67c5f;
+}
+
+.cell[data-value="128"] {
+    background-color: #f9f686;
+}
+
+.cell[data-value="256"] {
+    background-color: #f9f86e;
+}
+
+.cell[data-value="512"] {
+    background-color: #c2c3b2;
+}
+
+.cell[data-value="1024"] {
+    background-color: #ffeb8a;
+}
+
+.cell[data-value="2048"] {
+    background-color: #ffda8c;
+}
 
 .score {
     margin-top: 20px;
@@ -61,23 +93,28 @@ body {
 }
 
 .modal {
-    display: none; /* Oculto por defecto */
+    display: none;
+    /* Oculto por defecto */
     position: fixed;
     z-index: 1;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto; /* Habilitar desplazamiento si es necesario */
-    background-color: rgba(0, 0, 0, 0.4); /* Fondo oscuro */
+    overflow: auto;
+    /* Habilitar desplazamiento si es necesario */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Fondo oscuro */
 }
 
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto; /* 15% desde la parte superior y centrado */
+    margin: 15% auto;
+    /* 15% desde la parte superior y centrado */
     padding: 20px;
     border: 1px solid #888;
-    width: 80%; /* Ancho del modal */
+    width: 80%;
+    /* Ancho del modal */
     text-align: center;
 }
 
@@ -107,4 +144,24 @@ button {
 
 button:hover {
     background-color: #5a4d44;
+}
+
+.undo-button {
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    background-color: #776e65;
+    color: white;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 0 auto;
+}
+
+.botones {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: 0 auto;
+
 }

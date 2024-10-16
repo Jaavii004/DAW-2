@@ -27,15 +27,25 @@
             <div class="cell" id="cel14"></div>
             <div class="cell" id="cel15"></div>
         </div>
-        <div class="score">Score: <span id="score">4</span></div>
+        <div class="score">Puntos: <span id="score">4</span></div>
+        <div class="undo-button" id="volver-atras">
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 32 32" class="aspect-square h-auto w-full min-w-0 max-w-8 shrink" id="undoButton">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 25h6.5a8.5 8.5 0 0 0 8.5-8.5v0A8.5 8.5 0 0 0 16.5 8H8m0 0 3.5-4M8 8l3.5 4" style="stroke:currentColor;stroke-opacity:1"></path>
+            </svg>
+        </div>
     </div>
     <div id="modal" class="modal">
         <div class="modal-content">
-            <span class="close" id="closeModal">&times;</span>
             <h2>¡Juego Terminado!</h2>
             <p>No hay más movimientos posibles.</p>
-            <button id="undoButton">Rehacer último movimiento</button>
-            <button id="restartButton">Reiniciar</button>
+            <div class="botones">
+                <div class="undo-button">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="none" viewBox="0 0 32 32" class="aspect-square h-auto w-full min-w-0 max-w-8 shrink" id="undoButton">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M10 25h6.5a8.5 8.5 0 0 0 8.5-8.5v0A8.5 8.5 0 0 0 16.5 8H8m0 0 3.5-4M8 8l3.5 4" style="stroke:currentColor;stroke-opacity:1"></path>
+                    </svg>
+                </div>
+                <button id="restartButton">Reiniciar</button>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>
