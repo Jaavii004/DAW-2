@@ -15,7 +15,7 @@ if (isset($_GET["nombre"])) {
     echo "<p><strong>Sexo:</strong> " . $_GET["sexo"] . "</p>";
     echo "<p><strong>Provincia:</strong> " . $_GET["provincia"] . "</p>";
 
-    echo "<p><strong>Horario de contacto:</strong> " . implode(", ", $_GET["horario"]) . "</p>";
+    echo "<p><strong>Horario de contacto:</strong> " . implode(" - ", $_GET["horario"]) . "</p>";
 
     if (isset($_GET["conocido"])) {
         echo "<p><strong>¿Cómo nos ha conocido?:</strong> " . implode(", ", $_GET["conocido"]) . "</p>";
@@ -24,7 +24,7 @@ if (isset($_GET["nombre"])) {
     }
 
     echo "<p><strong>Comentario:</strong> " . $_GET["comentario"] . "</p>";
-    echo "<p><strong>Recibir información:</strong> " . (isset($_GET["informacion"]) ? "Sí" : "No") . "</p>";
+    echo "<p><strong>Recibir información:</strong> " . (isset($_GET["informacion"]) ? "Ha seleccionado recibir ofertas" : "No ha seleccionado recibir ofertas") . "</p>";
     echo "<p><strong>Aceptar condiciones:</strong> " . (isset($_GET["condiciones"]) ? "Sí" : "No") . "</p>";
 } else {
 ?>
