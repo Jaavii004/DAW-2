@@ -11,11 +11,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Javier Puertas - Formulario de registro 3</title>
 </head>
 <body>
 <form action="" method="GET">
-    <h1>Alumnos - Formulario de registro 3</h1>
+    <h1>Javier Puertas - Formulario de registro 3</h1>
     <label for="nombre">Nombre:</label>
     <input type="text" id="nombre" name="nombre" maxlength="50" required><br>
 
