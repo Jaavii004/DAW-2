@@ -3,7 +3,7 @@
  * @Author: Javier Puertas
  */
 
- if (isset($_GET["nombre"])) {
+if (isset($_GET["nombre"])) {
     echo "<h1>Datos recibidos:</h1>";
     echo "<p><strong>Nombre:</strong> " . $_GET["nombre"] . "</p>";
     echo "<p><strong>Apellidos:</strong> " . $_GET["apellidos"] . "</p>";
@@ -23,7 +23,7 @@
 </head>
 <body>
     <h1>Javier Puertas - Formulario de registro 2</h1>
-    <form method="GET" action="">
+    <form method="GET" action="2formulario.php">
         <label for="nombre">Nombre:</label>
         <input type="text" name="nombre" maxlength="50" required><br><br>
         
@@ -46,14 +46,14 @@
         <label for="mujer">Mujer</label><br><br>
         
         <label for="provincia">Provincia:</label>
-        <select name="provincia" required></select>
+        <select name="pselectia" required>
             <option value="Alicante">Alicante</option>
             <option value="Castellón">Castellón</option>
             <option value="Valencia">Valencia</option>
         </select><br><br>
         
         <label for="situacion">Situación:</label>
-        <select size="2" name="situacion[]" multiple required></select>
+        <select size="2" name="situacion[]" multiple required>
             <option value="Estudiando">Estudiando</option>
             <option value="Trabajando">Trabajando</option>
             <option value="Buscando empleo">Buscando empleo</option>
