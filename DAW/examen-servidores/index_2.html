@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Examen Tipo Test - 40 Nuevas Preguntas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    .container {
+      margin-top: 50px;
+    }
+    .question {
+      margin-bottom: 20px;
+    }
+    .result {
+      margin-top: 20px;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1 class="text-center">Examen Tipo Test</h1>
+    <form id="quizForm">
+      <!-- Preguntas dinámicamente añadidas aquí -->
+    </form>
+    <div class="text-center">
+      <button class="btn btn-primary" type="button" onclick="checkAnswers()">Enviar</button>
+    </div>
+    <div id="result" class="result text-center"></div>
+  </div>
+
+  <script>
+    // Array de preguntas con opciones y la respuesta correcta
+    const questions = [
+      { question: "1. ¿Qué es una IP estática?", options: ["Una IP que cambia regularmente", "Una IP que no cambia", "Una IP dinámica", "Una IP asignada por DHCP"], answer: 1 },
+      { question: "2. ¿Qué protocolo se utiliza para obtener una dirección IP automáticamente?", options: ["FTP", "HTTP", "DHCP", "DNS"], answer: 2 },
+      { question: "3. ¿Qué es una dirección MAC?", options: ["Una dirección IP", "Una dirección física única de un dispositivo", "Una dirección de correo electrónico", "Una URL"], answer: 1 },
+      { question: "4. ¿Qué puerto utiliza HTTPS?", options: ["80", "443", "21", "25"], answer: 1 },
+      { question: "5. ¿Qué es una red VPN?", options: ["Una red visible para todos", "Una red local", "Una red privada virtual", "Un tipo de DNS"], answer: 2 },
+      { question: "6. ¿Cuál es la función principal de un firewall?", options: ["Mejorar la velocidad de red", "Bloquear el acceso no autorizado", "Asignar direcciones IP", "Cifrar los datos"], answer: 1 },
+      { question: "7. ¿Qué es un DDoS?", options: ["Un tipo de certificado", "Un ataque distribuido de denegación de servicio", "Una técnica de optimización de redes", "Un protocolo de red"], answer: 1 },
+      { question: "8. ¿Qué significa el término 'latencia'?", options: ["La velocidad de carga de un sitio web", "El retraso en la transmisión de datos", "El ancho de banda disponible", "La cantidad de datos transferidos"], answer: 1 },
+      { question: "9. ¿Qué es un servidor DNS?", options: ["Un servidor de almacenamiento", "Un servidor de correos", "Un servidor que traduce nombres de dominio a IPs", "Un servidor que distribuye contenido"], answer: 2 },
+      { question: "10. ¿Qué tipo de registro DNS se utiliza para resolver dominios a direcciones IPv6?", options: ["A", "CNAME", "MX", "AAAA"], answer: 3 },
+      { question: "11. ¿Qué significa HTTP?", options: ["HyperText Transfer Protocol", "Hyper Transfer Text Protocol", "Host Transfer Text Protocol", "HyperTest Transfer Protocol"], answer: 0 },
+      { question: "12. ¿Qué diferencia principal existe entre TCP y UDP?", options: ["UDP es más seguro", "TCP es más rápido", "TCP es orientado a conexión y UDP no", "UDP garantiza la entrega de paquetes"], answer: 2 },
+      { question: "13. ¿Qué es un router?", options: ["Un dispositivo que asigna IPs", "Un dispositivo que almacena datos", "Un dispositivo que dirige el tráfico entre redes", "Un dispositivo de seguridad"], answer: 2 },
+      { question: "14. ¿Qué significa la sigla FTP?", options: ["File Transfer Protocol", "File Text Protocol", "Fast Transfer Protocol", "File Transport Protocol"], answer: 0 },
+      { question: "15. ¿Qué es una dirección IP pública?", options: ["Una dirección utilizada en redes locales", "Una dirección visible en internet", "Una dirección que cambia con frecuencia", "Una dirección asignada por DHCP"], answer: 1 },
+      { question: "16. ¿Qué es el ping?", options: ["Una medida de velocidad de descarga", "Una medida de latencia", "Una medida de ancho de banda", "Una medida de la calidad de la conexión"], answer: 1 },
+      { question: "17. ¿Qué es un servidor proxy?", options: ["Un servidor que almacena correos electrónicos", "Un servidor intermedio entre el usuario y el destino", "Un servidor de archivos", "Un servidor de DNS"], answer: 1 },
+      { question: "18. ¿Qué es el ancho de banda?", options: ["La velocidad de internet", "El tiempo de respuesta", "La cantidad máxima de datos que puede transferirse", "El número de conexiones simultáneas"], answer: 2 },
+      { question: "19. ¿Qué es la criptografía?", options: ["El proceso de compresión de datos", "El proceso de cifrar y descifrar información", "El proceso de almacenamiento de datos", "El proceso de acelerar la conexión"], answer: 1 },
+      { question: "20. ¿Qué protocolo se utiliza para la transmisión de archivos?", options: ["DNS", "FTP", "SMTP", "DHCP"], answer: 1 },
+      { question: "21. ¿Qué es el tiempo de actividad (uptime) de un servidor?", options: ["El tiempo que tarda en procesar una solicitud", "El tiempo que un servidor está disponible y funcionando", "El tiempo que tarda en responder a un ping", "El tiempo que un servidor tarda en iniciar"], answer: 1 },
+      { question: "22. ¿Qué es una VPN?", options: ["Una red de área local", "Una red privada virtual", "Una red pública de internet", "Una red de alta velocidad"], answer: 1 },
+      { question: "23. ¿Qué es IPv4?", options: ["Un tipo de DNS", "Un protocolo de red", "Un estándar de dirección IP de 32 bits", "Un servidor"], answer: 2 },
+      { question: "24. ¿Qué es un balanceador de carga?", options: ["Un tipo de DNS", "Un dispositivo que distribuye tráfico entre varios servidores", "Un servidor de seguridad", "Un tipo de firewall"], answer: 1 },
+      { question: "25. ¿Qué es un switch de red?", options: ["Un dispositivo que almacena datos", "Un dispositivo que conecta múltiples dispositivos en una red", "Un dispositivo que asigna IPs", "Un dispositivo de seguridad"], answer: 1 },
+      { question: "26. ¿Qué significa NAT?", options: ["Network Address Translation", "Network Access Translation", "Network Allocation Transfer", "Network Assignment Translation"], answer: 0 },
+      { question: "27. ¿Qué es un certificado SSL?", options: ["Un tipo de firewall", "Un método para encriptar conexiones", "Una dirección IP", "Un protocolo de transferencia"], answer: 1 },
+      { question: "28. ¿Qué puerto utiliza FTP?", options: ["21", "80", "443", "25"], answer: 0 },
+      { question: "29. ¿Qué es el cifrado AES?", options: ["Advanced Encryption Standard", "Automatic Encryption Standard", "Advanced Email Security", "Automatic Email Security"], answer: 0 },
+      { question: "30. ¿Qué es un servidor web?", options: ["Un servidor que almacena archivos de video", "Un servidor que aloja sitios web", "Un servidor que envía correos electrónicos", "Un servidor que resuelve DNS"], answer: 1 },
+      { question: "31. ¿Qué es un servidor POP3?", options: ["Un servidor para enviar correos", "Un servidor para recibir correos", "Un servidor de almacenamiento", "Un servidor de DNS"], answer: 1 },
+      { question: "32. ¿Qué significa SMTP?", options: ["Secure Mail Transfer Protocol", "Simple Message Transfer Protocol", "Simple Mail Transfer Protocol", "Secure Message Transfer Protocol"], answer: 2 },
+      { question: "33. ¿Qué puerto utiliza SMTP?", options: ["21", "25", "80", "443"], answer: 1 },
+      { question: "34. ¿Qué es un servidor IMAP?", options: ["Un servidor para el envío de correos", "Un servidor de archivos", "Un servidor de DNS", "Un servidor para el acceso a correos"], answer: 3 },
+      { question: "35. ¿Qué es el hashing?", options: ["Un método de cifrado reversible", "Un método de compresión", "Un método para asegurar la integridad de datos", "Un método de encriptación simétrica"], answer: 2 },
+      { question: "36. ¿Qué puerto utiliza SSH?", options: ["22", "80", "443", "25"], answer: 0 },
+      { question: "37. ¿Qué es un ataque Man-in-the-Middle?", options: ["Un tipo de ataque que intercepta la comunicación entre dos partes", "Un ataque DDoS", "Un ataque de fuerza bruta", "Un ataque de redirección de DNS"], answer: 0 },
+      { question: "38. ¿Qué es una red LAN?", options: ["Local Area Network", "Large Area Network", "Low Area Network", "Linked Area Network"], answer: 0 },
+      { question: "39. ¿Qué es una red WAN?", options: ["Wide Area Network", "Wireless Area Network", "Web Area Network", "Wired Area Network"], answer: 0 },
+      { question: "40. ¿Qué es una dirección IP dinámica?", options: ["Una IP que cambia automáticamente", "Una IP que no cambia", "Una IP asignada manualmente", "Una IP invisible"], answer: 0 }
+    ];
+
+    // Función para generar las preguntas dinámicamente
+    function generateQuiz() {
+      const form = document.getElementById('quizForm');
+      questions.forEach((q, index) => {
+        const questionDiv = document.createElement('div');
+        questionDiv.className = 'question';
+        
+        // Título de la pregunta
+        const questionTitle = document.createElement('h5');
+        questionTitle.innerText = q.question;
+        questionDiv.appendChild(questionTitle);
+        
+        // Opciones
+        q.options.forEach((option, i) => {
+          const div = document.createElement('div');
+          div.className = 'form-check';
+          const input = document.createElement('input');
+          input.type = 'radio';
+          input.className = 'form-check-input';
+          input.name = `question${index}`;
+          input.id = `q${index}o${i}`;
+          input.value = i;
+          
+          const label = document.createElement('label');
+          label.className = 'form-check-label';
+          label.htmlFor = `q${index}o${i}`;
+          label.innerText = option;
+          
+          div.appendChild(input);
+          div.appendChild(label);
+          questionDiv.appendChild(div);
+        });
+
+        form.appendChild(questionDiv);
+      });
+    }
+
+    // Función para comprobar las respuestas
+    function checkAnswers() {
+      let score = 0;
+      
+      questions.forEach((q, index) => {
+        const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+        if (selectedOption && parseInt(selectedOption.value) === q.answer) {
+          score++;
+        }
+      });
+
+      // Mostrar la puntuación
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerText = `Tu puntuación es: ${score}/${questions.length}`;
+    }
+
+    // Generar el examen cuando la página carga
+    window.onload = generateQuiz;
+  </script>
+</body>
+</html>
