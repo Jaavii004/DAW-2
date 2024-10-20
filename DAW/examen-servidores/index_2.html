@@ -12,6 +12,12 @@
     .question {
       margin-bottom: 20px;
     }
+    .correct {
+      background-color: #c8e6c9; /* Verde claro */
+    }
+    .incorrect {
+      background-color: #ffccbc; /* Rojo claro */
+    }
     .result {
       margin-top: 20px;
       font-size: 1.5rem;
@@ -76,19 +82,16 @@
       { question: "40. ¿Qué es una dirección IP dinámica?", options: ["Una IP que cambia automáticamente", "Una IP que no cambia", "Una IP asignada manualmente", "Una IP invisible"], answer: 0 }
     ];
 
-    // Función para generar las preguntas dinámicamente
     function generateQuiz() {
       const form = document.getElementById('quizForm');
       questions.forEach((q, index) => {
         const questionDiv = document.createElement('div');
         questionDiv.className = 'question';
-        
-        // Título de la pregunta
+
         const questionTitle = document.createElement('h5');
         questionTitle.innerText = q.question;
         questionDiv.appendChild(questionTitle);
-        
-        // Opciones
+
         q.options.forEach((option, i) => {
           const div = document.createElement('div');
           div.className = 'form-check';
@@ -98,12 +101,12 @@
           input.name = `question${index}`;
           input.id = `q${index}o${i}`;
           input.value = i;
-          
+
           const label = document.createElement('label');
           label.className = 'form-check-label';
           label.htmlFor = `q${index}o${i}`;
           label.innerText = option;
-          
+
           div.appendChild(input);
           div.appendChild(label);
           questionDiv.appendChild(div);
@@ -113,23 +116,33 @@
       });
     }
 
-    // Función para comprobar las respuestas
     function checkAnswers() {
       let score = 0;
-      
+      const resultDiv = document.getElementById('result');
+
+      // Limpiar resultados anteriores
+      resultDiv.innerText = '';
+
       questions.forEach((q, index) => {
         const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
-        if (selectedOption && parseInt(selectedOption.value) === q.answer) {
-          score++;
+        const correctOption = document.getElementById(`q${index}o${q.answer}`);
+
+        if (selectedOption) {
+          if (parseInt(selectedOption.value) === q.answer) {
+            score++;
+            selectedOption.parentElement.classList.add('correct');
+          } else {
+            selectedOption.parentElement.classList.add('incorrect');
+          }
         }
+
+        // Resaltar la respuesta correcta
+        correctOption.parentElement.classList.add('correct');
       });
 
-      // Mostrar la puntuación
-      const resultDiv = document.getElementById('result');
       resultDiv.innerText = `Tu puntuación es: ${score}/${questions.length}`;
     }
 
-    // Generar el examen cuando la página carga
     window.onload = generateQuiz;
   </script>
 </body>
