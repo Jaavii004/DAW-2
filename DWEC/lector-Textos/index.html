@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lector de Texto Mejorado</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .text-area {
+            margin-bottom: 15px;
+            height: 409px; /* Ajustar altura del cuadro de texto */
+            border: 1px solid #ced4da; /* Borde del div */
+            padding: 10px; /* Espaciado interno */
+            overflow-y: auto; /* Habilitar scroll vertical */
+            background-color: #fff; /* Fondo blanco */
+            white-space: pre-wrap; /* Mantener los espacios */
+        }
+        .highlight {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Lector de Texto Mejorado</h1>
+
+        <div class="mb-3">
+            <label for="text-input" class="form-label">Introduce el texto a leer:</label>
+            <div class="text-area" id="text-input" contenteditable="true" placeholder="Escribe algo aquí..."></div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-6">
+                <label for="lang-select" class="form-label">Selecciona el idioma:</label>
+                <select class="form-select" id="lang-select"></select>
+            </div>
+
+            <div class="col-md-6">
+                <label for="rate" class="form-label">Velocidad:</label>
+                <input type="range" class="form-range" id="rate" min="0.5" max="2" value="1" step="0.1">
+                <span id="rate-value" class="form-text">Velocidad: 1x</span>
+            </div>
+        </div>
+
+        <div class="text-center">
+            <button class="btn btn-primary" id="speak-btn">Leer Texto</button>
+            <button class="btn btn-danger" id="stop-btn">Detener</button>
+        </div>
+    </div>
+
+    <script>
+        // Obtener elementos del DOM
+        const textInput = document.getElementById('text-input');
+        const langSelect = document.getElementById('lang-select');
+        const rateInput = document.getElementById('rate');
+        const rateValue = document.getElementById('rate-value');
+        const speakBtn = document.getElementById('speak-btn');
+        const stopBtn = document.getElementById('stop-btn');
+
+        const synth = window.speechSynthesis;
+        let utterance = null;
+        let currentIndex = 0;  // Para guardar la posición actual
+        let isPaused = false;
+
+        // Cargar las voces disponibles en el navegador
+        function loadVoices() {
+            const voices = synth.getVoices();
+            langSelect.innerHTML = '';  // Limpiar las opciones anteriores
+
+            voices.forEach((voice) => {
+                const option = document.createElement('option');
+                option.value = voice.name;
+                option.innerText = `${voice.name} (${voice.lang})`;
+                langSelect.appendChild(option);
+            });
+
+            if (voices.length > 0) {
+                langSelect.value = voices[0].name;  // Selecciona la primera voz por defecto
+            }
+        }
+
+        // Cambiar la velocidad de lectura
+        rateInput.addEventListener('input', () => {
+            rateValue.textContent = `Velocidad: ${rateInput.value}x`;
+            if (utterance && synth.speaking) {
+                utterance.rate = rateInput.value;
+            }
+        });
+
+        // Leer el texto
+        function readText() {
+            const text = textInput.innerText.trim();
+            if (!text) {
+                console.log("No hay texto para leer.");
+                return;
+            }
+
+            utterance = new SpeechSynthesisUtterance(text);
+            utterance.voice = synth.getVoices().find(voice => voice.name === langSelect.value) || synth.getVoices()[0];
+            utterance.rate = rateInput.value;
+
+            // Almacenar el índice del carácter en el texto
+            let startIndex = 0;
+
+            utterance.onboundary = (event) => {
+                if (event.name === 'word') {
+                    const word = text.substring(event.charIndex, event.charIndex + event.length);
+                    highlightText(event.charIndex, event.length);  // Resaltar la palabra actual
+                    scrollToWord(event.charIndex);  // Desplazar el scroll
+                    startIndex = event.charIndex;  // Actualizar el índice de inicio
+                }
+            };
+
+            utterance.onend = () => {
+                highlightText(-1); // Limpiar resaltado al finalizar
+                utterance = null;
+            };
+
+            synth.speak(utterance);
+        }
+
+        // Resaltar la palabra que está siendo leída
+        function highlightText(start, length) {
+            // Eliminar resaltados anteriores
+            textInput.innerHTML = textInput.innerHTML.replace(/<span class="highlight">|<\/span>/g, '');
+            const text = textInput.innerText; // Obtener el texto actual
+            if (start >= 0) {
+                const highlightedWord = text.substring(start, start + length);
+                const regex = new RegExp(`(${highlightedWord})`, 'g'); // Crear una expresión regular para resaltar
+                textInput.innerHTML = textInput.innerHTML.replace(regex, `<span class="highlight">$1</span>`); // Resaltar la palabra actual
+            }
+        }
+
+        // Desplazar el área de texto hasta la palabra que se está leyendo
+        function scrollToWord(position) {
+            const textArea = textInput;
+            const charHeight = textArea.offsetHeight / textArea.innerText.length; // Calcular la altura por carácter
+            const scrollPosition = position * charHeight;
+            textArea.scrollTop = scrollPosition; // Desplazar el scroll
+        }
+
+        // Leer el texto desde la última posición si está pausado, o desde el inicio
+        speakBtn.addEventListener('click', () => {
+            if (isPaused) {
+                synth.resume(); // Reanudar desde donde se pausó
+                isPaused = false;
+            } else {
+                readText(); // Leer desde el principio
+            }
+        });
+
+        // Detener la lectura
+        stopBtn.addEventListener('click', () => {
+            if (synth.speaking) {
+                synth.pause(); // Pausar la lectura
+                isPaused = true;
+            }
+        });
+
+        // Cargar las voces al cargar la página
+        window.addEventListener('load', () => {
+            loadVoices();
+            if (speechSynthesis.onvoiceschanged !== undefined) {
+                speechSynthesis.onvoiceschanged = loadVoices;
+            }
+        });
+    </script>
+</body>
+</html>

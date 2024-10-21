@@ -139,13 +139,37 @@ const palabras = [
     "quero", "quien", "quiza", "radio", "razas", "rebel", "roble", "roque", "salas", "salto",
     "santo", "sello", "silva", "socio", "somos", "sordo", "suele", "tarde", "tiempo", "tinta",
     "topes", "tribu", "tumor", "ubica", "ufano", "ulcer", "unido", "valle", "vario", "veras",
-    "vigor", "voces", "votar", "yacer", "yogur", "zorro"
+    "vigor", "voces", "votar", "yacer", "yogur", "zorro",
+    "abandon", "abogado", "abrazar", "abrumar", "acertar",
+    "acertijo", "aceptar", "acordar", "acuario", "admirar",
+    "adolescente", "afirmar", "agresivo", "alabanza", "alergia",
+    "análisis", "anterior", "antigua", "apasionado", "apetito",
+    "arcoíris", "artículo", "asustar", "asustado", "atender",
+    "aterrado", "atento", "auditorio", "autorizar", "automático",
+    "aventura", "balacera", "barómetro", "batallón", "biblioteca",
+    "bilingüe", "carnaval", "castillo", "celebrar", "cercano",
+    "cocinero", "cohesión", "comedia", "correría", "despertar",
+    "dificultad", "diligente", "emoción", "especial", "espectro",
+    "estímulo", "felicidad", "generoso", "hermoso", "informar",
+    "intensidad", "interesar", "intervención", "juguetes", "librería",
+    "maravilla", "motociclo", "navegante", "nervioso", "ocurrir",
+    "participar", "patinaje", "razonable", "reacción", "reclamar",
+    "sabiduría", "sorprender", "suspenso", "trabajar", "universo"
 ];
 
+let haGanado = false;
 const Letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 let palabraAAdivinar = palabras[Math.floor(Math.random() * palabras.length)];
 
 console.log(palabraAAdivinar);
+
+let lengthPalabras = 6;
+if (palabraAAdivinar.length > 5) {
+    lengthPalabras += (palabraAAdivinar.length - 5);
+}
+
+crearTablero(lengthPalabras, palabraAAdivinar.length);
+
 let arrayLetrasEscritas = [];
 for (let i = 0; i < 6; i++) {
     let newArray = [];
@@ -155,39 +179,41 @@ for (let i = 0; i < 6; i++) {
 let celdas = document.querySelectorAll('.celda');
 let fila = 0;
 
-document.addEventListener('keydown', function(event) {
+document.addEventListener('keydown', function (event) {
     let array = arrayLetrasEscritas[fila];
-    
-    if (Letras.includes(event.key)) {
-        if (array.length <= 4) {
-            array.push(event.key);
-            console.log(event.key);
-            arrayLetrasEscritas[fila] = array;
-            MostrarFila(fila);
+    if (!haGanado) {
+        if (Letras.includes(event.key)) {
+            if (array.length <= 4) {
+                array.push(event.key);
+                console.log(event.key);
+                arrayLetrasEscritas[fila] = array;
+                MostrarFila(fila);
+            }
         }
-    }
-    if (event.key === 'Enter') {
-        if (array.length === 5) {
-            let palabra = arrayLetrasEscritas[fila].join("");
-            comprobarPalabra(palabra, palabraAAdivinar);
+        if (event.key === 'Enter') {
+            if (array.length === 5) {
+                let palabra = arrayLetrasEscritas[fila].join("");
+                comprobarPalabra(palabra, palabraAAdivinar);
+            }
         }
-    }
-    if (event.key === 'Backspace') {
-        if (array.length > 0) {
-            array.pop();
-            arrayLetrasEscritas[fila] = array;
-            MostrarFila(fila);
+        if (event.key === 'Backspace') {
+            if (array.length > 0) {
+                array.pop();
+                arrayLetrasEscritas[fila] = array;
+                MostrarFila(fila);
+            }
         }
     }
 });
 
-function comprobarPalabra(palabra , palabraAAdivinar) {
+function comprobarPalabra(palabra, palabraAAdivinar) {
     if (palabra === palabraAAdivinar) {
         for (let index = 0; index < 5; index++) {
             const celda = celdas[fila * 5 + index];
             celda.classList.add('verde');
+            haGanado = true;
         }
-    } else {    
+    } else {
         for (let index = 0; index < 5; index++) {
             const celda = celdas[fila * 5 + index];
             if (palabraAAdivinar[index] === palabra[index]) {
@@ -217,7 +243,7 @@ function MostrarFila(fila) {
             celda.textContent = '';
         }
     }
-    
+
     // Encuentra la primera celda vacía después de la última letra escrita
     for (let index = 0; index < 5; index++) {
         const celda = celdas[fila * 5 + index];
@@ -231,32 +257,33 @@ function MostrarFila(fila) {
     }
 }
 
-// Añadir la funcion de la tecla del teclado virtual
+// teclado virtual
 document.querySelectorAll('.tecla').forEach(tecla => {
-    tecla.addEventListener('click', function() {
+    tecla.addEventListener('click', function () {
         let array = arrayLetrasEscritas[fila];
         let letra = this.textContent.toLowerCase();
-        
-        if (Letras.includes(letra)) {
-            if (array.length <= 4) {
-                array.push(letra);
-                arrayLetrasEscritas[fila] = array;
-                MostrarFila(fila);
+        if (!haGanado) {
+            if (Letras.includes(letra)) {
+                if (array.length <= 4) {
+                    array.push(letra);
+                    arrayLetrasEscritas[fila] = array;
+                    MostrarFila(fila);
+                }
             }
-        }
 
-        if (letra == "enter") {
-            if (array.length === 5) {
-                let palabra = arrayLetrasEscritas[fila].join("");
-                comprobarPalabra(palabra, palabraAAdivinar);
+            if (letra == "enter") {
+                if (array.length === 5) {
+                    let palabra = arrayLetrasEscritas[fila].join("");
+                    comprobarPalabra(palabra, palabraAAdivinar);
+                }
             }
-        }
 
-        if (letra === "delete") {
-            if (array.length > 0) {
-                array.pop();
-                arrayLetrasEscritas[fila] = array;
-                MostrarFila(fila);
+            if (letra === "delete") {
+                if (array.length > 0) {
+                    array.pop();
+                    arrayLetrasEscritas[fila] = array;
+                    MostrarFila(fila);
+                }
             }
         }
     });
@@ -265,9 +292,48 @@ document.querySelectorAll('.tecla').forEach(tecla => {
 function eliminarClaseBlink() {
     // Selecciona todos los elementos con la clase 'blink'
     const celdasConBlink = document.querySelectorAll('.blink');
-    
+
     // Itera a través de los elementos y elimina la clase
     celdasConBlink.forEach(celda => {
         celda.classList.remove('blink');
     });
+}
+
+
+
+tiempo_jugando = 0;
+setInterval(() => {
+    tiempo_jugando++;
+    let minutos = Math.floor(tiempo_jugando / 60);
+    let segundos = tiempo_jugando % 60;
+    document.getElementById('tiempo-jugando').textContent = `${minutos}:${segundos < 10 ? '0' : ''}${segundos}`;
+}, 1000);
+
+
+function crearTablero(filas, celdasPorFila) {
+    const cuadrícula = document.querySelector('.cuadrícula');
+
+    cuadrícula.style.gridTemplateRows = `repeat(${filas}, 60px)`;
+    cuadrícula.style.gridTemplateColumns = `repeat(${celdasPorFila}, 60px)`;
+
+    // Limpiar la cuadrícula antes de crear un nuevo tablero
+    cuadrícula.innerHTML = ''; // Limpia la cuadrícula para evitar duplicados
+
+    for (let j = 0; j < filas; j++) { // Crear filas según el número de intentos
+        const fila = document.createElement('div');
+        fila.classList.add('fila');
+
+        for (let i = 0; i < celdasPorFila; i++) { // Crear celdas según la longitud de la palabra
+            const celda = document.createElement('div');
+            celda.classList.add('celda');
+
+            // Añadir la clase 'blink' solo a la primera celda de la primera fila
+            if (j === 0 && i === 0) {
+                celda.classList.add('blink');
+            }
+
+            fila.appendChild(celda); // Añadir la celda a la fila
+        }
+        cuadrícula.appendChild(fila); // Añadir la fila a la cuadrícula
+    }
 }

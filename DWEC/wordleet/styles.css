@@ -11,7 +11,8 @@ body {
 
 .contenedor {
     display: flex;
-    flex-direction: column;
+    flex-direction:row; /* Cambiar a columna: cuadrícula arriba, teclado abajo */
+
     align-items: center;
 }
 
@@ -126,5 +127,12 @@ h1 {
     }
     to {
         background-color: #e0e0e0;
+    }
+}
+
+/* Cambiar la disposición en pantallas pequeñas */
+@media (max-width: 910px) {
+    .contenedor {
+        flex-direction: column;
     }
 }

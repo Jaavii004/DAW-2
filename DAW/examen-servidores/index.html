@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Examen Tipo Test</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .container {
+            margin-top: 50px;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .correct {
+            background-color: #d4edda;
+        }
+
+        .incorrect {
+            background-color: #f8d7da;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1 class="text-center">Examen Tipo Test</h1>
+        <form id="quizForm">
+            <!-- Preguntas dinámicamente añadidas aquí -->
+        </form>
+        <div class="text-center">
+            <button class="btn btn-primary" type="button" onclick="checkAnswers()">Enviar</button>
+        </div>
+        <div id="result" class="result text-center"></div>
+    </div>
+
+    <script>
+        // Array de preguntas con opciones y la respuesta correcta
+        const questions = [
+            { question: "1. ¿Qué es un servidor VPS?", options: ["Un servidor privado exclusivo", "Un servidor compartido", "Un servidor físico completo", "Un servidor virtual privado"], answer: 3 },
+            { question: "2. ¿Qué hace un registro DNS tipo A?", options: ["Resuelve un dominio a IPv6", "Resuelve un dominio a IPv4", "Crea un alias de dominio", "Resuelve un correo electrónico"], answer: 1 },
+            { question: "3. ¿Qué es un CDN?", options: ["Una red de entrega de contenido", "Un servidor dedicado", "Un tipo de DNS", "Una red interna"], answer: 0 },
+            { question: "4. ¿Qué protocolo usa SSL?", options: ["HTTP", "HTTPS", "FTP", "SMTP"], answer: 1 },
+            { question: "5. ¿Qué es un balanceador de carga?", options: ["Un dispositivo físico", "Una técnica para distribuir cargas de trabajo", "Un servidor DNS", "Un tipo de almacenamiento en la nube"], answer: 1 },
+            { question: "6. ¿Qué tipo de hosting ofrece más control?", options: ["Hosting compartido", "VPS", "Hosting dedicado", "Hosting en la nube"], answer: 2 },
+            { question: "7. ¿Qué hace un registro MX?", options: ["Redirige un dominio", "Resuelve a IPv4", "Recibe correos electrónicos", "Resuelve a IPv6"], answer: 2 },
+            { question: "8. ¿Cuál es una ventaja de un CDN?", options: ["Aumenta la latencia", "Reduce la velocidad", "Distribuye el contenido geográficamente", "Solo funciona con IPv4"], answer: 2 },
+            { question: "9. ¿Qué es un proxy directo?", options: ["Oculta la IP del servidor", "Oculta la IP del cliente", "Distribuye contenido", "Resuelve dominios"], answer: 1 },
+            { question: "10. ¿Qué es un proxy inverso?", options: ["Oculta la IP del servidor", "Oculta la IP del cliente", "Es una técnica de escalabilidad", "Es una técnica de cifrado"], answer: 0 },
+            { question: "11. ¿Qué hace un registro CNAME?", options: ["Resuelve a una dirección IP", "Crea un alias de dominio", "Recibe correos", "Verifica la propiedad del dominio"], answer: 1 },
+            { question: "12. ¿Qué es una ventaja del balanceo de carga?", options: ["Mayor seguridad", "Escalabilidad", "Reduce la latencia", "Reduce la carga en DNS"], answer: 1 },
+            { question: "13. ¿Qué es el Blue-Green Deployment?", options: ["Una estrategia de escalabilidad", "Un tipo de CDN", "Una estrategia de despliegue continuo", "Un método de autenticación"], answer: 2 },
+            { question: "14. ¿Qué protocolo utiliza HTTPS para encriptar?", options: ["SSL", "FTP", "SMTP", "POP3"], answer: 0 },
+            { question: "15. ¿Qué es el Canary Deployment?", options: ["Un tipo de DNS", "Un método de balanceo", "Una técnica de despliegue gradual", "Una técnica de encriptación"], answer: 2 },
+            { question: "16. ¿Qué es un registro AAAA?", options: ["Resuelve a IPv6", "Resuelve a IPv4", "Crea un alias", "Verifica la propiedad"], answer: 0 },
+            { question: "17. ¿Qué es una ventaja del hosting en la nube?", options: ["Mayor escalabilidad", "Menor seguridad", "Latencia reducida", "Recibe correos"], answer: 0 },
+            { question: "18. ¿Cuál es una ventaja de un proxy inverso?", options: ["Anonimato del cliente", "Balanceo de carga", "Velocidad", "Reducción de tráfico"], answer: 1 },
+            { question: "19. ¿Qué hace un certificado SSL?", options: ["Asegura la conexión entre servidor y cliente", "Resuelve a una dirección IP", "Recibe correos", "Redirige tráfico"], answer: 0 },
+            { question: "20. ¿Qué es un VPS?", options: ["Un servidor dedicado", "Un servidor compartido", "Un entorno virtual privado", "Un servidor físico"], answer: 2 },
+            { question: "21. ¿Qué es el registro TXT?", options: ["Resuelve dominios", "Verifica la propiedad del dominio", "Recibe correos", "Resuelve a IPv4"], answer: 1 },
+            { question: "22. ¿Qué es un hosting dedicado?", options: ["Un servidor exclusivo para un cliente", "Un servidor compartido", "Un servidor virtual", "Un CDN"], answer: 0 },
+            { question: "23. ¿Cuál es una desventaja del hosting compartido?", options: ["Costo alto", "Menor control sobre el servidor", "Mayor control sobre el servidor", "Mayor escalabilidad"], answer: 1 },
+            { question: "24. ¿Qué ventaja ofrece un VPS frente a un hosting compartido?", options: ["Mayor control y recursos dedicados", "Menor seguridad", "Menor costo", "Mayor escalabilidad"], answer: 0 },
+            { question: "25. ¿Cuál es la función principal de un balanceador de carga?", options: ["Incrementar la latencia", "Distribuir tráfico entre servidores", "Redirigir a un dominio", "Recibir correos electrónicos"], answer: 1 },
+            { question: "26. ¿Qué técnica de despliegue permite revertir fácilmente a una versión anterior?", options: ["Despliegue en la nube", "Canary Deployment", "Blue-Green Deployment", "Despliegue compartido"], answer: 2 },
+            { question: "27. ¿Cuál es una ventaja del registro CNAME?", options: ["Permite múltiples alias para un dominio", "Resuelve a IPv4", "Verifica la propiedad", "Recibe correos"], answer: 0 },
+            { question: "28. ¿Qué es un grupo de seguridad en AWS?", options: ["Un método de escalabilidad", "Un cortafuegos virtual", "Un servidor dedicado", "Una base de datos"], answer: 1 },
+            { question: "29. ¿Qué hace el balanceo de carga basado en software?", options: ["Distribuye tráfico entre servidores usando software", "Recibe correos electrónicos", "Verifica dominios", "Reduce la latencia del DNS"], answer: 0 },
+            { question: "30. ¿Qué ventaja tiene un certificado SSL en SEO?", options: ["Mayor escalabilidad", "Mejora el posicionamiento en Google", "Menor seguridad", "Reducción de tráfico"], answer: 1 },
+            { question: "31. ¿Qué hace una CDN para mejorar la velocidad?", options: ["Utiliza servidores cercanos a los usuarios", "Oculta la IP del cliente", "Cifra las conexiones", "Recibe correos electrónicos"], answer: 0 },
+            { question: "32. ¿Qué protocolo se utiliza para la transferencia de archivos?", options: ["FTP", "HTTP", "DNS", "HTTPS"], answer: 0 },
+            { question: "33. ¿Cuál es una ventaja del hosting en la nube?", options: ["Alta escalabilidad y flexibilidad", "Bajo costo", "Control total del servidor físico", "Anonimato"], answer: 0 },
+            { question: "34. ¿Qué tipo de balanceo de carga distribuye equitativamente entre servidores?", options: ["Round Robin", "Weighted Round Robin", "IP Hash", "Least Connections"], answer: 0 },
+            { question: "35. ¿Cuál es la función del registro MX?", options: ["Definir el servidor de correos", "Resuelve a IPv4", "Verificar la propiedad de dominio", "Crear un alias de dominio"], answer: 0 },
+            { question: "36. ¿Cuál es una desventaja del hosting dedicado?", options: ["Mayor costo", "Menor control", "Escalabilidad limitada", "Menor seguridad"], answer: 0 },
+            { question: "37. ¿Qué es el despliegue continuo?", options: ["Una estrategia de desarrollo ágil", "Una técnica de encriptación", "Una técnica de SEO", "Un método de balanceo de carga"], answer: 0 },
+            { question: "38. ¿Qué protocolo se utiliza para enviar correos electrónicos?", options: ["SMTP", "HTTPS", "FTP", "DNS"], answer: 0 },
+            { question: "39. ¿Qué hace el registro PTR?", options: ["Mapea una IP a un nombre de dominio", "Resuelve un dominio a IPv6", "Crea un alias", "Redirige tráfico"], answer: 0 },
+            { question: "40. ¿Qué es una función del servicio Route 53 de AWS?", options: ["Un servicio DNS", "Un balanceador de carga", "Un servidor dedicado", "Un servicio de correo"], answer: 0 }
+        ];
+
+        function generateQuiz() {
+            const form = document.getElementById('quizForm');
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+
+                const questionTitle = document.createElement('h5');
+                questionTitle.innerText = q.question;
+                questionDiv.appendChild(questionTitle);
+
+                q.options.forEach((option, i) => {
+                    const div = document.createElement('div');
+                    div.className = 'form-check';
+                    const input = document.createElement('input');
+                    input.type = 'radio';
+                    input.className = 'form-check-input';
+                    input.name = `question${index}`;
+                    input.id = `q${index}o${i}`;
+                    input.value = i;
+
+                    const label = document.createElement('label');
+                    label.className = 'form-check-label';
+                    label.htmlFor = `q${index}o${i}`;
+                    label.innerText = option;
+
+                    div.appendChild(input);
+                    div.appendChild(label);
+                    questionDiv.appendChild(div);
+                });
+
+                form.appendChild(questionDiv);
+            });
+        }
+
+        function checkAnswers() {
+            let score = 0;
+
+            questions.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+                const correctOption = document.getElementById(`q${index}o${q.answer}`);
+
+                if (selectedOption) {
+                    if (parseInt(selectedOption.value) === q.answer) {
+                        score++;
+                        selectedOption.parentElement.classList.add('correct');
+                    } else {
+                        selectedOption.parentElement.classList.add('incorrect');
+                    }
+                }
+
+                // Resaltar la respuesta correcta
+                correctOption.parentElement.classList.add('correct');
+            });
+
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerText = `Tu puntuación es: ${score}/${questions.length}`;
+        }
+
+        window.onload = generateQuiz;
+    </script>
+</body>
+
+</html>
