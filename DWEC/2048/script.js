@@ -41,6 +41,7 @@ function añadirNumeroNuevo() {
     mostrarJuegoPorConsola();
     return true;
 }
+
 function moverBajo() {
     // Recorre cada columna (de 0 a 3)
     for (let col = 0; col < 4; col++) {

@@ -289,17 +289,14 @@ document.querySelectorAll('.tecla').forEach(tecla => {
     });
 });
 
+// Eliminamos el que tiene la animacion para que parpadee el siguiente
 function eliminarClaseBlink() {
-    // Selecciona todos los elementos con la clase 'blink'
     const celdasConBlink = document.querySelectorAll('.blink');
 
-    // Itera a través de los elementos y elimina la clase
     celdasConBlink.forEach(celda => {
         celda.classList.remove('blink');
     });
 }
-
-
 
 tiempo_jugando = 0;
 setInterval(() => {
