@@ -3,14 +3,19 @@
  * @Author: Javier Puertas
  */
 
- if (isset($_GET["nombre"])) {
+if (isset($_GET["nombre"])) {
     echo "<h1>Datos recibidos:</h1>";
     echo "<p><strong>Nombre:</strong> " . $_GET["nombre"] . "</p>";
     echo "<p><strong>Apellidos:</strong> " . $_GET["apellidos"] . "</p>";
     echo "<p><strong>Sexo:</strong> " . $_GET["sexo"] . "</p>";
     echo "<p><strong>Correo electrónico:</strong> " . $_GET["correo"] . "</p>";
     echo "<p><strong>Provincia:</strong> " . $_GET["provincia"] . "</p>";
-    echo "<p><strong>Recibir información:</strong> " . $_GET["informacion"] . "</p>";
+    if ($_GET["informacion"] == "on") {
+        echo "<p><strong>Recibir información:</strong> no </p>";
+    } else {
+        echo "<p><strong>Recibir información:</strong> si </p>";
+    }
+
     echo "<p><strong>Aceptar condiciones:</strong> " . $_GET["condiciones"] . "</p>";
 } else {
 ?>
