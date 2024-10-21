@@ -160,7 +160,7 @@ const palabras = [
 let haGanado = false;
 const Letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 let palabraAAdivinar = palabras[Math.floor(Math.random() * palabras.length)];
-
+palabraAAdivinar = "hola";
 console.log(palabraAAdivinar);
 
 let lengthPalabras = 6;
@@ -172,8 +172,8 @@ crearTablero(lengthPalabras, palabraAAdivinar.length);
 
 let arrayLetrasEscritas = [];
 for (let i = 0; i < 6; i++) {
-    let newArray = [];
-    arrayLetrasEscritas.push(newArray);
+    let filas = [];
+    arrayLetrasEscritas.push(filas);
 }
 
 let celdas = document.querySelectorAll('.celda');
@@ -191,7 +191,7 @@ document.addEventListener('keydown', function (event) {
             }
         }
         if (event.key === 'Enter') {
-            if (array.length === 5) {
+            if (array.length === palabraAAdivinar.length) {
                 let palabra = arrayLetrasEscritas[fila].join("");
                 comprobarPalabra(palabra, palabraAAdivinar);
             }
@@ -208,14 +208,14 @@ document.addEventListener('keydown', function (event) {
 
 function comprobarPalabra(palabra, palabraAAdivinar) {
     if (palabra === palabraAAdivinar) {
-        for (let index = 0; index < 5; index++) {
-            const celda = celdas[fila * 5 + index];
+        for (let index = 0; index < palabraAAdivinar.length; index++) {
+            const celda = celdas[fila * palabraAAdivinar.length + index];
             celda.classList.add('verde');
             haGanado = true;
         }
     } else {
-        for (let index = 0; index < 5; index++) {
-            const celda = celdas[fila * 5 + index];
+        for (let index = 0; index < palabraAAdivinar.length; index++) {
+            const celda = celdas[fila * palabraAAdivinar.length + index];
             if (palabraAAdivinar[index] === palabra[index]) {
                 celda.classList.add('verde');
             } else if (palabraAAdivinar.includes(palabra[index]) && palabra[index].length === 1) {
@@ -234,8 +234,8 @@ function MostrarFila(fila) {
     eliminarClaseBlink();
 
     // las celdas de cada fila
-    for (let index = 0; index < 5; index++) {
-        const celda = celdas[fila * 5 + index];
+    for (let index = 0; index < palabraAAdivinar.length; index++) {
+        const celda = celdas[fila * palabraAAdivinar.length + index];
         // Mostrar el texto
         if (letrasFila[index]) {
             celda.textContent = letrasFila[index];
@@ -245,10 +245,10 @@ function MostrarFila(fila) {
     }
 
     // Encuentra la primera celda vacía después de la última letra escrita
-    for (let index = 0; index < 5; index++) {
-        const celda = celdas[fila * 5 + index];
+    for (let index = 0; index < palabraAAdivinar.length; index++) {
+        const celda = celdas[fila * palabraAAdivinar.length + index];
         if (celda.textContent === '') {
-            if (index > 0 && celdas[fila * 5 + index - 1].textContent !== '') {
+            if (index > 0 && celdas[fila * palabraAAdivinar.length + index - 1].textContent !== '') {
                 // Añade la clase blink a la siguiente celda vacía
                 celda.classList.add('blink');
                 index = 6;
@@ -272,7 +272,7 @@ document.querySelectorAll('.tecla').forEach(tecla => {
             }
 
             if (letra == "enter") {
-                if (array.length === 5) {
+                if (array.length === palabraAAdivinar.length) {
                     let palabra = arrayLetrasEscritas[fila].join("");
                     comprobarPalabra(palabra, palabraAAdivinar);
                 }
