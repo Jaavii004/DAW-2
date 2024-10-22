@@ -5,8 +5,6 @@
  */
 
 // Crear y rellenar por teclado dos matrices de tamaño 3x3, sumarlas y mostrar su suma.
-
-// Definimos el tamaño de las matrices
 $fila = 3;
 $columna = 3;
 
