@@ -160,7 +160,7 @@ const palabras = [
 let haGanado = false;
 const Letras = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
 let palabraAAdivinar = palabras[Math.floor(Math.random() * palabras.length)];
-palabraAAdivinar = "hola";
+
 console.log(palabraAAdivinar);
 
 let lengthPalabras = 6;
@@ -178,16 +178,18 @@ for (let i = 0; i < 6; i++) {
 
 let celdas = document.querySelectorAll('.celda');
 let fila = 0;
+let letraActual = 0;
 
 document.addEventListener('keydown', function (event) {
     let array = arrayLetrasEscritas[fila];
     if (!haGanado) {
         if (Letras.includes(event.key)) {
-            if (array.length <= 4) {
+            if (array.length < palabraAAdivinar.length) {
                 array.push(event.key);
                 console.log(event.key);
                 arrayLetrasEscritas[fila] = array;
                 MostrarFila(fila);
+                letraActual++;
             }
         }
         if (event.key === 'Enter') {
@@ -201,6 +203,7 @@ document.addEventListener('keydown', function (event) {
                 array.pop();
                 arrayLetrasEscritas[fila] = array;
                 MostrarFila(fila);
+                letraActual--;
             }
         }
     }
@@ -231,7 +234,6 @@ function comprobarPalabra(palabra, palabraAAdivinar) {
 function MostrarFila(fila) {
     // Obtiene las letras de la fila actual
     const letrasFila = arrayLetrasEscritas[fila];
-    eliminarClaseBlink();
 
     // las celdas de cada fila
     for (let index = 0; index < palabraAAdivinar.length; index++) {
@@ -243,18 +245,12 @@ function MostrarFila(fila) {
             celda.textContent = '';
         }
     }
-
-    // Encuentra la primera celda vacía después de la última letra escrita
-    for (let index = 0; index < palabraAAdivinar.length; index++) {
-        const celda = celdas[fila * palabraAAdivinar.length + index];
-        if (celda.textContent === '') {
-            if (index > 0 && celdas[fila * palabraAAdivinar.length + index - 1].textContent !== '') {
-                // Añade la clase blink a la siguiente celda vacía
-                celda.classList.add('blink');
-                index = 6;
-            }
-        }
-    }
+    console.log(letraActual);
+    const celdaEliminar = celdas[letraActual];
+    celdaEliminar.classList.remove('blink');
+    
+    const celda = celdas[letraActual + 1];
+    celda.classList.add('blink');
 }
 
 // teclado virtual
@@ -264,13 +260,13 @@ document.querySelectorAll('.tecla').forEach(tecla => {
         let letra = this.textContent.toLowerCase();
         if (!haGanado) {
             if (Letras.includes(letra)) {
-                if (array.length <= 4) {
+                if (array.length < palabraAAdivinar.length) {
                     array.push(letra);
                     arrayLetrasEscritas[fila] = array;
                     MostrarFila(fila);
+                    letraActual++;
                 }
             }
-
             if (letra == "enter") {
                 if (array.length === palabraAAdivinar.length) {
                     let palabra = arrayLetrasEscritas[fila].join("");
@@ -283,20 +279,12 @@ document.querySelectorAll('.tecla').forEach(tecla => {
                     array.pop();
                     arrayLetrasEscritas[fila] = array;
                     MostrarFila(fila);
+                    letraActual-- ;
                 }
             }
         }
     });
 });
-
-// Eliminamos el que tiene la animacion para que parpadee el siguiente
-function eliminarClaseBlink() {
-    const celdasConBlink = document.querySelectorAll('.blink');
-
-    celdasConBlink.forEach(celda => {
-        celda.classList.remove('blink');
-    });
-}
 
 tiempo_jugando = 0;
 setInterval(() => {
@@ -313,24 +301,20 @@ function crearTablero(filas, celdasPorFila) {
     cuadrícula.style.gridTemplateRows = `repeat(${filas}, 60px)`;
     cuadrícula.style.gridTemplateColumns = `repeat(${celdasPorFila}, 60px)`;
 
-    // Limpiar la cuadrícula antes de crear un nuevo tablero
-    cuadrícula.innerHTML = ''; // Limpia la cuadrícula para evitar duplicados
+    cuadrícula.innerHTML = '';
 
-    for (let j = 0; j < filas; j++) { // Crear filas según el número de intentos
+    for (let j = 0; j < filas; j++) {
         const fila = document.createElement('div');
         fila.classList.add('fila');
 
-        for (let i = 0; i < celdasPorFila; i++) { // Crear celdas según la longitud de la palabra
+        for (let i = 0; i < celdasPorFila; i++) {
             const celda = document.createElement('div');
             celda.classList.add('celda');
-
-            // Añadir la clase 'blink' solo a la primera celda de la primera fila
             if (j === 0 && i === 0) {
                 celda.classList.add('blink');
             }
-
-            fila.appendChild(celda); // Añadir la celda a la fila
+            fila.appendChild(celda);
         }
-        cuadrícula.appendChild(fila); // Añadir la fila a la cuadrícula
+        cuadrícula.appendChild(fila);
     }
 }

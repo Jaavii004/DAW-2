@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego de las Pelotas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Juego de las Pelotas</h1>
+
+        <div class="controls">
+            <label for="cantidadPelotas">Selecciona el número de pelotas:</label>
+            <select id="cantidadPelotas">
+                <option value="10">10</option>
+                <option value="50">50</option>
+                <option value="100">100</option>
+                <option value="200">200</option>
+                <option value="500">500</option>
+            </select>
+        </div>
+
+        <div class="controls">
+            <label>Selecciona el modo:</label>
+            <label><input type="radio" name="modo" value="todos" checked> Quitar todas las pelotas</label>
+            <label><input type="radio" name="modo" value="color"> Quitar solo de color</label>
+        </div>
+
+        <div class="color-selection">
+            <label>Selecciona el color a eliminar:</label>
+            <label><input type="radio" name="color" value="rojo"> Rojo</label>
+            <label><input type="radio" name="color" value="verde"> Verde</label>
+            <label><input type="radio" name="color" value="azul"> Azul</label>
+        </div>
+
+        <button id="crearPelotas">Crear Pelotas</button>
+        <button id="jugar">Jugar</button>
+
+        <div id="zonaPelotas"></div>
+
+        <div id="resultado"></div>
+    </div>
+
+    <script>
+        // Mostrar u ocultar la selección de color según el modo seleccionado
+document.querySelectorAll('input[name="modo"]').forEach(function(input) {
+    input.addEventListener('change', function() {
+        const colorSelection = document.querySelector('.color-selection');
+        if (this.value === "color") {
+            colorSelection.style.display = 'block';
+        } else {
+            colorSelection.style.display = 'none';
+        }
+    });
+});
+    </script>
+</body>
+</html>
