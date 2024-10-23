@@ -171,7 +171,7 @@ if (palabraAAdivinar.length > 5) {
 crearTablero(lengthPalabras, palabraAAdivinar.length);
 
 let arrayLetrasEscritas = [];
-for (let i = 0; i < 6; i++) {
+for (let i = 0; i < lengthPalabras; i++) {
     let filas = [];
     arrayLetrasEscritas.push(filas);
 }
@@ -214,17 +214,21 @@ function comprobarPalabra(palabra, palabraAAdivinar) {
         for (let index = 0; index < palabraAAdivinar.length; index++) {
             const celda = celdas[fila * palabraAAdivinar.length + index];
             celda.classList.add('verde');
-            haGanado = true;
+            pintarTecladoVirtual(palabraAAdivinar[index], 'verde');
         }
+        haGanado = true;
     } else {
         for (let index = 0; index < palabraAAdivinar.length; index++) {
             const celda = celdas[fila * palabraAAdivinar.length + index];
             if (palabraAAdivinar[index] === palabra[index]) {
                 celda.classList.add('verde');
+                pintarTecladoVirtual(palabra[index], 'verde');
             } else if (palabraAAdivinar.includes(palabra[index]) && palabra[index].length === 1) {
                 celda.classList.add('amarillo');
+                pintarTecladoVirtual(palabra[index], 'amarillo');
             } else {
                 celda.classList.add('gris');
+                pintarTecladoVirtual(palabra[index], 'gris');
             }
         }
         fila++;
@@ -288,10 +292,12 @@ document.querySelectorAll('.tecla').forEach(tecla => {
 
 tiempo_jugando = 0;
 setInterval(() => {
-    tiempo_jugando++;
-    let minutos = Math.floor(tiempo_jugando / 60);
-    let segundos = tiempo_jugando % 60;
-    document.getElementById('tiempo-jugando').textContent = `${minutos}:${segundos < 10 ? '0' : ''}${segundos}`;
+    if (!haGanado) {
+        tiempo_jugando++;
+        let minutos = Math.floor(tiempo_jugando / 60);
+        let segundos = tiempo_jugando % 60;
+        document.getElementById('tiempo-jugando').textContent = `${minutos}:${segundos < 10 ? '0' : ''}${segundos}`;
+    }
 }, 1000);
 
 
@@ -317,4 +323,14 @@ function crearTablero(filas, celdasPorFila) {
         }
         cuadrícula.appendChild(fila);
     }
+}
+
+function pintarTecladoVirtual(letra, color) {
+    const teclas = document.querySelectorAll('.tecla');
+    teclas.forEach(tecla => {
+        if (tecla.textContent.toLocaleLowerCase() === letra.toLocaleLowerCase()) {
+            console.log(tecla);
+            tecla.classList.add(color);
+        }
+    });
 }
