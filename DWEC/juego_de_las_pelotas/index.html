@@ -37,23 +37,13 @@
         <button id="crearPelotas">Crear Pelotas</button>
         <button id="jugar">Jugar</button>
 
-        <div id="zonaPelotas"></div>
+        <div id="zonaPelotas">
+            <div class="pelota"></div>
+            <div class="pelota roja"></div>
+        </div>
 
         <div id="resultado"></div>
     </div>
-
-    <script>
-        // Mostrar u ocultar la selección de color según el modo seleccionado
-document.querySelectorAll('input[name="modo"]').forEach(function(input) {
-    input.addEventListener('change', function() {
-        const colorSelection = document.querySelector('.color-selection');
-        if (this.value === "color") {
-            colorSelection.style.display = 'block';
-        } else {
-            colorSelection.style.display = 'none';
-        }
-    });
-});
-    </script>
+    <script src="script.js"></script>
 </body>
 </html>

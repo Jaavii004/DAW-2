@@ -69,7 +69,7 @@ button:hover {
     transform: scale(1.1);
 }
 
-.rojo {
+.roja {
     background-color: red;
 }
 
@@ -79,8 +79,4 @@ button:hover {
 
 .azul {
     background-color: blue;
-}
-
-.ocultar {
-    display: none;
 }
