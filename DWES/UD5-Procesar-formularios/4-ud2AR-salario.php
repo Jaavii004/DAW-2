@@ -14,7 +14,7 @@
 </head>
 <body>
     <h1>Cálculo de Salario Semanal</h1>
-    <form method="post" action="">
+    <form method="post" action="4-ud2AR-salario.php">
         <label for="horas">Ingrese las horas trabajadas esta semana:</label>
         <input type="text" name="horas" required>
         <input type="submit" value="Calcular Salario">

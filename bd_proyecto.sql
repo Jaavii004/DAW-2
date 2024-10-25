@@ -37,6 +37,17 @@ CREATE TABLE Salarios (
     ID_Jugador INT,
     Sueldo DECIMAL(10, 2) NOT NULL,
     Fecha_Pago DATE,
+    Tipo_Pago ENUM('Mensual', 'Bonus', 'Otros') NOT NULL DEFAULT 'Mensual',
+    FOREIGN KEY (ID_Jugador) REFERENCES Jugadores(ID_Jugador)
+);
+
+-- Tabla de Historial de Pagos
+CREATE TABLE Historial_Pagos (
+    ID_Pago INT PRIMARY KEY AUTO_INCREMENT,
+    ID_Jugador INT,
+    Monto DECIMAL(10, 2) NOT NULL,
+    Fecha_Pago DATE,
+    Tipo_Pago ENUM('Salario', 'Cuota', 'Otros') NOT NULL,
     FOREIGN KEY (ID_Jugador) REFERENCES Jugadores(ID_Jugador)
 );
 
@@ -74,14 +85,17 @@ CREATE TABLE Salarios_Entrenadores (
 CREATE TABLE Partidos (
     ID_Partido INT PRIMARY KEY AUTO_INCREMENT,
     Fecha DATE NOT NULL,
+    Lugar VARCHAR(100) NOT NULL,
     Equipo_Local INT,
     Equipo_Visitante INT,
     Goles_Local INT NOT NULL,
     Goles_Visitante INT NOT NULL,
     Estatus ENUM('Programado', 'Finalizado', 'Cancelado') NOT NULL DEFAULT 'Programado',
     Tipo ENUM('Amistoso', 'Competitivo') NOT NULL DEFAULT 'Competitivo',
+    ID_Competicion INT,
     FOREIGN KEY (Equipo_Local) REFERENCES Equipos(ID_Equipo),
-    FOREIGN KEY (Equipo_Visitante) REFERENCES Equipos(ID_Equipo)
+    FOREIGN KEY (Equipo_Visitante) REFERENCES Equipos(ID_Equipo),
+    FOREIGN KEY (ID_Competicion) REFERENCES Competiciones(ID_Competicion)
 );
 
 -- Tabla de Competiciones
@@ -140,4 +154,42 @@ CREATE TABLE Notificaciones (
     Fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     Leida BOOLEAN NOT NULL DEFAULT FALSE,
     FOREIGN KEY (ID_Usuario) REFERENCES Usuarios(ID_Usuario)
+);
+
+-- Tabla de Actividades
+CREATE TABLE Actividades (
+    ID_Actividad INT PRIMARY KEY AUTO_INCREMENT,
+    ID_Usuario INT,
+    Descripcion TEXT NOT NULL,
+    Fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (ID_Usuario) REFERENCES Usuarios(ID_Usuario)
+);
+
+-- Tabla de Entrenamientos
+CREATE TABLE Entrenamientos (
+    ID_Entrenamiento INT PRIMARY KEY AUTO_INCREMENT,
+    Fecha DATE NOT NULL,
+    ID_Equipo INT,
+    FOREIGN KEY (ID_Equipo) REFERENCES Equipos(ID_Equipo)
+);
+
+-- Tabla de Asistencia a Entrenamientos
+CREATE TABLE Asistencia_Entrenamiento (
+    ID_Asistencia INT PRIMARY KEY AUTO_INCREMENT,
+    ID_Entrenamiento INT,
+    ID_Jugador INT,
+    Asistio BOOLEAN NOT NULL,
+    FOREIGN KEY (ID_Entrenamiento) REFERENCES Entrenamientos(ID_Entrenamiento),
+    FOREIGN KEY (ID_Jugador) REFERENCES Jugadores(ID_Jugador)
+);
+
+-- Tabla de Comentarios
+CREATE TABLE Comentarios (
+    ID_Comentario INT PRIMARY KEY AUTO_INCREMENT,
+    ID_Usuario INT,
+    ID_Partido INT,
+    Comentario TEXT NOT NULL,
+    Fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (ID_Usuario) REFERENCES Usuarios(ID_Usuario),
+    FOREIGN KEY (ID_Partido) REFERENCES Partidos(ID_Partido)
 );
