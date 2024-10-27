@@ -29,16 +29,16 @@
 
         <div class="color-selection">
             <label>Selecciona el color a eliminar:</label>
-            <label><input type="radio" name="color" value="rojo"> Rojo</label>
-            <label><input type="radio" name="color" value="verde"> Verde</label>
-            <label><input type="radio" name="color" value="azul"> Azul</label>
+            <label><input type="radio" name="color" required value="rojo"> Rojo</label>
+            <label><input type="radio" name="color" required value="verde"> Verde</label>
+            <label><input type="radio" name="color" required value="azul"> Azul</label>
         </div>
 
         <button id="jugar">Jugar</button>
+        <div id="error"></div>
+        <div id="resultado"><p>Se han eliminado <span id="pelotas-eliminadas">0</span> pelotas</p></div>
 
         <div id="zonaPelotas"></div>
-
-        <div id="resultado"></div>
     </div>
     <script src="script.js"></script>
 </body>
