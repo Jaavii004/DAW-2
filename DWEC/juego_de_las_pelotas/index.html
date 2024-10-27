@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <h1>Juego de las Pelotas</h1>
-
+        <div id="tiempo-jugando">00:00</div>
         <div class="controls">
             <label for="cantidadPelotas">Selecciona el número de pelotas:</label>
             <select id="cantidadPelotas">
@@ -34,13 +34,9 @@
             <label><input type="radio" name="color" value="azul"> Azul</label>
         </div>
 
-        <button id="crearPelotas">Crear Pelotas</button>
         <button id="jugar">Jugar</button>
 
-        <div id="zonaPelotas">
-            <div class="pelota"></div>
-            <div class="pelota roja"></div>
-        </div>
+        <div id="zonaPelotas"></div>
 
         <div id="resultado"></div>
     </div>
