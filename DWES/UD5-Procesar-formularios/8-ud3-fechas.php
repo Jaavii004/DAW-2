@@ -3,7 +3,10 @@
  * @Author: Javier Puertas
  */
 
- function calcularDiferencia($fechaInicio, $fechaFin) {
+// 8. Ejercicio 7 Calcula, dada dos fechas inicio y final introducidas por el usuario (puede ser la
+// actual y otra deseada), cuántos días, horas y minutos hay de diferencia entre dichas horas
+
+function calcularDiferencia($fechaInicio, $fechaFin) {
     $fechaInicioArray = explode('-', $fechaInicio);
     $fechaFinArray = explode('-', $fechaFin);
 
