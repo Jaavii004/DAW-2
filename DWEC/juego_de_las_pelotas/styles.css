@@ -63,6 +63,8 @@ button:hover {
     position: absolute;
     border-radius: 50%;
     transition: transform 0.2s;
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
 }
 
 .pelota:hover {
