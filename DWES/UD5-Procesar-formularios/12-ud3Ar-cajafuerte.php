@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $intentos = 0; // Reiniciar intentos después de acertar
         } else {
             $intentos++;
-            if ($intentos >= 4) {
+            if ($intentos === 4) {
                 $mensaje = "Lo siento, ha agotado las oportunidades. Caja bloqueada.";
                 $intentos = 0; // Reiniciar intentos después de 4 fallos
             } else {

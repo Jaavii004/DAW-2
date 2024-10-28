@@ -35,15 +35,20 @@
     <?php
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $numero = $_POST['numero'];
+
         $multiplicador = $_POST['multiplicador'];
 
-        echo "<h2>Tabla del $numero hasta $multiplicador:</h2>";
-        echo "<ul>";
-        for ($i = 1; $i <= $multiplicador; $i++) {
-            $resultado = $numero * $i;
-            echo "<li>$numero x $i = $resultado</li>";
+        if ($multiplicador > 10 || $multiplicador < 1 || !is_numeric($numero)) {
+            echo "Error: El multiplicador debe ser un número entre 1 y 10.";
+        } else {
+            echo "<h2>Tabla del $numero hasta $multiplicador:</h2>";
+            echo "<ul>";
+            for ($i = 1; $i <= $multiplicador; $i++) {
+                $resultado = $numero * $i;
+                echo "<li>$numero x $i = $resultado</li>";
+            }
+            echo "</ul>";
         }
-        echo "</ul>";
     }
     ?>
 </body>
