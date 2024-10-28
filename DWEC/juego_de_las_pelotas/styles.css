@@ -1,7 +1,7 @@
 body {
     font-family: 'Arial', sans-serif;
-    background-color: #f4f4f4;
-    color: #333;
+    background-color: #f0f4f8; /* Color de fondo más suave */
+    color: #2c3e50; /* Texto más oscuro para contraste */
     text-align: center;
     margin: 0;
     padding: 20px;
@@ -10,38 +10,46 @@ body {
 .container {
     max-width: 100%;
     margin: auto;
-    background: white;
+    background: #ffffff; /* Manteniendo el blanco */
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    box-shadow: 0 6px 30px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada */
 }
 
 h1 {
-    color: #4CAF50;
+    color: #2980b9; /* Azul vibrante */
+    margin-bottom: 15px;
 }
 
 .controls {
-    margin: 20px 0;
+    margin: 10px 0;
+}
+
+label {
+    font-weight: bold;
 }
 
 select, button {
-    padding: 10px;
-    font-size: 16px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    margin-left: 10px;
+    padding: 8px;
+    font-size: 14px;
+    border-radius: 5px;
+    border: 1px solid #bdc3c7; /* Color de borde más suave */
+    margin-top: 5px;
+    margin-right: 5px;
 }
 
 button {
-    background-color: #4CAF50;
+    background-color: #3498db; /* Azul claro */
     color: white;
     border: none;
     cursor: pointer;
-    transition: background-color 0.3s;
+    transition: background-color 0.3s, transform 0.2s;
+    padding: 10px 15px;
 }
 
 button:hover {
-    background-color: #45a049;
+    background-color: #2980b9; /* Azul más oscuro al pasar el mouse */
+    transform: scale(1.05);
 }
 
 .color-selection {
@@ -51,10 +59,10 @@ button:hover {
 #zonaPelotas {
     position: relative;
     width: 100%;
-    height: 500px;
-    border: 2px dashed #ccc;
-    background-color: #eaeaea;
-    margin-top: 20px;
+    height: 400px; /* Altura reducida */
+    border: 2px dashed #95a5a6; /* Color de borde más bonito */
+    background-color: #ecf0f1; /* Fondo más claro */
+    margin-top: 15px;
     border-radius: 8px;
     overflow: hidden;
 }
@@ -63,7 +71,7 @@ button:hover {
     position: absolute;
     border-radius: 50%;
     transition: transform 0.2s;
-    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 4px 4px 15px rgba(0, 0, 0, 0.5); /* Sombra más suave */
     cursor: pointer;
 }
 
@@ -72,24 +80,29 @@ button:hover {
 }
 
 .rojo {
-    background-color: red;
+    background-color: #e74c3c; /* Rojo brillante */
 }
 
 .verde {
-    background-color: green;
+    background-color: #2ecc71; /* Verde vibrante */
 }
 
 .azul {
-    background-color: blue;
+    background-color: #3498db; /* Azul más claro */
+}
+
+#error {
+    color: #e74c3c; /* Rojo para el error */
+    font-weight: bold;
+    margin-top: 10px;
+    text-align: center;
+}
+
+#resultado {
+    margin-top: 10px;
+    font-size: 16px;
 }
 
 .ocultar {
     display: none;
-}
-
-#error {
-    color: red;
-    font-weight: bold;
-    margin-top: 10px;
-    text-align: center;
 }
