@@ -21,7 +21,7 @@
 
 <body>
     <h1>Cálculo de Media, Moda y Mediana</h1>
-    <form method="post" action="">
+    <form method="post">
         <label for="numeros">Introduce números separados por comas:</label><br>
         <input type="text" name="numeros" required><br><br>
 
@@ -42,10 +42,9 @@
         // Obtener números de entrada
         $entrada = $_POST['numeros'];
         $numeros = explode(',', $entrada);
-        
-        // Limpiar y filtrar solo números
-        $numeros = array_map('trim', $numeros); // Eliminar espacios
-        $numeros = array_filter($numeros, 'is_numeric'); // Filtrar no numéricos
+
+        $numeros = array_map('trim', $numeros);
+        $numeros = array_filter($numeros, 'is_numeric');
 
         // Mostrar resultados
         echo "<h2>Resultados:</h2>";

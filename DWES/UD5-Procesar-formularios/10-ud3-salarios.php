@@ -38,7 +38,7 @@ function salarioMedio($trabajadores) {
 </head>
 <body>
     <h1>Cálculo de Salarios</h1>
-    <form method="post" action="">
+    <form method="post">
         <label for="opciones">Seleccione el cálculo deseado:</label><br>
         <input type="checkbox" name="opciones[]" value="maximo"> Salario Máximo<br>
         <input type="checkbox" name="opciones[]" value="minimo"> Salario Mínimo<br>

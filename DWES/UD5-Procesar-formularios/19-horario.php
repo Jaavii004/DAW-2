@@ -18,7 +18,7 @@
 
 <body>
     <h1>Generador de Horario</h1>
-    <form method="post" action="">
+    <form method="post">
         <h2>Selecciona el curso:</h2>
         <input type="radio" name="curso" value="1º ESO" required>
         <label>1º ESO</label><br>

@@ -31,7 +31,7 @@ $palabras = [
 
 <body>
     <h1>Selecciona palabras para traducir</h1>
-    <form method="post" action="">
+    <form method="post">
         <table>
             <tr>
                 <th>Palabra en inglés</th>

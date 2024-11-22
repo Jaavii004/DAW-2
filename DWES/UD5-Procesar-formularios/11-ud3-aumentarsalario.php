@@ -31,7 +31,7 @@ function calcularSalarioAumentado($salario, $porcentaje) {
 
 <body>
     <h1>Cálculo de Salario Aumentado</h1>
-    <form method="post" action="">
+    <form method="post">
         <label for="porcentaje">Porcentaje de aumento:</label>
         <input type="text" name="porcentaje" required>
         <input type="submit" value="Calcular">
@@ -43,8 +43,7 @@ function calcularSalarioAumentado($salario, $porcentaje) {
         if (is_numeric($porcentaje)) {
             echo "<h2>Salarios con Aumento del $porcentaje%:</h2>";
             foreach ($trabajadores as $nombre => $salario) {
-                $salarioAumentado = $salario * (1 + $porcentaje / 100);
-                echo "Trabajador: $nombre - Salario Actual: $salario - Salario con Aumento: " . number_format($salarioAumentado, 2) . "<br>";
+                echo "Trabajador: $nombre - Salario Actual: $salario - Salario con Aumento: " . calcularSalarioAumentado($salario, $porcentaje) . "<br>";
             }
         } else {
             echo "Porcentaje ingresado no es un valor numérico válido.<br>";

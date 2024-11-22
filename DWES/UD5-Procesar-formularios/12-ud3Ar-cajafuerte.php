@@ -3,13 +3,15 @@
  * @Author: Javier Puertas
  */
 
+// NO ME VA LOS INTENTOS
+
 // 12. Ejercicio 5. Realiza el control de acceso a una caja fuerte. La combinación será un número de
 // 4 cifras. El programa nos pedirá la combinación para abrirla. Si no acertamos, se nos mostrará el
 // mensaje “Lo siento, esa no es la combinación” en color rojo y si acertamos se nos dirá “La caja
 // fuerte se ha abierto satisfactoriamente” en color verde. Tendremos cuatro oportunidades para
 // abrir la caja fuerte.
 
-$combinacion = "1234"; // Combinación de la caja fuerte
+$combinacion = "1234";
 $intentos = isset($_POST['intentos']) ? $_POST['intentos'] : 0;
 $mensaje = "";
 
