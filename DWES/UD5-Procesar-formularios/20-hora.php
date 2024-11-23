@@ -20,8 +20,8 @@
 
 <body>
     <h1>Introduce una hora para recibir un saludo</h1>
-    <form method="post" action="">
-        <label for="hora">Hora (solo la hora en formato 24h, sin minutos):</label><br>
+    <form method="post">
+        <label for="hora">Hora sin minutos:</label><br>
         <input type="text" name="hora" required><br><br>
         <input type="submit" value="Enviar">
     </form>

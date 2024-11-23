@@ -17,7 +17,7 @@
 </head>
 <body>
     <h1>Selecciona una zona horaria</h1>
-    <form method="post" action="">
+    <form method="post">
         <label for="zona">Zona Horaria:</label>
         <select name="zona" required>
             <option value="America/New_York">Nueva York</option>
