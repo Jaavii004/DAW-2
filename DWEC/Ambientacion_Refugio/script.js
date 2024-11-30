@@ -5,15 +5,14 @@ const audioList = document.getElementById('audio-list');
 // Arreglos con los datos de los videos y la música
 const videos = [
     { id: 1, title: 'Video 1', url: 'campfire.mp4' },
-    { id: 2, title: 'Video 2', url: 'video2.mp4' },
-    { id: 3, title: 'Video 3', url: 'video2.mp4' },
+    { id: 2, title: 'Video 2', url: 'campfire.mp4' },
     // ... más videos
 ];
 
 const audios = [
     { id: 1, title: 'Radio 1', url: 'Blue_Moon.mp3' },
     { id: 2, title: 'Radio 2', url: 'campfire.mp3' },
-    // ... más radios
+    // ... más audios
 ];
 
 // Función para crear un elemento de lista
@@ -54,10 +53,11 @@ function reproducir(queEs, urlArchivo) {
 }
 
 function controls() {
-    let controles = document.querySelectorAll('#controles li'); // Seleccionamos todos los <li> dentro de #controles
+    let controles = document.querySelectorAll('#controles li');
     console.log(controles);
+    let video = document.getElementById('video');
     controles.forEach(element => {
-        switch (element.textContent) {
+        switch (element.id) {
             case "Silenciar":
                 element.onclick = function() {
                     let auVideo = document.getElementById('video');
@@ -65,31 +65,52 @@ function controls() {
                 }
                 break;
             case "-10 segs":
-                // Aquí va la función para -10 segundos
-                console.log('-10 segundos');
+                element.onclick = function() {
+                    video.currentTime -= 10;
+                }
                 break;
             case "Play/Stop":
-                // Aquí va la función para Play/Stop
-                console.log('Play/Stop');
+                element.onclick = function() {
+                    // saber si esta pausada o reproduciendo
+                    if (video.paused) {
+                        video.play();
+                    } else {
+                        video.pause();
+                    }
+                }
                 break;
             case "+10 segs":
-                // Aquí va la función para +10 segundos
-                console.log('+10 segundos');
+                element.onclick = function() {
+                    video.currentTime += 10;
+                }
                 break;
             case "Reiniciar":
-                // Aquí va la función para reiniciar
-                console.log('Reiniciar');
+                element.onclick = function() {
+                    video.load();
+                    video.play();
+                }
                 break;
             case "+ Vol":
-                // Aquí va la función para subir el volumen
-                console.log('+ Volumen');
+                element.onclick = function() {
+                    if (video.volume < 1) {
+                        video.volume += 0.1;
+                    }
+                }
                 break;
             case "- Vol":
-                // Aquí va la función para bajar el volumen
-                console.log('- Volumen');
+                element.onclick = function() {
+                    if (video.volume > 0) {
+                        video.volume -= 0.1;
+                    }
+                }
+                break;
+            case "Pantalla completa":
+                element.onclick = function() {
+                    video.requestFullscreen();
+                }
                 break;
             default:
-                console.log('Acción no definida');
+                console.log('Defina el boton '+element.textContent);
                 break;
         }
     });

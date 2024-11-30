@@ -3,6 +3,7 @@
 <head>
     <title>Selector de Medios</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 <body>
     <div class="container">
@@ -15,13 +16,14 @@
                 Your browser does not support HTML video.
             </video>
             <ul id="controles">
-                <li>Silenciar</li>
-                <li>-10 segs</li>
-                <li>Play/Stop</li>
-                <li>+10 segs</li>
-                <li>Reiniciar</li>
-                <li>+ Vol</li>
-                <li>- Vol</li>
+                <li id="Silenciar"><i class="fas fa-volume-mute"></i></li>  <!-- Silenciar -->
+                <li id="-10 segs"><i class="fas fa-backward"></i></li>  <!-- -10 segs -->
+                <li id="Play/Stop"><i class="fas fa-play"></i> / <i class="fas fa-stop"></i></li>  <!-- Play/Stop -->
+                <li id="+10 segs"><i class="fas fa-forward"></i></li>  <!-- +10 segs -->
+                <li id="Reiniciar"><i class="fas fa-sync"></i></li>  <!-- Reiniciar -->
+                <li id="+ Vol"><i class="fas fa-volume-up"></i></li>  <!-- + Vol -->
+                <li id="- Vol"><i class="fas fa-volume-down"></i></li>  <!-- - Vol -->
+                <li id="Pantalla completa"><i class="fas fa-expand"></i></li>  <!-- Pantalla completa -->
             </ul>
         </div>
         <div class="section audio">
