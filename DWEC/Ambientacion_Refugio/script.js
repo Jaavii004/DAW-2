@@ -2,6 +2,8 @@
 const videoList = document.getElementById('video-list');
 const audioList = document.getElementById('audio-list');
 
+// IMPORTANTE Te dejo estos dos videos para que no pese tanto el archivo
+
 // Arreglos con los datos de los videos y la música
 const videos = [
     { id: 1, title: 'Video 1', url: 'campfire.mp4' },
