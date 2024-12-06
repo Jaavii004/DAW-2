@@ -11,20 +11,10 @@
 // con opción a introducir texto)
 
 // Validar que se hayan recibido los datos necesarios
-if (empty($_GET['nombre']) || empty($_GET['email']) || empty($_GET['nivel_estudios']) || empty($_GET['situacion'])) {
-    echo "<h1>Error: Faltan datos requeridos</h1>";
+if (empty($_GET['nombre'])) {
     echo "<p>Por favor, regresa al formulario y completa todos los campos obligatorios.</p>";
     exit;
 }
-
-// Recibir datos del formulario
-$nombre = htmlspecialchars($_GET['nombre']);
-$email = htmlspecialchars($_GET['email']);
-$nivel_estudios = htmlspecialchars($_GET['nivel_estudios']);
-$situacion = $_GET['situacion'];
-$hobbies = $_GET['hobbies'];
-$otro_hobby = htmlspecialchars($_GET['otro_hobby'] ?? '');
-
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -36,20 +26,20 @@ $otro_hobby = htmlspecialchars($_GET['otro_hobby'] ?? '');
 <body>
     <h1>Información proporcionada</h1>
 
-    <p><strong>Nombre:</strong> <?= $nombre ?></p>
-    <p><strong>Correo electrónico:</strong> <?= $email ?></p>
-    <p><strong>Nivel de estudios:</strong> <?= $nivel_estudios ?></p>
+    <p><strong>Nombre:</strong> <?php echo $_GET['nombre']; ?></p>
+    <p><strong>Correo electrónico:</strong> <?php echo $_GET['email']; ?></p>
+    <p><strong>Nivel de estudios:</strong> <?php echo $_GET['nivel_estudios']; ?></p>
 
     <p><strong>Situación actual:</strong></p>
     <ul>
-        <li><?php echo implode(', ', $situacion); ?></li>
+        <li><?php echo $_GET['situacion']; ?></li>
     </ul>
 
     <p><strong>Hobbies:</strong></p>
     <ul>
-        <li><?php echo implode(', ', $hobbies); ?></li>
-        <?php if (!empty($otro_hobby)): ?>
-            <li><?php echo $otro_hobby; ?></li>
+        <li><?php echo $_GET['hobbies']; ?></li>
+        <?php if (!empty($_GET['otro_hobby'])): ?>
+            <li><?php echo $_GET['otro_hobby']; ?></li>
         <?php endif; ?>
     </ul>
 

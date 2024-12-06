@@ -10,10 +10,10 @@
 // trabajando, buscando empleo, desempleado) y hobbies (marcar de varios mostrados y poner otro
 // con opción a introducir texto)
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Validación de datos
-    $errores = [];
+$errores = [];
 
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nombre = $_POST['nombre'] ?? '';
     $email = $_POST['email'] ?? '';
     $nivel_estudios = $_POST['nivel_estudios'] ?? '';
@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Validar email
-    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    if (empty($email)) {
         $errores['email'] = 'El correo electrónico es inválido o está vacío.';
     }
 
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Validar hobbies
-    if (empty($hobbies) && empty($otro_hobby)) {
+    if (empty($hobbies)) {
         $errores['hobbies'] = 'Debes seleccionar al menos un hobby o especificar otro.';
     }
 
@@ -64,13 +64,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <h1>Formulario de recogida de datos</h1>
 
+    <ul style="color: red;">
+        <?php foreach ($errores as $error): ?>
+            <li><?= $error ?></li>
+        <?php endforeach; ?>
+    </ul>
+
     <form action="" method="POST">
         <label for="nombre">Nombre:</label>
-        <input type="text" name="nombre" id="nombre" value="<?= htmlspecialchars($_POST['nombre'] ?? '') ?>">
+        <input type="text" name="nombre" id="nombre" >
         <br><br>
 
         <label for="email">Correo electrónico:</label>
-        <input type="text" name="email" id="email" value="<?= htmlspecialchars($_POST['email'] ?? '') ?>">
+        <input type="text" name="email" id="email" >
         <br><br>
 
         <label for="nivel_estudios">Nivel de estudios:</label>
