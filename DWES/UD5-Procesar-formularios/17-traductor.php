@@ -6,7 +6,7 @@
 // 17. Escribe un programa que dadas 10 palabras en inglés muestre su traducción al castellano a su
 // derecha en una tabla. El usuario debe seleccionar la/s palabra/s a traducir (podría seleccionarlas todas).
 
-$palabras = [
+$traducciones = [
     "hello" => "hola",
     "goodbye" => "adiós",
     "please" => "por favor",
@@ -37,7 +37,7 @@ $palabras = [
                 <th>Palabra en inglés</th>
                 <th>Seleccionar</th>
             </tr>
-            <?php foreach ($palabras as $palabra => $traduccion): ?>
+            <?php foreach ($traducciones as $palabra => $traduccion): ?>
             <tr>
                 <td><?= $palabra ?></td>
                 <td><input type="checkbox" name="<?= $palabra ?>"></td>
@@ -58,7 +58,7 @@ $palabras = [
         echo "</tr>";
 
         // Mostrar traducciones basadas en el array asociativo
-        foreach ($palabras as $palabra => $traduccion) {
+        foreach ($traducciones as $palabra => $traduccion) {
             if (isset($_POST[$palabra])) {
                 echo "<tr>";
                 echo "<td>$palabra</td>";
