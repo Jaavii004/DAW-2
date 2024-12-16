@@ -7,9 +7,7 @@
 
 $palabraSecreta = "hola";
 $intentos = 5;
-
-
-
+$hasGanado = false;
 
 function MostrarPalabra($palabraSecreta, $palabraInput) {
     $palabraArraySecreta = str_split($palabraSecreta);
@@ -33,7 +31,6 @@ function MostrarPalabra($palabraSecreta, $palabraInput) {
 
 }
 
-
 for ($i=0; $i < $intentos; $i++) { 
     $InputPalabra = ReadLine("Dime la palabra");
     MostrarPalabra($palabraSecreta, $InputPalabra);
@@ -41,11 +38,15 @@ for ($i=0; $i < $intentos; $i++) {
     if ($palabraSecreta == $InputPalabra) {
         $i = $intentos+1;
         echo "HAS GANADO!!!!!";
+        $hasGanado = true;
     } else {
-        echo "Te quedan ".($intentos-$i). " intentos\n";
+        echo "Te quedan ".($intentos-$i-1). " intentos\n";
     }
 }
 
+if (!$hasGanado) {
+    echo "Te quedaste sin intentos lo sentimos";
+}
 
 
 
