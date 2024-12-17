@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi página con fondo Xubuntu</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            background-image: url('./img/fondo.png'); /* Asegúrate de poner la ruta correcta de tu imagen */
+            background-size: cover; /* Asegura que la imagen cubra toda la pantalla */
+            background-position: center center; /* Centra la imagen */
+            background-repeat: no-repeat; /* Asegura que la imagen no se repita */
+        }
+
+        /* Estilo para la cabecera (donde irá la hora y el día) */
+        .header {
+            background-color: rgba(0, 0, 0, 0.5); /* Capa semitransparente para que el texto se vea */
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-bottom: 2px solid #fff; /* La línea en la parte inferior de la cabecera */
+            font-family: 'Arial', sans-serif;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+        }
+
+        .header p {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        /* Espacio para el contenido principal */
+        .content {
+            text-align: center;
+            color: white;
+            font-size: 20px;
+            padding-top: 80px; /* Espacio para no tapar la cabecera */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header" id="header">
+        <!-- Aquí se actualizarán dinámicamente la hora y el día -->
+        <p id="time">00:00:00</p>
+        <p id="date">Lunes, 17 de diciembre de 2024</p>
+    </div>
+
+
+    <script>
+        function updateDateTime() {
+            const now = new Date();
+
+            // Obtener la hora, minutos y segundos
+            let hours = now.getHours().toString().padStart(2, '0');
+            let minutes = now.getMinutes().toString().padStart(2, '0');
+            let seconds = now.getSeconds().toString().padStart(2, '0');
+            document.getElementById('time').textContent = `${hours}:${minutes}:${seconds}`;
+
+            // Obtener el día, mes y año
+            const daysOfWeek = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+            const monthsOfYear = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+            const dayOfWeek = daysOfWeek[now.getDay()];
+            const dayOfMonth = now.getDate();
+            const month = monthsOfYear[now.getMonth()];
+            const year = now.getFullYear();
+
+            document.getElementById('date').textContent = `${dayOfWeek}, ${dayOfMonth} de ${month} de ${year}`;
+        }
+
+        // Actualizar la hora y fecha cada segundo
+        setInterval(updateDateTime, 1000);
+
+        // Llamar a la función una vez para mostrar la hora de inmediato
+        updateDateTime();
+    </script>
+
+</body>
+</html>

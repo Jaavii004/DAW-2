@@ -1,0 +1,94 @@
+/* Estilos generales */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 30px auto;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Estilo para las listas de medios */
+.media-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.media-list div {
+    background-color: #efefef;
+    padding: 15px;
+    text-align: center;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.media-list div:hover {
+    transform: scale(1.05);
+}
+
+.media-list div img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+.media-list div p {
+    margin-top: 10px;
+    color: #555;
+}
+
+/* Estilos para los controles de video y audio */
+.controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 15px;
+}
+
+button {
+    background-color: #333;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+button:hover {
+    background-color: #555;
+}
+
+button i {
+    font-size: 20px;
+}
+
+/* Video y audio */
+video, audio {
+    width: 100%;
+    border-radius: 8px;
+    margin-top: 20px;
+}
+
+/* Estilo para la sección de audio */
+.audio {
+    margin-top: 50px;
+}
