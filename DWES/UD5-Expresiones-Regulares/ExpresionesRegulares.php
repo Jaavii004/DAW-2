@@ -7,14 +7,14 @@
 
 // a) Genera el patrón para los teléfonos fijos de la provincia de Valencia
 $telefono = "961234567";
-if (preg_match("/^96\\d{8}$/", $telefono)) {
+if (preg_match("/^96\\d{7}$/", $telefono)) {
     echo "Teléfono válido.";
 } else {
     echo "Teléfono no válido.";
 }
 
 // b) Genera el patrón para los códigos postales de la Comunidad Valenciana
-$codigo_postal = "46001";
+$codigo_postal = "46200";
 if (preg_match("/^(46)\\d{3}$/", $codigo_postal)) {
     echo "Código postal válido.";
 } else {
@@ -31,7 +31,7 @@ if (preg_match("/^[67]\\d{8}$/", $movil)) {
 
 // d) Genera el patrón para un NIF
 $nif = "12345678Z";
-if (preg_match("/^\\d{8}[A-Za-z]$/", $nif)) {
+if (preg_match("/^\\d{8}[A-Z]$/", $nif)) {
     echo "NIF válido.";
 } else {
     echo "NIF no válido.";
