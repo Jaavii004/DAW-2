@@ -7,14 +7,14 @@
 
 // a) Genera el patrón para los teléfonos fijos de la provincia de Valencia
 $telefono = "961234567";
-if (preg_match("/^96\\d{7}$/", $telefono)) {
+if (preg_match("/^96\\d{8}$/", $telefono)) {
     echo "Teléfono válido.";
 } else {
     echo "Teléfono no válido.";
 }
 
 // b) Genera el patrón para los códigos postales de la Comunidad Valenciana
-$codigo_postal = "46200";
+$codigo_postal = "46001";
 if (preg_match("/^(46)\\d{3}$/", $codigo_postal)) {
     echo "Código postal válido.";
 } else {
@@ -30,11 +30,11 @@ if (preg_match("/^[67]\\d{8}$/", $movil)) {
 }
 
 // d) Genera el patrón para un NIF
-$nif = "12345678Z";
-if (preg_match("/^\\d{8}[A-Z]$/", $nif)) {
-    echo "NIF válido.";
+$dni = "12345678Z";
+if (preg_match("/^\\d{8}[A-Za-z]$/", $dni)) {
+    echo "DNI válido.";
 } else {
-    echo "NIF no válido.";
+    echo "DNI no válido.";
 }
 
 // e) Genera el patrón para fecha en formato dd/mm/aaaa o bien dd-mm-aaaa
@@ -48,9 +48,9 @@ if (preg_match("/^\\d{2}[\\/\\-]\\d{2}[\\/\\-]\\d{4}$/", $fecha)) {
 // f) Genera el patrón para una cadena que sea aprobado (puede ser mayúsculas o minúsculas)
 $cadena = "Aprobado";
 if (preg_match("/^[aA][pP][rR][oO][bB][aA][dD][oO]$/", $cadena)) {
-    echo "Cadena válida.";
+    echo "Es Aprobado.";
 } else {
-    echo "Cadena no válida.";
+    echo "No es Aprobado.";
 }
 
 // g) Genera el patrón para una cadena que contenga aprobado en minúsculas
@@ -119,7 +119,7 @@ if (preg_match("/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$/", $email)) {
 
 // o) Genera el patrón para validar una URL sencilla (http://www.ieslasenia.org/ejercicio?16)
 $url = "http://www.ieslasenia.org/ejercicio?16";
-if (preg_match("/^https?:\\/\\/[a-zA-Z0-9.-]+\\/[a-zA-Z0-9?=&#]*$/", $url)) {
+if (preg_match("/^http?:\\/\\/[a-zA-Z0-9.-]+\\/[a-zA-Z0-9?=&#]*$/", $url)) {
     echo "URL válida.";
 } else {
     echo "URL no válida.";
