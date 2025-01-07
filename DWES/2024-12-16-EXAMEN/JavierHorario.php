@@ -34,9 +34,9 @@ $horario = [
 ];
 
 // Imprimir encabezado
-echo str_pad("Horas", 10, " ", STR_PAD_RIGHT);
+printf("%-15s", "Horas");
 foreach ($horario as $dia => $clases) {
-    echo str_pad($dia, 15, " ", STR_PAD_RIGHT);
+    printf("%-20s", $dia);
 }
 echo "\n";
 
@@ -44,11 +44,10 @@ echo "\n";
 $horas = array_keys($horario['Lunes']); // Usamos las horas del lunes
 
 foreach ($horas as $hora) {
-    echo str_pad($hora, 10, " ", STR_PAD_RIGHT); // Imprimir hora
+    printf("%-15s", $hora); // Imprimir hora
     foreach ($horario as $clases) {
         // Imprimir el módulo correspondiente para esa hora y día
-        echo str_pad(isset($clases[$hora]) ? $clases[$hora] : '', 15, " ", STR_PAD_RIGHT);
+        printf("%-20s", isset($clases[$hora]) ? $clases[$hora] : '');
     }
     echo "\n";
 }
-?>
