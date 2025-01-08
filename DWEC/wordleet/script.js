@@ -334,3 +334,19 @@ function pintarTecladoVirtual(letra, color) {
         }
     });
 }
+
+// Función para buscar una palabra en la API
+function buscarPalabra(palabra) {
+    return fetch(`https://api.dictionaryapi.dev/api/v2/entries/es/${palabra}`)
+        .then(respuesta => respuesta.json())
+        .then(data => {
+            return data.length > 0;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            return false;
+        });
+}
+
+
+console.log(buscarPalabra('hola'));
