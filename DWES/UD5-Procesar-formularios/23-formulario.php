@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Validar email
-    if (empty($email)) {
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errores['email'] = 'El correo electrónico es inválido o está vacío.';
     }
 

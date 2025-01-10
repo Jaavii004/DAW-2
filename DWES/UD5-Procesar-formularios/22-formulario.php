@@ -20,10 +20,10 @@
     <h1>Formulario de Correo</h1>
     <form method="post" action="22-formulario-resultado.php">
         <label for="correo">Correo electrónico:</label>
-        <input type="email" name="correo" required><br><br>
+        <input type="text" name="correo" required><br><br>
 
         <label for="correo_confirmar">Confirmar correo electrónico:</label>
-        <input type="email" name="correo_confirmar" required><br><br>
+        <input type="text" name="correo_confirmar" required><br><br>
 
         <input type="checkbox" name="publicidad" id="publicidad">
         <label for="publicidad">Acepto recibir publicidad</label><br><br>

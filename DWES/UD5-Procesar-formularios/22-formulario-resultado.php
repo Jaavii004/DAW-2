@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $publicidad = isset($_POST['publicidad']) ? 'Sí' : 'No';
 
     // Validar que los correos coincidan
-    if ($correo === $correo_confirmar) {
+    if (filter_var($correo, FILTER_VALIDATE_EMAIL) && $correo === $correo_confirmar) {
         echo "<h1>Datos recibidos</h1>";
         echo "<p>Correo: <strong>$correo</strong></p>";
         echo "<p>Acepta recibir publicidad: <strong>$publicidad</strong></p>";
