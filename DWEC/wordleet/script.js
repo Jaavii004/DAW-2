@@ -252,7 +252,7 @@ function MostrarFila(fila) {
     console.log(letraActual);
     const celdaEliminar = celdas[letraActual];
     celdaEliminar.classList.remove('blink');
-    
+
     const celda = celdas[letraActual + 1];
     celda.classList.add('blink');
 }
@@ -283,7 +283,7 @@ document.querySelectorAll('.tecla').forEach(tecla => {
                     array.pop();
                     arrayLetrasEscritas[fila] = array;
                     MostrarFila(fila);
-                    letraActual-- ;
+                    letraActual--;
                 }
             }
         }
@@ -336,17 +336,36 @@ function pintarTecladoVirtual(letra, color) {
 }
 
 // Función para buscar una palabra en la API
-function buscarPalabra(palabra) {
-    return fetch(`https://api.dictionaryapi.dev/api/v2/entries/es/${palabra}`)
-        .then(respuesta => respuesta.json())
-        .then(data => {
-            return data.length > 0;
+function buscarPalabra(word) {
+    let existe = false;
+    fetch(`https://api.dictionaryapi.dev/api/v2/entries/es/${word}`)
+        .then(response => {
+            existe = response.ok;
         })
-        .catch(error => {
-            console.error('Error:', error);
-            return false;
+        .catch(() => {
+            existe = false;
         });
+    return existe;
 }
 
 
-console.log(buscarPalabra('hola'));
+// let existpal = buscarPalabra(palabraAAdivinar);
+// console.log(existpal);
+
+function obtenerPalabraAleatoria() {
+    return fetch('https://random-word-api.herokuapp.com/word?lang=es')
+        .then(response => response.json())
+        .then(data => data[0]); // Devuelve la palabra
+}
+
+let palabraAleatoria;
+
+// Ejemplo de uso:
+obtenerPalabraAleatoria().then(palale => {
+    palabraAleatoria = palale;
+    console.log(palabraAleatoria + " pal");
+});
+
+console.log(palabraAleatoria);
+
+
