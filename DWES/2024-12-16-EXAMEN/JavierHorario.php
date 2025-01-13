@@ -1,53 +1,92 @@
 <?php
-// Definir el horario como un array multidimensional
+
+/**
+ * @Author: Javier Puertas
+ */
+
 $horario = [
     'Lunes' => [
-        '08:00' => 'Matemáticas',
-        '09:00' => 'Física',
-        '10:00' => 'Química',
-        '11:00' => 'Historia',
+        '14:10' => 'DWEC',
+        '15:05' => 'DWEC',
+        '16:00' => 'DWES',
+        '16:55' => 'P',
+        '17:15' => 'DWES',
+        '18:10' => 'EIE',
+        '19:05' => 'DAW',
+        '20:00' => 'DAW'
     ],
     'Martes' => [
-        '08:00' => 'Lengua',
-        '09:00' => 'Geografía',
-        '10:00' => 'Biología',
-        '11:00' => 'Filosofía',
+        '14:10' => 'DWEC',
+        '15:05' => 'DWEC',
+        '16:00' => 'DIW',
+        '16:55' => 'A',
+        '17:15' => 'DIW',
+        '18:10' => 'DWES',
+        '19:05' => 'DWES',
+        '20:00' => '--'
     ],
     'Miércoles' => [
-        '08:00' => 'Matemáticas',
-        '09:00' => 'Física',
-        '10:00' => 'Inglés',
-        '11:00' => 'Deportes',
+        '14:10' => '--',
+        '15:05' => 'DWEC',
+        '16:00' => 'DWEC',
+        '16:55' => 'T',
+        '17:15' => 'DWEC',
+        '18:10' => 'DAW',
+        '19:05' => 'DAW',
+        '20:00' => 'TUT'
     ],
     'Jueves' => [
-        '08:00' => 'Arte',
-        '09:00' => 'Química',
-        '10:00' => 'Historia',
-        '11:00' => 'Música',
+        '14:10' => 'DWES',
+        '15:05' => 'DWES',
+        '16:00' => 'EIE',
+        '16:55' => 'I',
+        '17:15' => 'DIW',
+        '18:10' => 'DIW',
+        '19:05' => 'DAW',
+        '20:00' => 'DAW'
     ],
     'Viernes' => [
-        '08:00' => 'Tecnología',
-        '09:00' => 'Filosofía',
-        '10:00' => 'Lengua',
-        '11:00' => 'Matemáticas',
-    ],
+        '14:10' => 'EIE',
+        '15:05' => 'DWES',
+        '16:00' => 'DWES',
+        '16:55' => 'O',
+        '17:15' => 'DIW',
+        '18:10' => 'DIW',
+        '19:05' => '--',
+        '20:00' => '--'
+    ]
 ];
 
-// Imprimir encabezado
-printf("%-15s", "Horas");
-foreach ($horario as $dia => $clases) {
-    printf("%-20s", $dia);
-}
-echo "\n";
+echo "|";
+echo str_repeat("-", 86);
+echo "|\n";
 
-// Imprimir las filas con los horarios
-$horas = array_keys($horario['Lunes']); // Usamos las horas del lunes
+printf("%-13s", "|Horas");
+foreach ($horario as $dia => $clases) {
+    printf("%-15s", "|" . $dia);
+}
+echo "|\n|";
+echo str_repeat("-", 86);
+echo "|\n";
+
+$horas = [
+    '14:10',
+    '15:05',
+    '16:00',
+    '16:55',
+    '17:15',
+    '18:10',
+    '19:05',
+    '20:00'
+];
 
 foreach ($horas as $hora) {
-    printf("%-15s", $hora); // Imprimir hora
-    foreach ($horario as $clases) {
-        // Imprimir el módulo correspondiente para esa hora y día
-        printf("%-20s", isset($clases[$hora]) ? $clases[$hora] : '');
+    printf("| %-10s", $hora);
+    foreach ($horario as $dia => $clases) {
+        printf("%-15s", "|" . $clases[$hora]);
     }
-    echo "\n";
+    echo "|\n";
 }
+echo "|";
+echo str_repeat("-", 86);
+echo "|\n";
