@@ -209,7 +209,12 @@ document.addEventListener('keydown', function (event) {
     }
 });
 
-function comprobarPalabra(palabra, palabraAAdivinar) {
+async function comprobarPalabra(palabra, palabraAAdivinar) {
+    let existe = await compExiste(palabra);
+    if (!existe) {
+        mostrarModal();
+        return;
+    }
     if (palabra === palabraAAdivinar) {
         for (let index = 0; index < palabraAAdivinar.length; index++) {
             const celda = celdas[fila * palabraAAdivinar.length + index];
@@ -348,5 +353,25 @@ function buscarPalabra(palabra) {
         });
 }
 
+async function compExiste(adivinar) {
+    let palabraExiste = await fetch("https://rae-api.com/api/words/" + adivinar)
+        .then(response => {
+            if (response.ok) {
+                return true;
+            } else {
+                return false;
+            }
+        });
+    return palabraExiste;
+}
 
-console.log(buscarPalabra('hola'));
+
+// Función para mostrar el modal
+function mostrarModal() {
+    document.getElementById("myModal").style.display = "block";
+}
+
+// Función para cerrar el modal
+function cerrarModal() {
+    document.getElementById("myModal").style.display = "none";
+}
