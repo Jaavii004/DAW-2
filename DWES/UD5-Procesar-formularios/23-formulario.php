@@ -85,6 +85,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <option value="Primaria">Primaria</option>
             <option value="Secundaria">Secundaria</option>
             <option value="Bachillerato">Bachillerato</option>
+            <option value="FP">FP</option>
             <option value="Universitario">Universitario</option>
         </select>
         <br><br>
