@@ -90,6 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </select>
         <br><br>
 
+        <!-- CAMBIAR POR SELECT MULTIPLE -->
         <label>Situación actual:</label><br>
         <input type="checkbox" name="situacion[]" value="Estudiando" > Estudiando<br>
         <input type="checkbox" name="situacion[]" value="Trabajando" > Trabajando<br>
