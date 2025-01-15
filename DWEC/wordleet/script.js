@@ -211,10 +211,14 @@ document.addEventListener('keydown', function (event) {
 
 async function comprobarPalabra(palabra, palabraAAdivinar) {
     let existe = await compExiste(palabra);
-    if (!existe) {
-        mostrarModal();
-        return;
+
+    if (palabra != palabraAAdivinar) {
+        if (!existe) {
+            mostrarModal();
+            return;
+        }
     }
+
     if (palabra === palabraAAdivinar) {
         for (let index = 0; index < palabraAAdivinar.length; index++) {
             const celda = celdas[fila * palabraAAdivinar.length + index];
@@ -340,19 +344,6 @@ function pintarTecladoVirtual(letra, color) {
     });
 }
 
-// Función para buscar una palabra en la API
-function buscarPalabra(palabra) {
-    return fetch(`https://api.dictionaryapi.dev/api/v2/entries/es/${palabra}`)
-        .then(respuesta => respuesta.json())
-        .then(data => {
-            return data.length > 0;
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            return false;
-        });
-}
-
 async function compExiste(adivinar) {
     let palabraExiste = await fetch("https://rae-api.com/api/words/" + adivinar)
         .then(response => {
@@ -364,7 +355,6 @@ async function compExiste(adivinar) {
         });
     return palabraExiste;
 }
-
 
 // Función para mostrar el modal
 function mostrarModal() {
