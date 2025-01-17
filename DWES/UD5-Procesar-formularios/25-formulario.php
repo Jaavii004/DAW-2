@@ -14,6 +14,12 @@
 // grupo de clase.
 
 $errores = [];
+$nombre = isset($_POST['nombre_completo']) ? $_POST['nombre_completo'] : '';
+$contrasena = isset($_POST['contrasena']) ? $_POST['contrasena'] : '';
+$nivel_estudios = isset($_POST['nivel_estudios']) ? $_POST['nivel_estudios'] : '';
+$nacionalidad = isset($_POST['nacionalidad']) ? $_POST['nacionalidad'] : '';
+$idiomas = isset($_POST['idiomas']) ? $_POST['idiomas'] : [];
+$email = isset($_POST['email']) ? $_POST['email'] : '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($_POST['nombre_completo'])) {
@@ -43,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
         $nombre_archivo = $_FILES['foto']['name'];
         $tamano_archivo = $_FILES['foto']['size'];
-        $extension = substr($nombre_archivo, strrpos($nombre_archivo, '.') + 1);
+        $extension = substr($nombre_archivo, strlen($nombre_archivo) - 1);
 
         if (!in_array($extension, ['jpg', 'gif', 'png'])) {
             $errores[] = 'La foto debe ser jpg, gif o png.';
@@ -67,9 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errores)) {
-        $nombre = urlencode('Javier Puertas');
-        $grupo = urlencode('Grupo 23/24');
-        header("Location: 25-formulario-exito.php?nombre=$nombre&grupo=$grupo");
+        header("Location: 25-formulario-exito.php?nombre=$nombre&grupo=$grupo&img=");
         exit;
     }
 }
@@ -93,7 +97,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     <form method="post" enctype="multipart/form-data">
         <label>Nombre Completo:
-            <input type="text" name="nombre_completo">
+            <input type="text" name="nombre_completo" value="<?php echo $no?>">
         </label>
         <br>
 
@@ -131,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <br>
 
         <label>Email:
-            <input type="email" name="email">
+            <input type="text" name="email">
         </label>
         <br>
 
