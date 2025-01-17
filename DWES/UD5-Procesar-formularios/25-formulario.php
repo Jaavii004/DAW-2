@@ -14,12 +14,12 @@
 // grupo de clase.
 
 $errores = [];
-$nombre = isset($_POST['nombre_completo']) ? $_POST['nombre_completo'] : '';
-$contrasena = isset($_POST['contrasena']) ? $_POST['contrasena'] : '';
-$nivel_estudios = isset($_POST['nivel_estudios']) ? $_POST['nivel_estudios'] : '';
-$nacionalidad = isset($_POST['nacionalidad']) ? $_POST['nacionalidad'] : '';
-$idiomas = isset($_POST['idiomas']) ? $_POST['idiomas'] : [];
-$email = isset($_POST['email']) ? $_POST['email'] : '';
+$nombre = $_POST['nombre_completo'] ?? '';
+$contrasena = $_POST['contrasena'] ?? '';
+$nivel_estudios = $_POST['nivel_estudios'] ?? '';
+$nacionalidad = $_POST['nacionalidad'] ?? '';
+$idiomas = $_POST['idiomas'] ?? [];
+$email = $_POST['email'] ?? '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($_POST['nombre_completo'])) {
@@ -97,23 +97,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     <form method="post" enctype="multipart/form-data">
         <label>Nombre Completo:
-            <input type="text" name="nombre_completo" value="<?php echo $no?>">
+            <input type="text" name="nombre_completo" value="<?php echo $nombre?>">
         </label>
         <br>
 
         <label>Contraseña:
-            <input type="password" name="contrasena">
+            <input type="password" name="contrasena" value="<?php echo $contrasena ?>">
+        </label>
         </label>
         <br>
 
         <label>Nivel de Estudios:
             <select name="nivel_estudios">
                 <option value="">Selecciona</option>
-                <option value="Sin estudios">Sin estudios</option>
-                <option value="ESO">ESO</option>
-                <option value="Bachillerato">Bachillerato</option>
-                <option value="FP">FP</option>
-                <option value="Universidad">Universidad</option>
+                <option value="Sin estudios"<?php if ($nivel_estudios === 'Sin estudios') echo ' selected'; ?>>Sin estudios</option>
+                <option value="ESO"<?php if ($nivel_estudios === 'ESO') echo ' selected'; ?>>ESO</option>
+                <option value="Bachillerato"<?php if ($nivel_estudios === 'Bachillerato') echo ' selected'; ?>>Bachillerato</option>
+                <option value="FP"<?php if ($nivel_estudios === 'FP') echo ' selected'; ?>>FP</option>
+                <option value="Universidad"<?php if ($nivel_estudios === 'Universidad') echo ' selected'; ?>>Universidad</option>
+            </select>
             </select>
         </label>
         <br>
@@ -121,16 +123,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label>Nacionalidad:
             <select name="nacionalidad">
                 <option value="">Selecciona</option>
-                <option value="Española">Española</option>
-                <option value="Otra">Otra</option>
+                <option value="Española"<?php if ($nacionalidad === 'Española') echo ' selected'; ?>>Española</option>
+                <option value="Otra"<?php if ($nacionalidad === 'Otra') echo ' selected'; ?>>Otra</option>
             </select>
         </label>
         <br>
 
         <label>Idiomas:<br>
-            <input type="checkbox" name="idiomas[]" value="Español"> Español
-            <input type="checkbox" name="idiomas[]" value="Inglés"> Inglés
-            <input type="checkbox" name="idiomas[]" value="Francés"> Francés
+            <input type="checkbox" name="idiomas[]" value="Español"<?php if (in_array('Español', $idiomas)) echo ' checked'; ?>> Español
+            <input type="checkbox" name="idiomas[]" value="Inglés"<?php if (in_array('Inglés', $idiomas)) echo ' checked'; ?>> Inglés
+            <input type="checkbox" name="idiomas[]" value="Francés"<?php if (in_array('Francés', $idiomas)) echo ' checked'; ?>> Francés
         </label>
         <br>
 
