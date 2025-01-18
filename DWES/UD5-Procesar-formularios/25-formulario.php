@@ -73,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errores)) {
-        header("Location: 25-formulario-exito.php?nombre=$nombre&grupo=$grupo&img=");
+        header("Location: 25-formulario-exito.php?nombre=$nombre&grupo=$grupo&img=$nombreUnico");
         exit;
     }
 }
@@ -84,10 +84,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario Simple</title>
+    <title>Formulario 25</title>
 </head>
 <body>
-    <h1>Formulario de Datos</h1>
+    <h1>Formulario 25</h1>
 
     <ul style="color: red;">
         <?php foreach ($errores as $error): ?>
@@ -104,7 +104,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label>Contraseña:
             <input type="password" name="contrasena" value="<?php echo $contrasena ?>">
         </label>
-        </label>
         <br>
 
         <label>Nivel de Estudios:
@@ -116,16 +115,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <option value="FP"<?php if ($nivel_estudios === 'FP') echo ' selected'; ?>>FP</option>
                 <option value="Universidad"<?php if ($nivel_estudios === 'Universidad') echo ' selected'; ?>>Universidad</option>
             </select>
-            </select>
         </label>
         <br>
 
         <label>Nacionalidad:
-            <select name="nacionalidad">
-                <option value="">Selecciona</option>
-                <option value="Española"<?php if ($nacionalidad === 'Española') echo ' selected'; ?>>Española</option>
-                <option value="Otra"<?php if ($nacionalidad === 'Otra') echo ' selected'; ?>>Otra</option>
-            </select>
+            <input type="radio" name="nacionalidad" value="Española"<?php if ($nacionalidad === 'Española') echo ' checked'; ?>> Española
+            <input type="radio" name="nacionalidad" value="Otra"<?php if ($nacionalidad === 'Otra') echo ' checked'; ?>> Otra
         </label>
         <br>
 
@@ -137,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <br>
 
         <label>Email:
-            <input type="text" name="email">
+            <input type="text" name="email" value="<?php echo $email ?>">
         </label>
         <br>
 
