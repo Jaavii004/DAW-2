@@ -1,17 +1,10 @@
 <?php
+
 /**
  * @Author: Javier Puertas
  */
 
-// 25. Crea una Web para obtener los siguientes datos: Nombre completo, Contraseña (mínimo 6
-// caracteres), Nivel de Estudios(Sin estudios, Educación Secundaria Obligatoria, Bachillerato,
-// Formación Profesional, Estudios Universitarios), Nacionalidad (Española, Otra), Idiomas
-// (Español, Inglés, Francés, Alemán Italiano), Email, Adjuntar Foto (sólo extensiones jpg, gif y
-// png, tamaño máximo 50 KB). Además de las comprobaciones de validación, se debe comprobar
-// que sube fichero, que el fichero tiene extensión (puedes usar explode()) y ésta es válida, que hay
-// directorio donde guardarlo y que se genera con nombre único. Si todo ha ido bien, redirige al
-// usuario a una página donde se le indique que se ha procesado con éxito e incluye tu nombre y
-// grupo de clase.
+// 25. Crea una Web para obtener los siguientes datos: Nombre completo, Contraseña (mínimo 6 caracteres)...
 
 $errores = [];
 $nombre = $_POST['nombre_completo'] ?? '';
@@ -20,36 +13,41 @@ $nivel_estudios = $_POST['nivel_estudios'] ?? '';
 $nacionalidad = $_POST['nacionalidad'] ?? '';
 $idiomas = $_POST['idiomas'] ?? [];
 $email = $_POST['email'] ?? '';
+$accion = $_POST['accion'] ?? '';
+$validacion = '';
+$fotoCorrecta = false;
+$rutaFotoTemporal = $_POST['foto_temp'] ?? '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (empty($_POST['nombre_completo'])) {
+    if (empty($nombre)) {
         $errores[] = 'El nombre completo es obligatorio.';
     }
 
-    if (empty($_POST['contrasena']) || strlen($_POST['contrasena']) < 6) {
+    if (empty($contrasena) || strlen($contrasena) < 6) {
         $errores[] = 'La contraseña debe tener al menos 6 caracteres.';
     }
 
-    if (empty($_POST['nivel_estudios'])) {
+    if (empty($nivel_estudios)) {
         $errores[] = 'El nivel de estudios es obligatorio.';
     }
 
-    if (empty($_POST['nacionalidad'])) {
+    if (empty($nacionalidad)) {
         $errores[] = 'La nacionalidad es obligatoria.';
     }
 
-    if (empty($_POST['idiomas'])) {
+    if (empty($idiomas)) {
         $errores[] = 'Debes seleccionar al menos un idioma.';
     }
 
-    if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errores[] = 'El email es obligatorio y debe ser válido.';
     }
 
     if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
         $nombre_archivo = $_FILES['foto']['name'];
         $tamano_archivo = $_FILES['foto']['size'];
-        $extension = substr($nombre_archivo, strlen($nombre_archivo) - 1);
+        $informacionArchivo = pathinfo($nombre_archivo);
+        $extension = $informacionArchivo['extension'];
 
         if (!in_array($extension, ['jpg', 'gif', 'png'])) {
             $errores[] = 'La foto debe ser jpg, gif o png.';
@@ -64,17 +62,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if (!is_dir($directorio)) {
                 mkdir($directorio);
             }
-
+            $fotoCorrecta = true;
             $nombreUnico = uniqid("unica") . '.' . $extension;
             move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . $nombreUnico);
+            $rutaFotoTemporal = $directorio . $nombreUnico;
         }
     } else {
+        if (empty($rutaFotoTemporal)) {
         $errores[] = 'Debes subir una foto válida.';
+        } else {
+            $fotoCorrecta = true;
+        }
     }
 
     if (empty($errores)) {
-        header("Location: 25-formulario-exito.php?nombre=$nombre&grupo=$grupo&img=$nombreUnico");
-        exit;
+        if ($accion !== 'validar') {
+            header("Location: 25-formulario-exito.php?nombre=$nombre&contrasena=$contrasena&nivel_estudios=$nivel_estudios&nacionalidad=$nacionalidad&idiomas=" . implode(',', $idiomas) . "&email=$email&ruta_img=$rutaFotoTemporal");
+            exit;
+        } else {
+            $validacion = 'Formulario validado correctamente.';
+        }
     }
 }
 ?>
@@ -94,15 +101,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <li><?= $error ?></li>
         <?php endforeach; ?>
     </ul>
+    <ul style="color: green;">
+        <?php if (!empty($validacion)){ ?>
+            <li><?php echo $validacion ?></li>
+        <?php }; ?>
+    </ul>
     
     <form method="post" enctype="multipart/form-data">
         <label>Nombre Completo:
-            <input type="text" name="nombre_completo" value="<?php echo $nombre?>">
+            <input type="text" name="nombre_completo" value="<?php echo $nombre; ?>">
         </label>
         <br>
 
         <label>Contraseña:
-            <input type="password" name="contrasena" value="<?php echo $contrasena ?>">
+            <input type="password" name="contrasena" value="<?php echo $contrasena; ?>">
         </label>
         <br>
 
@@ -132,16 +144,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <br>
 
         <label>Email:
-            <input type="text" name="email" value="<?php echo $email ?>">
+            <input type="text" name="email" value="<?php echo $email; ?>">
         </label>
         <br>
 
-        <label>Foto:
-            <input type="file" name="foto">
-        </label>
+        <?php if ($fotoCorrecta): ?>
+            <p>Foto subida:</p>
+            <img src="<?php echo $rutaFotoTemporal; ?>" alt="Foto subida" style="max-width: 100px;">
+            <input type="hidden" name="foto_temp" value="<?php echo $rutaFotoTemporal; ?>">
+        <?php else: ?>
+            <label>Foto:
+                <input type="file" name="foto">
+            </label>
+        <?php endif; ?>
         <br>
 
-        <button type="submit">Enviar</button>
+        <button type="submit" name="accion" value="enviar">Enviar</button>
+        <button type="submit" name="accion" value="validar">Validar</button>
     </form>
 </body>
 </html>
