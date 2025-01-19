@@ -66,19 +66,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errores[] = 'El tamaño máximo de la foto es 50 KB.';
         }
 
-        if (empty($errores)) {
-            $directorio = 'uploads/';
-            if (!is_dir($directorio)) {
-                mkdir($directorio);
-            }
-            $fotoCorrecta = true;
-            $nombreUnico = uniqid("unica") . '.' . $extension;
-            move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . $nombreUnico);
-            $rutaFotoTemporal = $directorio . $nombreUnico;
+        $directorio = 'uploads/';
+        if (!is_dir($directorio)) {
+            mkdir($directorio);
         }
+        $fotoCorrecta = true;
+        $nombreUnico = uniqid("unica") . '.' . $extension;
+        move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . $nombreUnico);
+        $rutaFotoTemporal = $directorio . $nombreUnico;
     } else {
         if (empty($rutaFotoTemporal)) {
-        $errores[] = 'Debes subir una foto válida.';
+            $errores[] = 'Debes subir una foto válida.';
         } else {
             $fotoCorrecta = true;
         }
@@ -157,15 +155,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </label>
         <br>
 
-        <?php if ($fotoCorrecta): ?>
+        <?php if ($fotoCorrecta) { ?>
             <p>Foto subida:</p>
             <img src="<?php echo $rutaFotoTemporal; ?>" alt="Foto subida" style="max-width: 100px;">
             <input type="hidden" name="foto_temp" value="<?php echo $rutaFotoTemporal; ?>">
-        <?php else: ?>
+        <?php } else { ?>
             <label>Foto:
                 <input type="file" name="foto">
             </label>
-        <?php endif; ?>
+        <?php } ?>
         <br>
 
         <button type="submit" name="accion" value="enviar">Enviar</button>

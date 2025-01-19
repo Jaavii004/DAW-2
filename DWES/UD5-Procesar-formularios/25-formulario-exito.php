@@ -24,13 +24,15 @@
 </head>
 <body>
     <h1>Formulario procesado con éxito</h1>
-    <p>Tu formulario se ha enviado correctamente.</p>
+    <p style="color: green">Tu formulario se ha enviado correctamente.</p>
     <p>Nombre: <?php echo $_GET['nombre']; ?></p>
     <p>Contraseña: <?php echo $_GET['contrasena']; ?></p>
     <p>Nivel de Estudios: <?php echo $_GET['nivel_estudios']; ?></p>
     <p>Nacionalidad: <?php echo $_GET['nacionalidad']; ?></p>
     <p>Idiomas: <?php echo $_GET['idiomas']; ?></p>
     <p>Email: <?php echo $_GET['email']; ?></p>
-    <p>Foto: <?php echo $_GET['ruta_img']; ?></p>
+    <p>Url foto: <?php echo $_GET['ruta_img']; ?></p>
+    <p>Foto:</p>
+    <img src="<?php echo $_GET['ruta_img']; ?>" alt="Foto Adjunta" style="max-width: 150px;">
 </body>
 </html>
