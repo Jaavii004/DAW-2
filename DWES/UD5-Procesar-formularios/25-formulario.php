@@ -27,11 +27,15 @@ $validacion = '';
 $fotoCorrecta = false;
 $rutaFotoTemporal = $_POST['foto_temp'] ?? '';
 
+// Comprobamos que por POST nos pasan todas las variables
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($nombre)) {
         $errores[] = 'El nombre completo es obligatorio.';
+    } elseif (!preg_match('/^[a-zA-Z]+$/', $nombre)) {
+        $errores[] = 'El nombre completo solo puede contener letras.';
     }
 
+    // Comprobamos la contraseña sea mayor que 6 y no este vacia
     if (empty($contrasena) || strlen($contrasena) < 6) {
         $errores[] = 'La contraseña debe tener al menos 6 caracteres.';
     }
@@ -48,10 +52,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errores[] = 'Debes seleccionar al menos un idioma.';
     }
 
+    // Comprobamos que sea un email
     if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errores[] = 'El email es obligatorio y debe ser válido.';
     }
 
+    // comprobamos que hay imagen
     if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
         $nombre_archivo = $_FILES['foto']['name'];
         $tamano_archivo = $_FILES['foto']['size'];
@@ -66,15 +72,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errores[] = 'El tamaño máximo de la foto es 50 KB.';
         }
 
-        $directorio = 'uploads/';
-        if (!is_dir($directorio)) {
-            mkdir($directorio);
+        if (empty($errores)) {
+            $directorio = 'uploads/';
+            if (!is_dir($directorio)) {
+                mkdir($directorio);
+            }
+            $fotoCorrecta = true;
+            $nombreUnico = uniqid("unica") . '.' . $extension;
+            move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . $nombreUnico);
+            $rutaFotoTemporal = $directorio . $nombreUnico;
         }
-        $fotoCorrecta = true;
-        $nombreUnico = uniqid("unica") . '.' . $extension;
-        move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . $nombreUnico);
-        $rutaFotoTemporal = $directorio . $nombreUnico;
     } else {
+        // si no hay imagen pero tenemos la de antes lo ponemos
         if (empty($rutaFotoTemporal)) {
             $errores[] = 'Debes subir una foto válida.';
         } else {
@@ -103,18 +112,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <body>
     <h1>Formulario 25</h1>
 
+    <!-- Mostramos los errores -->
     <ul style="color: red;">
         <?php foreach ($errores as $error): ?>
             <li><?= $error ?></li>
         <?php endforeach; ?>
     </ul>
+    <!-- Mostramos si es valido el formulario -->
     <ul style="color: green;">
         <?php if (!empty($validacion)){ ?>
             <li><?php echo $validacion ?></li>
         <?php }; ?>
     </ul>
     
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" action="25-formulario.php" enctype="multipart/form-data">
         <label>Nombre Completo:
             <input type="text" name="nombre_completo" value="<?php echo $nombre; ?>">
         </label>
@@ -155,6 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </label>
         <br>
 
+        <!-- Si hay foto ponemos la foto si no dejamos subirla -->
         <?php if ($fotoCorrecta) { ?>
             <p>Foto subida:</p>
             <img src="<?php echo $rutaFotoTemporal; ?>" alt="Foto subida" style="max-width: 100px;">
@@ -168,6 +180,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <button type="submit" name="accion" value="enviar">Enviar</button>
         <button type="submit" name="accion" value="validar">Validar</button>
+        <input type="reset" value="Limpiar">
     </form>
 </body>
 </html>
