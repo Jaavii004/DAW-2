@@ -139,6 +139,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <label>Nivel de Estudios:
             <select name="nivel_estudios">
                 <option value="">Selecciona</option>
+                <!-- Comprobamos si los han marcado antes -->
                 <option value="Sin estudios"<?php if ($nivel_estudios === 'Sin estudios') echo ' selected'; ?>>Sin estudios</option>
                 <option value="ESO"<?php if ($nivel_estudios === 'ESO') echo ' selected'; ?>>ESO</option>
                 <option value="Bachillerato"<?php if ($nivel_estudios === 'Bachillerato') echo ' selected'; ?>>Bachillerato</option>
@@ -180,7 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <button type="submit" name="accion" value="enviar">Enviar</button>
         <button type="submit" name="accion" value="validar">Validar</button>
-        <input type="reset" value="Limpiar">
+        <input type="Reset" value="reset">
     </form>
 </body>
 </html>
