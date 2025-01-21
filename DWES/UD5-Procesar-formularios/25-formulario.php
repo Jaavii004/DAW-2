@@ -16,16 +16,16 @@
 
 
 $errores = [];
-$nombre = $_POST['nombre_completo'] ?? '';
-$contrasena = $_POST['contrasena'] ?? '';
-$nivel_estudios = $_POST['nivel_estudios'] ?? '';
-$nacionalidad = $_POST['nacionalidad'] ?? '';
+$nombre = $_POST['nombre_completo'] ?? null;
+$contrasena = $_POST['contrasena'] ?? null;
+$nivel_estudios = $_POST['nivel_estudios'] ?? null;
+$nacionalidad = $_POST['nacionalidad'] ?? null;
 $idiomas = $_POST['idiomas'] ?? [];
-$email = $_POST['email'] ?? '';
-$accion = $_POST['accion'] ?? '';
-$validacion = '';
+$email = $_POST['email'] ?? null;
+$accion = $_POST['accion'] ?? null;
+$validacion = null;
 $fotoCorrecta = false;
-$rutaFotoTemporal = $_POST['foto_temp'] ?? '';
+$rutaFotoTemporal = $_POST['foto_temp'] ?? null;
 
 // Comprobamos que por POST nos pasan todas las variables
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
