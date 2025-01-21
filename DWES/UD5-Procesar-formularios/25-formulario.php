@@ -31,12 +31,14 @@ $rutaFotoTemporal = $_POST['foto_temp'] ?? '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($nombre)) {
         $errores[] = 'El nombre completo es obligatorio.';
-    } elseif (!preg_match('/^[a-zA-Z]+$/', $nombre)) {
+    } elseif (!ctype_alpha($nombre)) {
         $errores[] = 'El nombre completo solo puede contener letras.';
     }
 
     // Comprobamos la contraseña sea mayor que 6 y no este vacia
-    if (empty($contrasena) || strlen($contrasena) < 6) {
+    if (empty($contrasena)) {
+        $errores[] = 'La contraseña es obligatoria.';
+    } elseif (strlen($contrasena) < 6) {
         $errores[] = 'La contraseña debe tener al menos 6 caracteres.';
     }
 
@@ -72,16 +74,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errores[] = 'El tamaño máximo de la foto es 50 KB.';
         }
 
-        if (empty($errores)) {
-            $directorio = 'uploads/';
-            if (!is_dir($directorio)) {
-                mkdir($directorio);
-            }
-            $fotoCorrecta = true;
-            $nombreUnico = uniqid("unica") . '.' . $extension;
-            move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . $nombreUnico);
-            $rutaFotoTemporal = $directorio . $nombreUnico;
+        $directorio = 'uploads/';
+        if (!is_dir($directorio)) {
+            mkdir($directorio);
         }
+        $fotoCorrecta = true;
+        $nombreUnico = uniqid("unica") . '.' . $extension;
+        move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . $nombreUnico);
+        $rutaFotoTemporal = $directorio . $nombreUnico;
     } else {
         // si no hay imagen pero tenemos la de antes lo ponemos
         if (empty($rutaFotoTemporal)) {
@@ -92,6 +92,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (empty($errores)) {
+        // seprara en dos botones la accion
         if ($accion !== 'validar') {
             header("Location: 25-formulario-exito.php?nombre=$nombre&contrasena=$contrasena&nivel_estudios=$nivel_estudios&nacionalidad=$nacionalidad&idiomas=" . implode(',', $idiomas) . "&email=$email&ruta_img=$rutaFotoTemporal");
             exit;
@@ -115,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <!-- Mostramos los errores -->
     <ul style="color: red;">
         <?php foreach ($errores as $error): ?>
-            <li><?= $error ?></li>
+            <li><?php echo $error ?></li>
         <?php endforeach; ?>
     </ul>
     <!-- Mostramos si es valido el formulario -->
@@ -172,6 +173,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p>Foto subida:</p>
             <img src="<?php echo $rutaFotoTemporal; ?>" alt="Foto subida" style="max-width: 100px;">
             <input type="hidden" name="foto_temp" value="<?php echo $rutaFotoTemporal; ?>">
+            <!-- max file -->
         <?php } else { ?>
             <label>Foto:
                 <input type="file" name="foto">
