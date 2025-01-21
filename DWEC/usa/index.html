@@ -13,7 +13,7 @@
 
 <body>
       <h1>El Covid-19 en EEUU</h1>
-      <div class="noresize" style=" ">
+      <div class="noresize">
             <map name="USA">
                   <area href="#Alabama" data-cod="AL" shape="poly"
                         coords="537,310,556,377,518,382,518,395,506,391,504,312" alt="Alabama" title="Alabama">
@@ -173,59 +173,90 @@
       <div id="modal" class="oculto">
             <h3 id="titulo">Título</h3>
             <table>
-                  <tr>
-                        <td class="titPob">Población</td>
-                        <td class="poblacion"></td>
-                        <td class="titPob">Hispanos</td>
-                        <td class="poblacion"></td>
-                        <td class="titPob">No hispanos</td>
-                        <td class="poblacion"></td>
-                  </tr>
+                  <thead>
+                        <tr>
+                              <th>Hora</th>
+                              <th>Icono</th>
+                              <th>Temperatura</th>
+                              <th>Precipitaciones</th>
+                              <th>Humedad</th>
+                              <th>Vel. Viento</th>
+                        </tr>
+                  </thead>
+                  <tbody id="tbody">
+                        <tr>
+                              <td>16:00</td>
+                              <td></td>
+                              <td>16°</td>
+                              <td>0 mm</td>
+                              <td>30%</td>
+                              <td>3 km/h</td>
+                        </tr>
+                        <!-- <tr>
+                      <td>17:00</td>
+                      <td><img src="https://statics.eltiempo.es/images/weather/v20241016/svg/32/d300.svg" width="32" height="32" alt="Icono"></td>
+                      <td>15°</td>
+                      <td>0 mm</td>
+                      <td>30%</td>
+                      <td>Sureste</td>
+                      <td>5 km/h</td>
+                    </tr>
+                    <tr>
+                      <td>18:00</td>
+                      <td><img src="https://statics.eltiempo.es/images/weather/v20241016/svg/32/n300.svg" width="32" height="32" alt="Icono"></td>
+                      <td>13°</td>
+                      <td>0 mm</td>
+                      <td>30%</td>
+                      <td>Sur</td>
+                      <td>5 km/h</td>
+                    </tr>
+                    <tr>
+                      <td>19:00</td>
+                      <td><img src="https://statics.eltiempo.es/images/weather/v20241016/svg/32/n200.svg" width="32" height="32" alt="Icono"></td>
+                      <td>13°</td>
+                      <td>0 mm</td>
+                      <td>20%</td>
+                      <td>Sur</td>
+                      <td>1 km/h</td>
+                    </tr>
+                    <tr>
+                      <td>20:00</td>
+                      <td><img src="https://statics.eltiempo.es/images/weather/v20241016/svg/32/n200.svg" width="32" height="32" alt="Icono"></td>
+                      <td>12°</td>
+                      <td>0 mm</td>
+                      <td>20%</td>
+                      <td>Suroeste</td>
+                      <td>1 km/h</td>
+                    </tr>
+                    <tr>
+                      <td>21:00</td>
+                      <td><img src="https://statics.eltiempo.es/images/weather/v20241016/svg/32/n200.svg" width="32" height="32" alt="Icono"></td>
+                      <td>12°</td>
+                      <td>0 mm</td>
+                      <td>20%</td>
+                      <td>Oeste</td>
+                      <td>3 km/h</td>
+                    </tr>
+                    <tr>
+                      <td>22:00</td>
+                      <td><img src="https://statics.eltiempo.es/images/weather/v20241016/svg/32/n200.svg" width="32" height="32" alt="Icono"></td>
+                      <td>12°</td>
+                      <td>0 mm</td>
+                      <td>20%</td>
+                      <td>Noroeste</td>
+                      <td>2 km/h</td>
+                    </tr>
+                    <tr>
+                      <td>23:00</td>
+                      <td><img src="https://statics.eltiempo.es/images/weather/v20241016/svg/32/n300.svg" width="32" height="32" alt="Icono"></td>
+                      <td>11°</td>
+                      <td>0 mm</td>
+                      <td>20%</td>
+                      <td>Noroeste</td>
+                      <td>5 km/h</td>
+                    </tr> -->
+                  </tbody>
             </table>
-            <div id="info">
-                  <div>
-                        <h4>Notas</h4>
-                        <div id="notas">
-
-                        </div>
-                  </div>
-                  <table>
-                        <tr>
-                              <td colspan="2" class="titulo">Fecha</td>
-                              <td colspan="2" class="descripcion"></td>
-                        </tr>
-                        <tr>
-                              <td class="titulo">Muertos</td>
-                              <td class="descripcion"></td>
-                              <td class="titulo">Incremento</td>
-                              <td class="descripcion"></td>
-                        </tr>
-                        <tr>
-                              <td class="titulo">Hospitalizaciones</td>
-                              <td class="descripcion"></td>
-                              <td class="titulo">Incremento</td>
-                              <td class="descripcion"></td>
-                        </tr>
-                        <tr>
-                              <td class="titulo">Tests</td>
-                              <td class="descripcion"></td>
-                              <td class="titulo">Incremento</td>
-                              <td class="descripcion"></td>
-                        </tr>
-                        <tr>
-                              <td class="titulo">Positivos</td>
-                              <td class="descripcion"></td>
-                              <td class="titulo">Incremento</td>
-                              <td class="descripcion"></td>
-                        </tr>
-                        <tr>
-                              <td class="titulo">Negativos</td>
-                              <td class="descripcion"></td>
-                              <td class="titulo">Incremento</td>
-                              <td class="descripcion"></td>
-                        </tr>
-                  </table>
-            </div>
       </div>
 </body>
 
