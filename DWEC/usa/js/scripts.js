@@ -20,7 +20,7 @@ var estados = {
     Maine: { latitude: 44.693947, longitude: -69.381927 },
     Maryland: { latitude: 39.063946, longitude: -76.802101 },
     Massachusetts: { latitude: 42.230171, longitude: -71.530106 },
-    Michigan: { latitude: 42.326515, longitude: -83.636719 },
+    Míchigan: { latitude: 42.326515, longitude: -83.636719 },
     Minnesota: { latitude: 46.729553, longitude: -94.685899 },
     Misisipi: { latitude: 32.741646, longitude: -89.678696 },
     Misuri: { latitude: 36.5361, longitude: -89.831234 },
@@ -60,6 +60,36 @@ document.addEventListener("DOMContentLoaded" , function() {
 
 });
 
+const icono = {
+    "lt_sn": "https://www.weatherbit.io/static/img/icons/t01d.png",   // Lluvia ligera o nevada
+    "pt_cloudy_night": "https://www.weatherbit.io/static/img/icons/c02n.png", // Noche parcialmente nublada
+    "clear_night": "https://www.weatherbit.io/static/img/icons/c01n.png",   // Noche despejada
+    "few_clouds": "https://www.weatherbit.io/static/img/icons/c03d.png",    // Pocas nubes
+    "scattered_clouds": "https://www.weatherbit.io/static/img/icons/c04d.png", // Nubes dispersas
+    "chance_of_snow": "https://www.weatherbit.io/static/img/icons/t02d.png",  // Posibilidad de nieve
+    "clear": "https://www.weatherbit.io/static/img/icons/c01d.png", // Clear icon for "clear"
+    "mt_cloudy": "https://www.weatherbit.io/static/img/icons/c04d.png",  // Mountain cloudy
+    "overcast": "https://www.weatherbit.io/static/img/icons/c04d.png",  // Overcast
+    "sn": "https://www.weatherbit.io/static/img/icons/t01d.png",  // Snow (heavy snow)
+    "mt_cloudy_night": "https://www.weatherbit.io/static/img/icons/c04n.png", // Noche montañosa nublada
+    "pt_cloudy": "https://www.weatherbit.io/static/img/icons/c03d.png", // Cielo parcialmente nublado
+};
+
+const iconoViento = {
+    "SW": "<i class='fas fa-wind wind-icon wind-sw'></i>",  // Suroeste
+    "NW": "<i class='fas fa-wind wind-icon wind-nw'></i>",  // Noroeste
+    "NNW": "<i class='fas fa-wind wind-icon wind-nnw'></i>", // Noroeste-norte
+    "N": "<i class='fas fa-wind wind-icon wind-n'></i>",   // Norte
+    "NE": "<i class='fas fa-wind wind-icon wind-ne'></i>",  // Noreste
+    "E": "<i class='fas fa-wind wind-icon wind-e'></i>",   // Este
+    "SE": "<i class='fas fa-wind wind-icon wind-se'></i>",  // Sureste
+    "S": "<i class='fas fa-wind wind-icon wind-s'></i>",   // Sur
+    "SSW": "<i class='fas fa-wind wind-icon wind-ssw'></i>", // Suroeste-sur
+    "WSW": "<i class='fas fa-wind wind-icon wind-wsw'></i>", // Oeste-suroeste
+    "W": "<i class='fas fa-wind wind-icon wind-w'></i>",   // Oeste
+    "ESE": "<i class='fas fa-wind wind-icon wind-ese'></i>"  // Este-sureste
+};
+
 async function AreaOnClick (area) {
     console.log(area.title);
     console.log(estados[area.title]);
@@ -67,7 +97,7 @@ async function AreaOnClick (area) {
     let titulo = document.getElementById("titulo");
     titulo.innerText = area.title;
 
-    const response = await fetch(`https://api.weatherusa.net/v1/forecast?q=${estados[area.title].latitude},${estados[area.title].longitude}&daily=0&units=e&maxtime=1d`);
+    const response = await fetch(`https://api.weatherusa.net/v1/forecast?q=${estados[area.title].latitude},${estados[area.title].longitude}&daily=0&units=m&maxtime=1d`);
     const data = await response.json();
     console.log(data);
 
@@ -84,38 +114,34 @@ async function AreaOnClick (area) {
     let table = document.getElementById("tbody");
 
     table.innerHTML = "";
-    const weatherIcons = {
-        "lt_sn": "https://www.weatherbit.io/static/img/icons/t01d.png",   // Lluvia ligera o nevada
-        "pt_cloudy_night": "https://www.weatherbit.io/static/img/icons/c02n.png", // Noche parcialmente nublada
-        "clear_night": "https://www.weatherbit.io/static/img/icons/c01n.png",   // Noche despejada
-        "few_clouds": "https://www.weatherbit.io/static/img/icons/c03d.png",    // Pocas nubes
-        "scattered_clouds": "https://www.weatherbit.io/static/img/icons/c04d.png", // Nubes dispersas
-        "chance_of_snow": "https://www.weatherbit.io/static/img/icons/t02d.png",  // Posibilidad de nieve
-        "clear": "https://www.weatherbit.io/static/img/icons/c01d.png", // Clear icon for "clear"
-        "mt_cloudy": "https://www.weatherbit.io/static/img/icons/c04d.png",  // Mountain cloudy
-        "overcast": "https://www.weatherbit.io/static/img/icons/c04d.png",  // Overcast
-        "sn": "https://www.weatherbit.io/static/img/icons/t01d.png",  // Snow (heavy snow)
-        "mt_cloudy_night": "https://www.weatherbit.io/static/img/icons/c04n.png", // Noche montañosa nublada
-        "pt_cloudy": "https://www.weatherbit.io/static/img/icons/c03d.png", // Cielo parcialmente nublado
-    };
+
+    let prim = data.slice(0, 1);
+
+    console.log(prim);
     
+    // • validt: que se trata de la marca de tiempo. Hay que convertirla en formato fecha.
+    // • localtime: Indica la hora en la que nos encontramos.
+    // • temp: temperatura para la hora indicada.
+    // • wdir_compass: Dirección del tiempo.
+    // • wspd: Velocidad del viento.
 
     data.slice(1, 11).forEach(temp => {
         console.log(temp.wx_icon);
-        let img = weatherIcons[temp.wx_icon];
+        let img = icono[temp.wx_icon];
         if (img === undefined) {
-            console.log(`Missing icon for: ${temp.wx_icon}`);
+            console.log(`${temp.wx_icon}`);
             img = "https://icones.pro/wp-content/uploads/2021/05/icone-question-bleu.png"
         }
 
+        let imgDirVent = iconoViento[temp.wdir_compass];
+        console.log(imgDirVent + " " + temp.wdir_compass);
+ 
         table.innerHTML += `
             <tr>
-                <td>${temp.localtime}</td>
-                <td><img src="${img}" width="32" height="32" alt="Icono"></td>
-                <td>${temp.temp}</td>
-                <td>${temp.pop12}</td>
-                <td>${temp.rhm}</td>
-                <td>${temp.wspd}KM</td>
+                <td>${temp.localtime} <img src="${img}" width="32" height="32" alt="Icono ${temp.wx_icon}"></td>
+                <td>${temp.temp}<img src="https://cdn.eltiempo.es/dist/images/icons/general/svg/temperature-blue.svg" width="32" height="32" alt="Icono Temp"></td>
+                <td>${temp.wspd}Km/h</td>
+                <td>${temp.wdir_compass} ${imgDirVent}</td>
             </tr>
         `;
     });
@@ -141,7 +167,5 @@ function OcultarModal() {
     fondo.classList.add("oculto");
     modal.classList.add("oculto");
 }
-
-
 
 
