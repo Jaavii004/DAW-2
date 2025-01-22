@@ -73,7 +73,11 @@ const icono = {
     "sn": "https://www.weatherbit.io/static/img/icons/t01d.png",  // Snow (heavy snow)
     "mt_cloudy_night": "https://www.weatherbit.io/static/img/icons/c04n.png", // Noche montañosa nublada
     "pt_cloudy": "https://www.weatherbit.io/static/img/icons/c03d.png", // Cielo parcialmente nublado
+    "TEMP": "https://www.weatherbit.io/static/img/icons/c01d.png",   // TEMP (Ejemplo de icono si es necesario)
+    "ts_ra": "https://www.weatherbit.io/static/img/icons/t01d.png",   // Tormenta con lluvia (ts_ra)
+    "ra": "https://www.weatherbit.io/static/img/icons/t01d.png",     // Lluvia (ra)
 };
+
 
 const iconoViento = {
     "SW": "<i class='fas fa-wind wind-icon wind-sw'></i>",  // Suroeste
@@ -81,6 +85,7 @@ const iconoViento = {
     "NNW": "<i class='fas fa-wind wind-icon wind-nnw'></i>", // Noroeste-norte
     "N": "<i class='fas fa-wind wind-icon wind-n'></i>",   // Norte
     "NE": "<i class='fas fa-wind wind-icon wind-ne'></i>",  // Noreste
+    "ENE": "<i class='fas fa-wind wind-icon wind-ene'></i>", // Este-Noreste (nuevo)
     "E": "<i class='fas fa-wind wind-icon wind-e'></i>",   // Este
     "SE": "<i class='fas fa-wind wind-icon wind-se'></i>",  // Sureste
     "S": "<i class='fas fa-wind wind-icon wind-s'></i>",   // Sur
@@ -94,13 +99,10 @@ async function AreaOnClick (area) {
     console.log(area.title);
     console.log(estados[area.title]);
     
-    let titulo = document.getElementById("titulo");
-    titulo.innerText = area.title;
-
     const response = await fetch(`https://api.weatherusa.net/v1/forecast?q=${estados[area.title].latitude},${estados[area.title].longitude}&daily=0&units=m&maxtime=1d`);
     const data = await response.json();
     console.log(data);
-
+    
     // localtime: Hora
     // rhm: Humedad relativa en el aire
     // temp: Temperatura actual en grados Celsius
@@ -109,13 +111,13 @@ async function AreaOnClick (area) {
     // pop12: Probabilidad de precipitación en las próximas 12 horas
     // wdir_compass: Dirección del viento en términos de los puntos cardinales 
     // wspd: Velocidad del viento promedio
-
-
+    
+    let prim = data.slice(0, 1);
+    let titulo = document.getElementById("titulo");
+    titulo.innerHTML = area.title;
     let table = document.getElementById("tbody");
-
     table.innerHTML = "";
 
-    let prim = data.slice(0, 1);
 
     console.log(prim);
     
@@ -129,12 +131,11 @@ async function AreaOnClick (area) {
         console.log(temp.wx_icon);
         let img = icono[temp.wx_icon];
         if (img === undefined) {
-            console.log(`${temp.wx_icon}`);
+            console.log(`TEMP undefined ${temp.wx_icon}`);
             img = "https://icones.pro/wp-content/uploads/2021/05/icone-question-bleu.png"
         }
 
         let imgDirVent = iconoViento[temp.wdir_compass];
-        console.log(imgDirVent + " " + temp.wdir_compass);
  
         table.innerHTML += `
             <tr>
