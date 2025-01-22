@@ -85,19 +85,19 @@ async function AreaOnClick (area) {
 
     table.innerHTML = "";
     const weatherIcons = {
-        "lt_sn": "https://statics.eltiempo.es/images/weather/v20241016/svg/32/d400.svg",   // Lluvia ligera o nevada
-        "pt_cloudy_night": "https://statics.eltiempo.es/images/weather/v20241016/svg/32/d500.svg", // Noche parcialmente nublada
-        "clear_night": "https://statics.eltiempo.es/images/weather/v20241016/svg/32/d600.svg",   // Noche despejada
-        "few_clouds": "https://statics.eltiempo.es/images/weather/v20241016/svg/32/d700.svg",    // Pocas nubes
-        "scattered_clouds": "https://statics.eltiempo.es/images/weather/v20241016/svg/32/d800.svg", // Nubes dispersas
-        "chance_of_snow": "https://statics.eltiempo.es/images/weather/v20241016/svg/32/d900.svg",  // Posibilidad de nieve
-        "clear": "https://statics.eltiempo.es/images/weather/v20241016/svg/32/d600.svg", // Clear icon for "clear"
-        "mt_cloudy": "https://statics.eltiempo.es/images/weather/v20241016/svg/32/d800.svg",  // Mountain cloudy
-        "overcast": "https://statics.eltiempo.es/images/weather/v20241016/svg/32/d800.svg",  // Overcast
-        "sn": "https://statics.eltiempo.es/images/weather/v20241016/svg/32/d400.svg",  // Snow (heavy snow)
+        "lt_sn": "https://www.weatherbit.io/static/img/icons/t01d.png",   // Lluvia ligera o nevada
+        "pt_cloudy_night": "https://www.weatherbit.io/static/img/icons/c02n.png", // Noche parcialmente nublada
+        "clear_night": "https://www.weatherbit.io/static/img/icons/c01n.png",   // Noche despejada
+        "few_clouds": "https://www.weatherbit.io/static/img/icons/c03d.png",    // Pocas nubes
+        "scattered_clouds": "https://www.weatherbit.io/static/img/icons/c04d.png", // Nubes dispersas
+        "chance_of_snow": "https://www.weatherbit.io/static/img/icons/t02d.png",  // Posibilidad de nieve
+        "clear": "https://www.weatherbit.io/static/img/icons/c01d.png", // Clear icon for "clear"
+        "mt_cloudy": "https://www.weatherbit.io/static/img/icons/c04d.png",  // Mountain cloudy
+        "overcast": "https://www.weatherbit.io/static/img/icons/c04d.png",  // Overcast
+        "sn": "https://www.weatherbit.io/static/img/icons/t01d.png",  // Snow (heavy snow)
+        "mt_cloudy_night": "https://www.weatherbit.io/static/img/icons/c04n.png", // Noche montañosa nublada
+        "pt_cloudy": "https://www.weatherbit.io/static/img/icons/c03d.png", // Cielo parcialmente nublado
     };
-    
-    
     
 
     data.slice(1, 11).forEach(temp => {
