@@ -203,7 +203,20 @@
       <div id="modal-img" class="oculto">
             <button class="btn close-modal" onclick="cerrarImgEstado()">&times;</button>
             <h3 id="titulo-imagen">Imagen</h3>
-            <img id="img-estado-select" src="https://img.freepik.com/premium-photo/tv-has-no-signal-no-signal-noise-background_41050-4394.jpg" alt="Imagen" width="700" height="400">
+            <!-- Carrusel de Bootstrap -->
+            <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                <div class="carousel-inner" id="carousel-inner">
+                    <!-- Las imágenes se agregarán dinámicamente aquí -->
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                </button>
+            </div>
       </div>
 
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">

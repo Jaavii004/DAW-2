@@ -179,23 +179,54 @@ async function AreaOnClick (area) {
     const responseIMG = await fetch(`https://api.weatherusa.net/v1/skycams?q=${estados[area.title].latitude},${estados[area.title].longitude}`);
     const dataIMG = await responseIMG.json();
 
-    let imgEstado = [];
-    try {
-        imgEstado = dataIMG[0].image;
-        if (imgEstado == undefined) {
-            console.log("No hay imagen del estado");
-            imgEstado = "https://img.freepik.com/premium-photo/tv-has-no-signal-no-signal-noise-background_41050-4394.jpg";
-        }
-        console.log("Img obtenida correctamente de "+ area.title);
-    } catch (error) {
-        console.log("No hay imagen del estado " + area.title);
-        imgEstado = "https://img.freepik.com/premium-photo/tv-has-no-signal-no-signal-noise-background_41050-4394.jpg";
+    let todasLasImg = [];
+
+    dataIMG.forEach(data => {
+        todasLasImg.push(data.image);
+    });
+
+    console.log(todasLasImg);
+
+    // Construir el carrusel dinámicamente
+    const carouselInner = document.getElementById("carousel-inner");
+    // Limpiar el carrusel antes de agregar nuevas imágenes
+    carouselInner.innerHTML = "";
+
+    if (todasLasImg.length > 0) {
+        todasLasImg.forEach((img, index) => {
+            const carouselItem = document.createElement("div");
+            carouselItem.classList.add("carousel-item");
+            if (index === 0) {
+                carouselItem.classList.add("active"); // La primera imagen estará activa
+            }
+
+            const imgElement = document.createElement("img");
+            imgElement.src = img;
+            imgElement.alt = `Imagen ${index + 1} de ${area.title}`;
+            imgElement.classList.add("d-block", "w-100");
+            imgElement.style.maxHeight = "400px";
+            imgElement.style.objectFit = "cover";
+
+            carouselItem.appendChild(imgElement);
+            carouselInner.appendChild(carouselItem);
+        });
+    } else {
+        // Si no hay imágenes, mostrar una imagen de placeholder
+        const carouselItem = document.createElement("div");
+        carouselItem.classList.add("carousel-item", "active");
+
+        const imgElement = document.createElement("img");
+        imgElement.src = "https://img.freepik.com/premium-photo/tv-has-no-signal-no-signal-noise-background_41050-4394.jpg";
+        imgElement.alt = "No hay imágenes disponibles";
+        imgElement.classList.add("d-block", "w-100");
+        imgElement.style.maxHeight = "400px";
+        imgElement.style.objectFit = "cover";
+
+        carouselItem.appendChild(imgElement);
+        carouselInner.appendChild(carouselItem);
     }
-    document.getElementById("img-estado-select").src = imgEstado;
-    document.getElementById("titulo-imagen").innerText = "Imagen de " + area.title;
 
-
-
+    document.getElementById("titulo-imagen").innerText = "Imágenes de " + area.title;
 }
 
 
