@@ -4,6 +4,10 @@
  * @Author: Javier Puertas
  */
 
+// Usa el formulario (Ejercicio 2 UD5) de la quincena donde se indique el día de la semana y
+// muestre la quincena guardando estos datos en una Cookie. Se deben mostrar el día y la
+// quincena actual y el día y la quincena anterior (cookie).
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Guardar el día de la semana y la quincena en cookies
     setcookie("dia", $_POST['dia'], time() + 3600);

@@ -205,6 +205,7 @@ async function AreaOnClick (area) {
             imgElement.alt = `Imagen ${index + 1} de ${area.title}`;
             imgElement.classList.add("d-block", "w-100");
             imgElement.style.maxHeight = "400px";
+            // Para que no sea mas grande que el contenedor
             imgElement.style.objectFit = "cover";
 
             carouselItem.appendChild(imgElement);

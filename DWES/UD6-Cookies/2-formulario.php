@@ -4,6 +4,11 @@
  * @Author: Javier Puertas
  */
 
+// Crea un formulario en el que se le pida al usuario los siguientes datos: nombre y preferencia de
+// idioma, color y ciudad. Crea una Cookie que almacene estos datos y que, al recargar la página
+// por realizar una nueva selección de datos (y posiblemente usuario) muestre los datos
+// introducidos en el formulario junto con los datos obtenidos de la Cookie.
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Guardar los datos en cookies
     setcookie("nombre", $_POST['nombre'], time() + 3600);

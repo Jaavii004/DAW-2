@@ -4,6 +4,11 @@
  * @Author: Javier Puertas
  */
 
+//  Crea un formulario sencillo donde el usuario indique su nombre y seleccione si quiere un
+//  saludo o despedida. Se debe almacenar en una Cookie el usuario y el saludo y al pulsar Enviar,
+//  se debe indicar los valores actuales (usuario y saludo o despedida elegidos) y los valores del
+//  usuario anterior y acción elegida almacenadas en la Cookie
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Guardar los datos en cookies
     setcookie("usuario", $_POST['nombre'], time() + 3600);
