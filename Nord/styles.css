@@ -1,0 +1,136 @@
+/* Estilos generales */
+body {
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Contenedores */
+.container-medium {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.container-large {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Botones */
+.button {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+    background-color: #007bff;
+    border-radius: 4px;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #0056b3;
+}
+
+.button-secondary {
+    display: inline-block;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #007bff;
+    background-color: transparent;
+    border: 2px solid #007bff;
+    border-radius: 4px;
+    text-align: center;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.button-secondary:hover {
+    color: #fff;
+    background-color: #007bff;
+}
+
+/* Barra de navegación */
+.navbar-centered {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.nav-link {
+    margin: 0 15px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: #007bff;
+}
+
+/* Sección hero */
+.hero-section-b {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 100px 0;
+    background-color: #f9f9f9;
+}
+
+.heading-hero {
+    font-size: 48px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.text-size-xlarge {
+    font-size: 20px;
+    color: #666;
+    margin-bottom: 40px;
+}
+
+.mockup-image {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Estilos responsivos */
+@media (max-width: 767px) {
+    .navbar-centered {
+        flex-direction: column;
+        padding: 10px 0;
+    }
+
+    .nav-link {
+        margin: 10px 0;
+    }
+
+    .hero-section-b {
+        flex-direction: column;
+        padding: 50px 0;
+    }
+
+    .heading-hero {
+        font-size: 36px;
+    }
+
+    .text-size-xlarge {
+        font-size: 18px;
+    }
+}
