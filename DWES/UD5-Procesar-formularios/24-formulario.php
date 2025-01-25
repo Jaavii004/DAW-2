@@ -11,17 +11,15 @@
 // Debe tener los botones de Enviar y Borrar
 
 $errores = [];
+$nombre = $_POST['nombre'] ?? '';
+$apellidos = $_POST['apellidos'] ?? '';
+$edad = $_POST['edad'] ?? '';
+$peso = $_POST['peso'] ?? '';
+$sexo = $_POST['sexo'] ?? '';
+$estado_civil = $_POST['estado_civil'] ?? '';
+$aficiones = $_POST['aficiones'] ?? [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    $nombre = $_POST['nombre'] ?? '';
-    $apellidos = $_POST['apellidos'] ?? '';
-    $edad = $_POST['edad'] ?? '';
-    $peso = $_POST['peso'] ?? '';
-    $sexo = $_POST['sexo'] ?? '';
-    $estado_civil = $_POST['estado_civil'] ?? '';
-    $aficiones = $_POST['aficiones'] ?? [];
-
     // Validar nombre
     if (empty($nombre)) {
         $errores['nombre'] = 'El nombre es obligatorio.';
@@ -38,8 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Validar peso
-    if (empty($peso)) {
-        $errores['peso'] = 'El peso es obligatorio.';
+    if (empty($peso) || $peso < 10 || $peso > 150) {
+        $errores['peso'] = 'El peso debe ser mayor que 10 y menor que 150.';
     }
 
     // Validar sexo

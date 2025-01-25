@@ -209,7 +209,16 @@ document.addEventListener('keydown', function (event) {
     }
 });
 
-function comprobarPalabra(palabra, palabraAAdivinar) {
+async function comprobarPalabra(palabra, palabraAAdivinar) {
+    let existe = await compExiste(palabra);
+
+    if (palabra != palabraAAdivinar) {
+        if (!existe) {
+            mostrarModal();
+            return;
+        }
+    }
+
     if (palabra === palabraAAdivinar) {
         for (let index = 0; index < palabraAAdivinar.length; index++) {
             const celda = celdas[fila * palabraAAdivinar.length + index];
@@ -348,6 +357,10 @@ function buscarPalabra(word) {
     return existe;
 }
 
+// Función para mostrar el modal
+function mostrarModal() {
+    document.getElementById("myModal").style.display = "block";
+}
 
 // let existpal = buscarPalabra(palabraAAdivinar);
 // console.log(existpal);

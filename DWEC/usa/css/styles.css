@@ -1,0 +1,205 @@
+#fondo {
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    opacity: .6;
+    position: absolute;
+    left: 0;
+    top: 0;
+}
+
+#modal {
+    padding: 50px;
+    position: absolute;
+    width: 800px;
+    box-shadow: 0px 0px 20px black;
+    border-radius: 15px;
+    height: auto;
+    background-color: white;
+    top: 50%;
+    left: 50% ;
+    transform: translate(-50%, -50%);
+}
+
+#modal h3 {
+    text-align: center;
+    border-bottom: 1px solid silver;
+    padding: 10px;
+}
+
+#notas {
+    width: 100%;
+    max-height: 300px;
+    overflow: auto;
+    font-size: 10px;
+    color: gray;
+}
+
+table {
+    margin-top: 20px;
+    width: 100%;
+}
+
+td {
+    padding: 5px;
+    width: 25%;
+}
+
+.titulo {
+    width: 20%;
+    font-weight: bold;
+    padding-left: 25px;
+}
+
+.descripcion {
+    width: 30%;
+    color: gray;
+    padding-right: 30px;
+    text-align: right;
+    font-size: 12px;
+}
+
+.oculto {
+    display: none;
+}
+
+.noresize {
+
+    margin-left: calc(50% - 400px);
+    height: 495px;
+    width: 800px;
+}
+
+h1 {
+    text-align: center;
+    padding: 50px;
+}
+
+.titPob {
+    width: 12%;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+table {
+    margin-bottom: 10px;
+}
+
+tr {
+    border-bottom: 1px solid whitesmoke;
+}
+
+th, tr {
+    text-align: center;
+}
+.wind-icon {
+    font-size: 25px;  /* Tamaño aún más pequeño del icono */
+    display: inline-block;
+}
+
+.wind-nw {
+    transform: rotate(-45deg);  /* Noroeste */
+}
+
+.wind-nnw {
+    transform: rotate(-22.5deg);  /* Noroeste-norte */
+}
+
+.wind-n {
+    transform: rotate(0deg);  /* Norte */
+}
+
+.wind-ne {
+    transform: rotate(45deg);   /* Noreste */
+}
+
+.wind-e {
+    transform: rotate(90deg);   /* Este */
+}
+
+.wind-se {
+    transform: rotate(135deg);  /* Sureste */
+}
+
+.wind-s {
+    transform: rotate(180deg);  /* Sur */
+}
+
+.wind-ssw {
+    transform: rotate(157.5deg); /* Suroeste-sur */
+}
+
+.wind-wsw {
+    transform: rotate(112.5deg); /* Oeste-suroeste */
+}
+
+.wind-w {
+    transform: rotate(270deg);   /* Oeste */
+}
+
+.wind-ese {
+    transform: rotate(45deg);    /* Este-sureste */
+}
+
+.actual {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    border-radius: 10px;
+    box-shadow: 1px 1px 5px;
+    background-color: rgb(35, 126, 138);
+    padding: 5px;
+}
+
+.icono {
+    width: 40px;
+    height: auto;
+    margin-left: 5px;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    gap: 5px;
+}
+
+#modal-img h3 {
+    text-align: center;
+    border-bottom: 1px solid silver;
+    padding: 10px;
+}
+
+.close-modal {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 20px;
+    color: gray;
+}
+
+#modal-img {
+    padding: 50px;
+    position: absolute;
+    width: 800px;
+    box-shadow: 0px 0px 20px black;
+    border-radius: 15px;
+    height: auto;
+    background-color: white;
+    top: 50%;
+    left: 50% ;
+    transform: translate(-50%, -50%);
+}

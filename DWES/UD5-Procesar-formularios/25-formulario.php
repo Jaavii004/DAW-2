@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @Author: Javier Puertas
  */
@@ -13,37 +14,57 @@
 // usuario a una página donde se le indique que se ha procesado con éxito e incluye tu nombre y
 // grupo de clase.
 
-$errores = [];
 
+$errores = [];
+$nombre = $_POST['nombre_completo'] ?? null;
+$contrasena = $_POST['contrasena'] ?? null;
+$nivel_estudios = $_POST['nivel_estudios'] ?? null;
+$nacionalidad = $_POST['nacionalidad'] ?? null;
+$idiomas = $_POST['idiomas'] ?? [];
+$email = $_POST['email'] ?? null;
+$accion = $_POST['accion'] ?? null;
+$validacion = null;
+$fotoCorrecta = false;
+$rutaFotoTemporal = $_POST['foto_temp'] ?? null;
+
+// Comprobamos que por POST nos pasan todas las variables
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (empty($_POST['nombre_completo'])) {
+    if (empty($nombre)) {
         $errores[] = 'El nombre completo es obligatorio.';
+    } elseif (!ctype_alpha($nombre)) {
+        $errores[] = 'El nombre completo solo puede contener letras.';
     }
 
-    if (empty($_POST['contrasena']) || strlen($_POST['contrasena']) < 6) {
+    // Comprobamos la contraseña sea mayor que 6 y no este vacia
+    if (empty($contrasena)) {
+        $errores[] = 'La contraseña es obligatoria.';
+    } elseif (strlen($contrasena) < 6) {
         $errores[] = 'La contraseña debe tener al menos 6 caracteres.';
     }
 
-    if (empty($_POST['nivel_estudios'])) {
+    if (empty($nivel_estudios)) {
         $errores[] = 'El nivel de estudios es obligatorio.';
     }
 
-    if (empty($_POST['nacionalidad'])) {
+    if (empty($nacionalidad)) {
         $errores[] = 'La nacionalidad es obligatoria.';
     }
 
-    if (empty($_POST['idiomas'])) {
+    if (empty($idiomas)) {
         $errores[] = 'Debes seleccionar al menos un idioma.';
     }
 
-    if (empty($_POST['email']) || !filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
+    // Comprobamos que sea un email
+    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $errores[] = 'El email es obligatorio y debe ser válido.';
     }
 
+    // comprobamos que hay imagen
     if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
         $nombre_archivo = $_FILES['foto']['name'];
         $tamano_archivo = $_FILES['foto']['size'];
-        $extension = substr($nombre_archivo, strrpos($nombre_archivo, '.') + 1);
+        $informacionArchivo = pathinfo($nombre_archivo);
+        $extension = $informacionArchivo['extension'];
 
         if (!in_array($extension, ['jpg', 'gif', 'png'])) {
             $errores[] = 'La foto debe ser jpg, gif o png.';
@@ -53,24 +74,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errores[] = 'El tamaño máximo de la foto es 50 KB.';
         }
 
-        if (empty($errores)) {
-            $directorio = 'uploads/';
-            if (!is_dir($directorio)) {
-                mkdir($directorio);
-            }
-
-            $nombreUnico = uniqid("unica") . '.' . $extension;
-            move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . $nombreUnico);
+        $directorio = 'uploads/';
+        if (!is_dir($directorio)) {
+            mkdir($directorio);
         }
+        $fotoCorrecta = true;
+        $nombreUnico = uniqid("unica") . '.' . $extension;
+        move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . $nombreUnico);
+        $rutaFotoTemporal = $directorio . $nombreUnico;
     } else {
-        $errores[] = 'Debes subir una foto válida.';
+        // si no hay imagen pero tenemos la de antes lo ponemos
+        if (empty($rutaFotoTemporal)) {
+            $errores[] = 'Debes subir una foto válida.';
+        } else {
+            $fotoCorrecta = true;
+        }
     }
 
     if (empty($errores)) {
-        $nombre = urlencode('Javier Puertas');
-        $grupo = urlencode('Grupo 23/24');
-        header("Location: 25-formulario-exito.php?nombre=$nombre&grupo=$grupo");
-        exit;
+        // seprara en dos botones la accion
+        if ($accion !== 'validar') {
+            header("Location: 25-formulario-exito.php?nombre=$nombre&contrasena=$contrasena&nivel_estudios=$nivel_estudios&nacionalidad=$nacionalidad&idiomas=" . implode(',', $idiomas) . "&email=$email&ruta_img=$rutaFotoTemporal");
+            exit;
+        } else {
+            $validacion = 'Formulario validado correctamente.';
+        }
     }
 }
 ?>
@@ -80,67 +108,82 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario Simple</title>
+    <title>Formulario 25</title>
 </head>
 <body>
-    <h1>Formulario de Datos</h1>
+    <h1>Formulario 25</h1>
 
+    <!-- Mostramos los errores -->
     <ul style="color: red;">
         <?php foreach ($errores as $error): ?>
-            <li><?= $error ?></li>
+            <li><?php echo $error ?></li>
         <?php endforeach; ?>
     </ul>
+    <!-- Mostramos si es valido el formulario -->
+    <ul style="color: green;">
+        <?php if (!empty($validacion)){ ?>
+            <li><?php echo $validacion ?></li>
+        <?php }; ?>
+    </ul>
     
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" action="25-formulario.php" enctype="multipart/form-data">
         <label>Nombre Completo:
-            <input type="text" name="nombre_completo">
+            <input type="text" name="nombre_completo" value="<?php echo $nombre; ?>">
         </label>
         <br>
 
         <label>Contraseña:
-            <input type="password" name="contrasena">
+            <input type="password" name="contrasena" value="<?php echo $contrasena; ?>">
         </label>
         <br>
 
         <label>Nivel de Estudios:
             <select name="nivel_estudios">
                 <option value="">Selecciona</option>
-                <option value="Sin estudios">Sin estudios</option>
-                <option value="ESO">ESO</option>
-                <option value="Bachillerato">Bachillerato</option>
-                <option value="FP">FP</option>
-                <option value="Universidad">Universidad</option>
+                <!-- Comprobamos si los han marcado antes -->
+                <option value="Sin estudios"<?php if ($nivel_estudios === 'Sin estudios') echo ' selected'; ?>>Sin estudios</option>
+                <option value="ESO"<?php if ($nivel_estudios === 'ESO') echo ' selected'; ?>>ESO</option>
+                <option value="Bachillerato"<?php if ($nivel_estudios === 'Bachillerato') echo ' selected'; ?>>Bachillerato</option>
+                <option value="FP"<?php if ($nivel_estudios === 'FP') echo ' selected'; ?>>FP</option>
+                <option value="Universidad"<?php if ($nivel_estudios === 'Universidad') echo ' selected'; ?>>Universidad</option>
             </select>
         </label>
         <br>
 
         <label>Nacionalidad:
-            <select name="nacionalidad">
-                <option value="">Selecciona</option>
-                <option value="Española">Española</option>
-                <option value="Otra">Otra</option>
-            </select>
+            <input type="radio" name="nacionalidad" value="Española"<?php if ($nacionalidad === 'Española') echo ' checked'; ?>> Española
+            <input type="radio" name="nacionalidad" value="Otra"<?php if ($nacionalidad === 'Otra') echo ' checked'; ?>> Otra
         </label>
         <br>
 
         <label>Idiomas:<br>
-            <input type="checkbox" name="idiomas[]" value="Español"> Español
-            <input type="checkbox" name="idiomas[]" value="Inglés"> Inglés
-            <input type="checkbox" name="idiomas[]" value="Francés"> Francés
+            <input type="checkbox" name="idiomas[]" value="Español"<?php if (in_array('Español', $idiomas)) echo ' checked'; ?>> Español
+            <input type="checkbox" name="idiomas[]" value="Inglés"<?php if (in_array('Inglés', $idiomas)) echo ' checked'; ?>> Inglés
+            <input type="checkbox" name="idiomas[]" value="Francés"<?php if (in_array('Francés', $idiomas)) echo ' checked'; ?>> Francés
         </label>
         <br>
 
         <label>Email:
-            <input type="email" name="email">
+            <input type="text" name="email" value="<?php echo $email; ?>">
         </label>
         <br>
 
-        <label>Foto:
-            <input type="file" name="foto">
-        </label>
+        <!-- Si hay foto ponemos la foto si no dejamos subirla -->
+        <?php if ($fotoCorrecta) { ?>
+            <p>Foto subida:</p>
+            <img src="<?php echo $rutaFotoTemporal; ?>" alt="Foto subida" style="max-width: 100px;">
+            <input type="hidden" name="foto_temp" value="<?php echo $rutaFotoTemporal; ?>">
+            <!-- max file -->
+        <?php } else { ?>
+            <label>Foto:
+                <input type="file" name="foto">
+            </label>
+        <?php } ?>
         <br>
 
-        <button type="submit">Enviar</button>
+        <button type="submit" name="accion" value="enviar">Enviar</button>
+        <button type="submit" name="accion" value="validar">Validar</button>
+        <input type="Reset" value="reset">
     </form>
 </body>
 </html>

@@ -10,16 +10,21 @@
 // trabajando, buscando empleo, desempleado) y hobbies (marcar de varios mostrados y poner otro
 // con opción a introducir texto)
 
+// display errors
+// ini_set('display_errors', 1);
+// error_reporting(E_ALL);
+
+
 $errores = [];
 
+$nombre = isset($_POST['nombre']) ? $_POST['nombre'] : '';
+$email = isset($_POST['email']) ? $_POST['email'] : '';
+$nivel_estudios = isset($_POST['nivel_estudios']) ? $_POST['nivel_estudios'] : '';
+$situacion = isset($_POST['situacion']) ? $_POST['situacion'] : [];
+$hobbies = isset($_POST['hobbies']) ? $_POST['hobbies'] : [];
+$otro_hobby = isset($_POST['otro_hobby']) ? $_POST['otro_hobby'] : '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nombre = $_POST['nombre'] ?? '';
-    $email = $_POST['email'] ?? '';
-    $nivel_estudios = $_POST['nivel_estudios'] ?? '';
-    $situacion = $_POST['situacion'] ?? [];
-    $hobbies = $_POST['hobbies'] ?? [];
-    $otro_hobby = $_POST['otro_hobby'] ?? '';
 
     // Validar nombre
     if (empty($nombre)) {
@@ -42,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Validar hobbies
-    if (empty($hobbies)) {
+    if (empty($hobbies) && empty($otro_hobby)) {
         $errores['hobbies'] = 'Debes seleccionar al menos un hobby o especificar otro.';
     }
 
@@ -72,36 +77,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <form action="" method="POST">
         <label for="nombre">Nombre:</label>
-        <input type="text" name="nombre" id="nombre" >
+        <input type="text" name="nombre" id="nombre" value="<?php echo $nombre;?>">
         <br><br>
 
         <label for="email">Correo electrónico:</label>
-        <input type="text" name="email" id="email" >
+        <input type="text" name="email" id="email" value="<?php echo $email;?>">
         <br><br>
 
         <label for="nivel_estudios">Nivel de estudios:</label>
         <select name="nivel_estudios" id="nivel_estudios">
             <option value="">Seleccione</option>
-            <option value="Primaria">Primaria</option>
-            <option value="Secundaria">Secundaria</option>
-            <option value="Bachillerato">Bachillerato</option>
-            <option value="Universitario">Universitario</option>
+            <!-- Si esta seleccionado lo muestro seleccionado -->
+            <option value="Primaria" <?php if ($nivel_estudios === 'Primaria') echo 'selected'; ?>>Primaria</option>
+            <option value="Secundaria" <?php if ($nivel_estudios === 'Secundaria') echo 'selected'; ?>>Secundaria</option>
+            <option value="Bachillerato" <?php if ($nivel_estudios === 'Bachillerato') echo 'selected'; ?>>Bachillerato</option>
+            <option value="FP" <?php if ($nivel_estudios === 'FP') echo 'selected'; ?>>FP</option>
+            <option value="Universitario" <?php if ($nivel_estudios === 'Universitario') echo 'selected'; ?>>Universitario</option>
         </select>
         <br><br>
 
+        <!-- CAMBIAR POR SELECT MULTIPLE -->
         <label>Situación actual:</label><br>
-        <input type="checkbox" name="situacion[]" value="Estudiando" > Estudiando<br>
-        <input type="checkbox" name="situacion[]" value="Trabajando" > Trabajando<br>
-        <input type="checkbox" name="situacion[]" value="Buscando empleo"> Buscando empleo<br>
-        <input type="checkbox" name="situacion[]" value="Desempleado"> Desempleado<br>
-        <br><br>
+        <select name="situacion[]" multiple>
+            <!-- Si esta en el array porque ha sido marcado se marca -->
+            <option value="Estudiando" <?php if (in_array('Estudiando', $situacion)) echo 'selected'; ?>>Estudiando</option>
+            <option value="Trabajando" <?php if (in_array('Trabajando', $situacion)) echo 'selected'; ?>>Trabajando</option>
+            <option value="Buscando empleo" <?php if (in_array('Buscando empleo', $situacion)) echo 'selected'; ?>>Buscando empleo</option>
+            <option value="Desempleado" <?php if (in_array('Desempleado', $situacion)) echo 'selected'; ?>>Desempleado</option>
+        </select>
+        <br>
 
         <label>Hobbies:</label><br>
-        <input type="checkbox" name="hobbies[]" value="Leer"> Leer<br>
-        <input type="checkbox" name="hobbies[]" value="Deporte" > Deporte<br>
-        <input type="checkbox" name="hobbies[]" value="Música" > Música<br>
-        <input type="checkbox" name="hobbies[]" value="Viajar" > Viajar<br>
-        Otro: <input type="text" name="otro_hobby" >
+        <!-- Si esta en el array porque ha sido marcado se marca -->
+        <input type="checkbox" name="hobbies[]" value="Leer" <?php if (in_array('Leer', $hobbies)) echo 'checked'; ?>> Leer<br>
+        <input type="checkbox" name="hobbies[]" value="Deporte" <?php if (in_array('Deporte', $hobbies)) echo 'checked'; ?>> Deporte<br>
+        <input type="checkbox" name="hobbies[]" value="Música" <?php if (in_array('Música', $hobbies)) echo 'checked'; ?>> Música<br>
+        <input type="checkbox" name="hobbies[]" value="Viajar" <?php if (in_array('Viajar', $hobbies)) echo 'checked'; ?>> Viajar<br>
+        Otro: <input type="text" name="otro_hobby" value="<?php echo $otro_hobby; ?>">
         <br><br>
 
         <button type="submit">Enviar</button>
