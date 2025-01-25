@@ -4,20 +4,28 @@
  * @Author: Javier Puertas
  */
 
-//  Crea un formulario sencillo donde el usuario indique su nombre y seleccione si quiere un
-//  saludo o despedida. Se debe almacenar en una Cookie el usuario y el saludo y al pulsar Enviar,
-//  se debe indicar los valores actuales (usuario y saludo o despedida elegidos) y los valores del
-//  usuario anterior y acción elegida almacenadas en la Cookie
+// Crea un formulario sencillo donde el usuario indique su nombre y seleccione si quiere un
+// saludo o despedida. Se debe almacenar en una Cookie el usuario y el saludo y al pulsar Enviar,
+// se debe indicar los valores actuales (usuario y saludo o despedida elegidos) y los valores del
+// usuario anterior y acción elegida almacenadas en la Cookie
+
+// Recuperar los valores anteriores de las cookies antes de sobrescribirlas
+$usuario_anterior = isset($_COOKIE['usuario']) ? $_COOKIE['usuario'] : 'Ninguno';
+$saludo_anterior = isset($_COOKIE['saludo']) ? $_COOKIE['saludo'] : 'Ninguna';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Guardar los datos en cookies
+    // Guardar los datos actuales en cookies
     setcookie("usuario", $_POST['nombre'], time() + 3600);
     setcookie("saludo", $_POST['saludo'], time() + 3600);
-}
 
-// Obtener datos de cookies
-$usuario = isset($_COOKIE['usuario']) ? $_COOKIE['usuario'] : 'Nadie';
-$saludo = isset($_COOKIE['saludo']) ? $_COOKIE['saludo'] : 'Ninguno';
+    // Actualizar los valores actuales para mostrar
+    $usuario_actual = $_POST['nombre'];
+    $saludo_actual = $_POST['saludo'];
+} else {
+    // Valores por defecto si no se ha enviado el formulario
+    $usuario_actual = $usuario_anterior;
+    $saludo_actual = $saludo_anterior;
+}
 
 ?>
 
@@ -44,11 +52,11 @@ $saludo = isset($_COOKIE['saludo']) ? $_COOKIE['saludo'] : 'Ninguno';
     </form>
 
     <h2>Valores actuales:</h2>
-    <p>Usuario actual: <?php echo $usuario; ?></p>
-    <p>Acción elegida: <?php echo $saludo; ?></p>
+    <p>Usuario actual: <?php echo $usuario_actual; ?></p>
+    <p>Acción elegida: <?php echo $saludo_actual; ?></p>
 
     <h2>Valores anteriores (cookies):</h2>
-    <p>Usuario anterior: <?php echo isset($_COOKIE['usuario']) ? $_COOKIE['usuario'] : 'Ninguno'; ?></p>
-    <p>Acción anterior: <?php echo isset($_COOKIE['saludo']) ? $_COOKIE['saludo'] : 'Ninguna'; ?></p>
+    <p>Usuario anterior: <?php echo $usuario_anterior; ?></p>
+    <p>Acción anterior: <?php echo $saludo_anterior; ?></p>
 </body>
 </html>
