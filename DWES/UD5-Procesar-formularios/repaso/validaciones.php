@@ -33,43 +33,6 @@ function validarEmail($email) {
     return null;
 }
 
-function validarFoto($archivo, $directorio) {
-    if (!isset($archivo)) {
-        return 'Debes subir una foto.';
-    } elseif ($archivo['error'] !== UPLOAD_ERR_OK) {
-        return 'Error al subir la foto.';
-    }
-
-    $tamanoMaximo = 50 * 1024; // 50 KB
-    $extensionesPermitidas = ['jpg', 'gif', 'png'];
-    $informacionArchivo = pathinfo($archivo['name']);
-    $extension = strtolower($informacionArchivo['extension']);
-
-    if (!in_array($extension, $extensionesPermitidas)) {
-        return 'La foto debe ser jpg, gif o png.';
-    }
-
-    if ($archivo['size'] > $tamanoMaximo) {
-        return 'El tamaño máximo de la foto es 50 KB.';
-    }
-
-    if (!is_dir($directorio)) {
-        mkdir($directorio);
-    }
-    $informacionArchivo = pathinfo($archivo['name']);
-    $extension = $informacionArchivo['extension'];
-    $nombreUnico = uniqid('foto_') . '.' . $extension;
-    $rutaDestino = $directorio . $nombreUnico;
-
-    if (move_uploaded_file($archivo['tmp_name'], $rutaDestino)) {
-        return $rutaDestino;
-    } else {
-        return 'Error al mover la foto.';
-    }
-
-    return null;
-}
-
 function validarIdiomas($idiomas) {
     if (empty($idiomas)) {
         return 'Debes seleccionar al menos un idioma.';

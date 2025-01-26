@@ -23,45 +23,92 @@ $nivel_estudios = $_POST['nivel_estudios'] ?? null;
 $nacionalidad = $_POST['nacionalidad'] ?? null;
 $idiomas = $_POST['idiomas'] ?? [];
 $email = $_POST['email'] ?? null;
-$accion = $_POST['accion'] ?? null;
 $validacion = null;
 $fotoCorrecta = false;
 $rutaFotoTemporal = $_POST['foto_temp'] ?? null;
 
 // Comprobamos que por POST nos pasan todas las variables
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Comprobamos el nombre no este vacio y solo contenga letras y espacios
-    $errores[] = validarNombre($nombre);
+    $resultado = validarNombre($nombre);
+    if ($resultado) {
+        $errores[] = $resultado;
+    }
 
-    // Comprobamos la contraseña sea mayor que 6 y no este vacia
-    $errores[] = validarContrasena($contrasena);
+    $resultado = validarContrasena($contrasena);
+    if ($resultado) {
+        $errores[] = $resultado;
+    }
 
-    // Comprobamos que el nivel de estudios no este vacio
-    $errores[] = validarNivelEstudios($nivel_estudios);
+    $resultado = validarNivelEstudios($nivel_estudios);
+    if ($resultado) {
+        $errores[] = $resultado;
+    }
 
-    // Comprobamos que la nacionalidad no este vacia
-    $errores[] = validarNacionalidad($nacionalidad);
+    $resultado = validarNacionalidad($nacionalidad);
+    if ($resultado) {
+        $errores[] = $resultado;
+    }
 
-    // Comprobamos que haya marcado al menos un idioma
-    $errores[] = validarIdiomas($idiomas);
+    $resultado = validarIdiomas($idiomas);
+    if ($resultado) {
+        $errores[] = $resultado;
+    }
 
-    // Comprobamos que sea un email
-    $errores[] = validarEmail($email);
+    $resultado = validarEmail($email);
+    if ($resultado) {
+        $errores[] = $resultado;
+    }
 
     // comprobamos que hay imagen
-    $errores[] = validarFoto($_FILES['foto'], 'uploads/');
+    if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
+        $fotoCorrecta = true;
+        $nombre_archivo = $_FILES['foto']['name'];
+        $tamano_archivo = $_FILES['foto']['size'];
+        $informacionArchivo = pathinfo($nombre_archivo);
+        $extension = $informacionArchivo['extension'];
+
+        if (!in_array($extension, ['jpg', 'gif', 'png'])) {
+            $errores[] = 'La foto debe ser jpg, gif o png.';
+            $fotoCorrecta = false;
+        }
+
+        if ($tamano_archivo > 50 * 1024) {
+            $errores[] = 'El tamaño máximo de la foto es 50 KB.';
+            $fotoCorrecta = false;
+        }
+
+        // $directorio = 'uploads/';
+        // if (!is_dir($directorio)) {
+        //     mkdir($directorio);
+        // }
+        if ($fotoCorrecta) {
+            $nombreUnico = uniqid("img_") . '.' . $extension;
+            move_uploaded_file($_FILES['foto']['tmp_name'], $nombreUnico);
+            $rutaFotoTemporal = $nombreUnico;
+        }
+    } else {
+        // si no hay imagen pero tenemos la de antes lo ponemos
+        if (empty($rutaFotoTemporal)) {
+            $errores[] = 'Debes subir una foto válida.';
+        } else {
+            $fotoCorrecta = true;
+        }
+    }
 
     if (empty($errores)) {
         // seprara en dos botones la accion
-        if ($accion !== 'validar') {
+        if ($_POST['enviar']) {
             header("Location: 25-formulario-exito.php?nombre=$nombre&contrasena=$contrasena&nivel_estudios=$nivel_estudios&nacionalidad=$nacionalidad&idiomas=" . implode(',', $idiomas) . "&email=$email&ruta_img=$rutaFotoTemporal");
             exit;
-        } else {
+        } elseif ($_POST['validar']) {
             $validacion = 'Formulario validado correctamente.';
         }
     }
 }
 
+// Quitar aray errores los null
+//$errores = array_filter($errores);
+//
 ?>
 
 <!DOCTYPE html>
@@ -86,7 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <li><?php echo $validacion ?></li>
         <?php }; ?>
     </ul>
-    
+
     <form method="post" action="index.php" enctype="multipart/form-data">
         <label>Nombre Completo:
             <input type="text" name="nombre_completo" value="<?php echo $nombre; ?>">
@@ -134,7 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p>Foto subida:</p>
             <img src="<?php echo $rutaFotoTemporal; ?>" alt="Foto subida" style="max-width: 100px;">
             <input type="hidden" name="foto_temp" value="<?php echo $rutaFotoTemporal; ?>">
-            <input type="hidden" name="MAX_FILE_SIZE" value="51200">
+            <input type="hidden" name="MAX_FILE_SIZE" value="50">
         <?php } else { ?>
             <label>Foto:
                 <input type="file" name="foto">
@@ -142,9 +189,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php } ?>
         <br>
 
-        <button type="submit" name="accion" value="enviar">Enviar</button>
-        <button type="submit" name="accion" value="validar">Validar</button>
-        <input type="Reset" value="reset">
+        <button type="submit" name="enviar" value="enviar">Enviar</button>
+        <button type="submit" name="validar" value="validar">Validar</button>
+        <input type="Reset" value="reset" />
     </form>
 </body>
 </html>
