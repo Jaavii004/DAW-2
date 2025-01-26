@@ -4,6 +4,10 @@
  * @Author: Javier Puertas
  */
 
+// Usa el formulario (Ejercicio 22 UD5) que guarde en una Cookie la preferencia del usuario de si
+// desea o no recibir publicidad y que muestre la opción anterior y la nueva elegida en caso de que
+// la modifique.
+
 // Variables para cookies y preferencias
 $publicidad_anterior = isset($_COOKIE['publicidad']) ? $_COOKIE['publicidad'] : 'Ninguna';
 $email_anterior = isset($_COOKIE['email']) ? $_COOKIE['email'] : 'Ninguno';
@@ -18,14 +22,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Actualizar variables actuales
         $publicidad_actual = $_POST['publicidad'];
         $email_actual = $_POST['email'];
-
-        // Redirigir para reflejar cambios
-        header("Location: " . $_SERVER["PHP_SELF"]);
-        exit;
     } elseif (isset($_POST['borrar'])) {
         // Borrar las cookies
         setcookie("publicidad", "", time() - 3600);
         setcookie("email", "", time() - 3600);
+        $publicidad_actual = "";
+        $email_actual = "";
     }
 } else {
     // Inicializar valores desde cookies

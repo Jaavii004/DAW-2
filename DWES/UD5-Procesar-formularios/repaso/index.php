@@ -14,6 +14,7 @@
 // usuario a una página donde se le indique que se ha procesado con éxito e incluye tu nombre y
 // grupo de clase.
 
+include 'validaciones.php';
 
 $errores = [];
 $nombre = $_POST['nombre_completo'] ?? null;
@@ -29,69 +30,26 @@ $rutaFotoTemporal = $_POST['foto_temp'] ?? null;
 
 // Comprobamos que por POST nos pasan todas las variables
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (empty($nombre)) {
-        $errores[] = 'El nombre completo es obligatorio.';
-    } elseif (!ctype_alpha($nombre)) {
-        $errores[] = 'El nombre completo solo puede contener letras.';
-    }
+    // Comprobamos el nombre no este vacio y solo contenga letras y espacios
+    $errores[] = validarNombre($nombre);
 
     // Comprobamos la contraseña sea mayor que 6 y no este vacia
-    if (empty($contrasena)) {
-        $errores[] = 'La contraseña es obligatoria.';
-    } elseif (strlen($contrasena) < 6) {
-        $errores[] = 'La contraseña debe tener al menos 6 caracteres.';
-    }
+    $errores[] = validarContrasena($contrasena);
 
-    if (empty($nivel_estudios)) {
-        $errores[] = 'El nivel de estudios es obligatorio.';
-    }
+    // Comprobamos que el nivel de estudios no este vacio
+    $errores[] = validarNivelEstudios($nivel_estudios);
 
-    if (empty($nacionalidad)) {
-        $errores[] = 'La nacionalidad es obligatoria.';
-    }
+    // Comprobamos que la nacionalidad no este vacia
+    $errores[] = validarNacionalidad($nacionalidad);
 
-    if (empty($idiomas)) {
-        $errores[] = 'Debes seleccionar al menos un idioma.';
-    }
+    // Comprobamos que haya marcado al menos un idioma
+    $errores[] = validarIdiomas($idiomas);
 
     // Comprobamos que sea un email
-    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $errores[] = 'El email es obligatorio y debe ser válido.';
-    }
+    $errores[] = validarEmail($email);
 
     // comprobamos que hay imagen
-    if (isset($_FILES['foto']) && $_FILES['foto']['error'] === UPLOAD_ERR_OK) {
-        $fotoCorrecta = true;
-        $nombre_archivo = $_FILES['foto']['name'];
-        $tamano_archivo = $_FILES['foto']['size'];
-        $informacionArchivo = pathinfo($nombre_archivo);
-        $extension = $informacionArchivo['extension'];
-
-        if (!in_array($extension, ['jpg', 'gif', 'png'])) {
-            $errores[] = 'La foto debe ser jpg, gif o png.';
-            $fotoCorrecta = false;
-        }
-
-        if ($tamano_archivo > 50 * 1024) {
-            $errores[] = 'El tamaño máximo de la foto es 50 KB.';
-            $fotoCorrecta = false;
-        }
-
-        $directorio = 'uploads/';
-        if (!is_dir($directorio)) {
-            mkdir($directorio);
-        }
-        $nombreUnico = uniqid("unica") . '.' . $extension;
-        move_uploaded_file($_FILES['foto']['tmp_name'], $directorio . $nombreUnico);
-        $rutaFotoTemporal = $directorio . $nombreUnico;
-    } else {
-        // si no hay imagen pero tenemos la de antes lo ponemos
-        if (empty($rutaFotoTemporal)) {
-            $errores[] = 'Debes subir una foto válida.';
-        } else {
-            $fotoCorrecta = true;
-        }
-    }
+    $errores[] = validarFoto($_FILES['foto'], 'uploads/');
 
     if (empty($errores)) {
         // seprara en dos botones la accion
@@ -103,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -128,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php }; ?>
     </ul>
     
-    <form method="post" action="25-formulario.php" enctype="multipart/form-data">
+    <form method="post" action="index.php" enctype="multipart/form-data">
         <label>Nombre Completo:
             <input type="text" name="nombre_completo" value="<?php echo $nombre; ?>">
         </label>
@@ -175,7 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <p>Foto subida:</p>
             <img src="<?php echo $rutaFotoTemporal; ?>" alt="Foto subida" style="max-width: 100px;">
             <input type="hidden" name="foto_temp" value="<?php echo $rutaFotoTemporal; ?>">
-            <!-- max file -->
+            <input type="hidden" name="MAX_FILE_SIZE" value="51200">
         <?php } else { ?>
             <label>Foto:
                 <input type="file" name="foto">
