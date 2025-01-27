@@ -82,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         //     mkdir($directorio);
         // }
         if ($fotoCorrecta) {
+            //$nombreUnico = date("YmdHis") . '.' . $extension;
             $nombreUnico = uniqid("img_") . '.' . $extension;
             move_uploaded_file($_FILES['foto']['tmp_name'], $nombreUnico);
             $rutaFotoTemporal = $nombreUnico;
