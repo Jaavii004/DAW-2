@@ -229,8 +229,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <label>Foto:
                     <input type="file" name="foto">
                     <input type="hidden" name="MAX_FILE_SIZE" value="100">
-            </label>
-        <?php } ?>
+                </label>
+            <?php } ?>
         <br>
 
         <!-- Aqui tenemos los botones que si le dan a validar comprobamos los campos y si le da a enviar si esta todo correcto lo mandamos a JavierPuertas_ok.php -->
