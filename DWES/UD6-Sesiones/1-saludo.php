@@ -1,28 +1,22 @@
 <?php
-
 /**
  * @Author: Javier Puertas
  */
 
-// Usa el formulario del ejercicio 1 de Cookies de saludo o despedida de modo que uses la sesión
-// para mostrar el usuario y saludo actuales y además muestre el usuario y saludo anterior.
-
+// Iniciar la sesión
 session_start();
 
-// Si el formulario es enviado
+// Recuperar los valores anteriores de la sesión antes de sobrescribirlos
+$usuario_anterior = isset($_SESSION['usuario']) ? $_SESSION['usuario'] : 'Ninguno';
+$saludo_anterior = isset($_SESSION['saludo']) ? $_SESSION['saludo'] : 'Ninguna';
+
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Guardar el saludo anterior en la sesión (si existe)
-    $_SESSION['usuarioAnterior'] = isset($_SESSION['usuario']) ? $_SESSION['usuario'] : '';
-    $_SESSION['saludoAnterior'] = isset($_SESSION['saludo']) ? $_SESSION['saludo'] : '';
-    
-    // Obtener el nombre del usuario y el saludo del formulario
-    $usuario = $_POST['usuario'];
-    $saludo = $_POST['saludo'];
+    $_SESSION['usuario'] = $_POST['nombre'];
+    $_SESSION['saludo'] = $_POST['saludo'];
 
-    // Guardar el usuario y saludo actuales en la sesión
-    $_SESSION['usuario'] = $usuario;
-    $_SESSION['saludo'] = $saludo;
-
+    // Actualizar los valores actuales para mostrar
+    $usuario_actual = $_POST['nombre'];
+    $saludo_actual = $_POST['saludo'];
 }
 ?>
 
@@ -30,41 +24,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Saludo y Despedida con Sesión</title>
+    <title>Ejercicio 1 - Sesiones</title>
 </head>
 <body>
-    <h1>Formulario de Saludo</h1>
+    <h1>Formulario de Saludo o Despedida</h1>
     
-    <!-- Formulario para ingresar el nombre del usuario y el saludo -->
-    <form method="POST">
-        <label for="usuario">Nombre de usuario:</label>
-        <input type="text" name="usuario" id="usuario" required>
+    <form method="POST" action="">
+        <label for="nombre">Nombre:</label>
+        <input type="text" name="nombre" required>
         <br>
-        <label for="saludo">Saludo (por ejemplo, "Hola", "Buenos días"):</label>
-        <input type="text" name="saludo" id="saludo" required>
+        <label for="saludo">Elige un saludo o despedida:</label>
+        <select name="saludo" required>
+            <option value="Saludo">Saludo</option>
+            <option value="Despedida">Despedida</option>
+        </select>
         <br>
-        <input type="submit" value="Guardar saludo">
+        <input type="submit" value="Enviar">
     </form>
 
-    <hr>
+    <h2>Valores actuales:</h2>
+    <p>Usuario actual: <?php echo $usuario_actual; ?></p>
+    <p>Acción elegida: <?php echo $saludo_actual; ?></p>
 
-    <h2>Saludo Actual</h2>
-    <?php
-    // Verificar si existen las variables de sesión y mostrar el saludo actual
-    if (isset($_SESSION['usuario']) && isset($_SESSION['saludo'])) {
-        echo "Hola, " . $_SESSION['usuario'] . ". Tu saludo es: " . $_SESSION['saludo'] . ".<br>";
-    } else {
-        echo "No se ha guardado un saludo aún.<br>";
-    }
-
-    // Mostrar el saludo anterior si existe
-    if (isset($_SESSION['usuarioAnterior']) && $_SESSION['usuarioAnterior'] !== '') {
-        echo "El saludo anterior fue para " . $_SESSION['usuarioAnterior'] . " y fue: " . $_SESSION['saludoAnterior'] . ".";
-    } else {
-        echo "No hay un saludo anterior.";
-    }
-    ?>
-
+    <h2>Valores anteriores (sesión):</h2>
+    <p>Usuario anterior: <?php echo $usuario_anterior; ?></p>
+    <p>Acción anterior: <?php echo $saludo_anterior; ?></p>
 </body>
 </html>
