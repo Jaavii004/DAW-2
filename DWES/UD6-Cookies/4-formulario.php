@@ -9,8 +9,8 @@
 // quincena actual y el día y la quincena anterior (cookie).
  
 // Recuperar los valores anteriores antes de sobrescribir
-$dia_anterior = isset($_COOKIE['dia']) ? $_COOKIE['dia'] : 'Ninguno';
-$quincena_anterior = isset($_COOKIE['quincena']) ? $_COOKIE['quincena'] : 'Ninguna';
+$dia_anterior = isset($_COOKIE['quincena']) ? json_decode($_COOKIE['quincena'], true)['dia'] : 'Ninguno';
+$quincena_anterior = isset($_COOKIE['quincena']) ? json_decode($_COOKIE['quincena'], true)['quincena'] : 'Ninguna';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['fecha'])) {
     // Obtener el día enviado por el formulario
@@ -19,11 +19,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['fecha'])) {
     // Determinar la quincena según el día
     $quincena_actual = ($dia_actual <= 15) ? "Primera" : "Segunda";
 
-    // Guardar los valores actuales en cookies
-    setcookie("dia", $dia_actual, time() + 3600);
-    setcookie("quincena", $quincena_actual, time() + 3600);
+    $quincena = array(
+        'dia' => $dia_actual,
+        'quincena' => $quincena_actual
+    );
+
+    $quincena_json = json_encode($quincena);
+
+    setcookie("quincena", $quincena_json, time() + 3600);
 } else {
-    // Si no hay envío del formulario, los valores actuales son los anteriores
     $dia_actual = $dia_anterior;
     $quincena_actual = $quincena_anterior;
 }
