@@ -8,31 +8,34 @@
 // desea o no recibir publicidad y que muestre la opción anterior y la nueva elegida en caso de que
 // la modifique.
 
-// Variables para cookies y preferencias
-$publicidad_anterior = isset($_COOKIE['publicidad']) ? $_COOKIE['publicidad'] : 'Ninguna';
-$email_anterior = isset($_COOKIE['email']) ? $_COOKIE['email'] : 'Ninguno';
+// Recuperar los valores anteriores desde la cookie
+$datos_anteriores = isset($_COOKIE['preferencias']) ? unserialize($_COOKIE['preferencias']) : [
+    'email' => 'Ninguno',
+    'publicidad' => 'Ninguna'
+];
+// Valores por defecto si no se ha enviado el formulario
+$email_actual = $datos_anteriores['email'];
+$publicidad_actual = $datos_anteriores['publicidad'];
 
-// Procesar formulario cuando se envía
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['enviar'])) {
-        // Guardar las preferencias en cookies
-        setcookie("publicidad", $_POST['publicidad'], time() + 3600);
-        setcookie("email", $_POST['email'], time() + 3600);
+        // Guardar los datos actuales en una única cookie
+        $datos_actuales = [
+            'email' => $_POST['email'],
+            'publicidad' => $_POST['publicidad']
+        ];
+        setcookie("preferencias", serialize($datos_actuales), time() + 3600);
 
-        // Actualizar variables actuales
-        $publicidad_actual = $_POST['publicidad'];
+        // Actualizar los valores actuales para mostrar
         $email_actual = $_POST['email'];
+        $publicidad_actual = $_POST['publicidad'];
     } elseif (isset($_POST['borrar'])) {
-        // Borrar las cookies
-        setcookie("publicidad", "", time() - 3600);
-        setcookie("email", "", time() - 3600);
-        $publicidad_actual = "";
+        // Borrar la cookie
+        setcookie("preferencias", "", time() - 3600);
         $email_actual = "";
+        $publicidad_actual = "";
+        $datos_anteriores = ['email' => 'Ninguno', 'publicidad' => 'Ninguna'];
     }
-} else {
-    // Inicializar valores desde cookies
-    $publicidad_actual = isset($_COOKIE['publicidad']) ? $_COOKIE['publicidad'] : 'Ninguna';
-    $email_actual = isset($_COOKIE['email']) ? $_COOKIE['email'] : '';
 }
 
 ?>
@@ -48,7 +51,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     
     <form method="POST" action="">
         <label for="email">Correo electrónico:</label><br>
-        <input type="email" name="email" id="email" value="<?php echo htmlspecialchars($email_actual); ?>" required><br><br>
+        <input type="email" name="email" id="email" value="<?php echo $email_actual; ?>" required><br><br>
 
         <label>¿Desea recibir publicidad?</label><br>
         <input type="radio" name="publicidad" value="sí" <?php echo ($publicidad_actual == 'sí') ? 'checked' : ''; ?>> Sí<br>
@@ -59,11 +62,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </form>
 
     <h2>Preferencias Actuales</h2>
-    <p><strong>Correo electrónico:</strong> <?php echo htmlspecialchars($email_actual); ?></p>
+    <p><strong>Correo electrónico:</strong> <?php echo $email_actual; ?></p>
     <p><strong>Publicidad:</strong> <?php echo $publicidad_actual; ?></p>
 
     <h2>Preferencias Anteriores (Cookies)</h2>
-    <p><strong>Correo electrónico anterior:</strong> <?php echo htmlspecialchars($email_anterior); ?></p>
-    <p><strong>Publicidad anterior:</strong> <?php echo $publicidad_anterior; ?></p>
+    <p><strong>Correo electrónico anterior:</strong> <?php echo $datos_anteriores['email']; ?></p>
+    <p><strong>Publicidad anterior:</strong> <?php echo $datos_anteriores['publicidad']; ?></p>
 </body>
 </html>

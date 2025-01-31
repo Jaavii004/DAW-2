@@ -7,24 +7,22 @@
 // Crea un formulario sencillo donde el usuario indique su nombre y seleccione si quiere un
 // saludo o despedida. Se debe almacenar en una Cookie el usuario y el saludo y al pulsar Enviar,
 // se debe indicar los valores actuales (usuario y saludo o despedida elegidos) y los valores del
-// usuario anterior y acción elegida almacenadas en la Cookie
+// usuario anterior y acción elegida almacenadas en la Cookie.
 
-// Recuperar los valores anteriores de las cookies antes de sobrescribirlas
-$usuario_anterior = isset($_COOKIE['usuario']) ? $_COOKIE['usuario'] : 'Ninguno';
-$saludo_anterior = isset($_COOKIE['saludo']) ? $_COOKIE['saludo'] : 'Ninguna';
+// Recuperar los valores anteriores desde la cookie
+$datos_anteriores = isset($_COOKIE['datos']) ? json_decode($_COOKIE['datos'], true) : ['usuario' => 'Ninguno', 'saludo' => 'Ninguna'];
+$usuario_actual = $datos_anteriores['usuario'];
+$saludo_actual = $datos_anteriores['saludo'];
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // Guardar los datos actuales en cookies
-    setcookie("usuario", $_POST['nombre'], time() + 3600);
-    setcookie("saludo", $_POST['saludo'], time() + 3600);
+    $datos_actuales = [
+        'usuario' => $_POST['nombre'],
+        'saludo' => $_POST['saludo']
+    ];
+    setcookie("datos", json_encode($datos_actuales), time() + 3600);
 
-    // Actualizar los valores actuales para mostrar
     $usuario_actual = $_POST['nombre'];
     $saludo_actual = $_POST['saludo'];
-} else {
-    // Valores por defecto si no se ha enviado el formulario
-    $usuario_actual = $usuario_anterior;
-    $saludo_actual = $saludo_anterior;
 }
 
 ?>
@@ -56,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <p>Acción elegida: <?php echo $saludo_actual; ?></p>
 
     <h2>Valores anteriores (cookies):</h2>
-    <p>Usuario anterior: <?php echo $usuario_anterior; ?></p>
-    <p>Acción anterior: <?php echo $saludo_anterior; ?></p>
+    <p>Usuario anterior: <?php echo $datos_anteriores['usuario']; ?></p>
+    <p>Acción anterior: <?php echo $datos_anteriores['saludo']; ?></p>
 </body>
 </html>
