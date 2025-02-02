@@ -1,4 +1,39 @@
-var estados = {
+const icono = {
+    "lt_sn": "https://www.weatherbit.io/static/img/icons/t01d.png",
+    "pt_cloudy_night": "https://www.weatherbit.io/static/img/icons/c02n.png",
+    "clear_night": "https://www.weatherbit.io/static/img/icons/c01n.png",
+    "few_clouds": "https://www.weatherbit.io/static/img/icons/c03d.png",
+    "scattered_clouds": "https://www.weatherbit.io/static/img/icons/c04d.png",
+    "chance_of_snow": "https://www.weatherbit.io/static/img/icons/t02d.png",
+    "clear": "https://www.weatherbit.io/static/img/icons/c01d.png",
+    "mt_cloudy": "https://www.weatherbit.io/static/img/icons/c04d.png",
+    "overcast": "https://www.weatherbit.io/static/img/icons/c04d.png",
+    "sn": "https://www.weatherbit.io/static/img/icons/t01d.png",
+    "mt_cloudy_night": "https://www.weatherbit.io/static/img/icons/c04n.png",
+    "pt_cloudy": "https://www.weatherbit.io/static/img/icons/c03d.png",
+    "ts_ra": "https://www.weatherbit.io/static/img/icons/t01d.png",
+    "ra": "https://www.weatherbit.io/static/img/icons/t01d.png",
+};
+
+const iconoViento = {
+    "WNW": "<i class='fas fa-wind wind-icon wind-wnw'></i>",
+    "SW": "<i class='fas fa-wind wind-icon wind-sw'></i>",
+    "NW": "<i class='fas fa-wind wind-icon wind-nw'></i>",
+    "NNW": "<i class='fas fa-wind wind-icon wind-nnw'></i>",
+    "N": "<i class='fas fa-wind wind-icon wind-n'></i>",
+    "NE": "<i class='fas fa-wind wind-icon wind-ne'></i>",
+    "ENE": "<i class='fas fa-wind wind-icon wind-ene'></i>",
+    "E": "<i class='fas fa-wind wind-icon wind-e'></i>",
+    "SE": "<i class='fas fa-wind wind-icon wind-se'></i>",
+    "S": "<i class='fas fa-wind wind-icon wind-s'></i>",
+    "SSW": "<i class='fas fa-wind wind-icon wind-ssw'></i>",
+    "WSW": "<i class='fas fa-wind wind-icon wind-wsw'></i>",
+    "W": "<i class='fas fa-wind wind-icon wind-w'></i>",
+    "ESE": "<i class='fas fa-wind wind-icon wind-ese'></i>",
+    "SSE": "<i class='fas fa-wind wind-icon wind-sse'></i>"
+};
+
+const estados = {
     Alabama: { latitude: 32.806671, longitude: -86.79113, hora: -6 },
     Alaska: { latitude: 61.370716, longitude: -152.404419, hora: -9 },
     Arizona: { latitude: 33.729759, longitude: -111.431221, hora: -7 },
@@ -51,224 +86,112 @@ var estados = {
     Wyoming: { latitude: 42.755966, longitude: -107.30249, hora: -7 }
 };
 
-
-document.addEventListener("DOMContentLoaded" , function() {
-    const areas = document.querySelectorAll("area");
-
-    areas.forEach(area => {
-        area.addEventListener("click", function(){AreaOnClick(area)});
-    });
-
-});
-
-const icono = {
-    "lt_sn": "https://www.weatherbit.io/static/img/icons/t01d.png",   // Lluvia ligera o nevada
-    "pt_cloudy_night": "https://www.weatherbit.io/static/img/icons/c02n.png", // Noche parcialmente nublada
-    "clear_night": "https://www.weatherbit.io/static/img/icons/c01n.png",   // Noche despejada
-    "few_clouds": "https://www.weatherbit.io/static/img/icons/c03d.png",    // Pocas nubes
-    "scattered_clouds": "https://www.weatherbit.io/static/img/icons/c04d.png", // Nubes dispersas
-    "chance_of_snow": "https://www.weatherbit.io/static/img/icons/t02d.png",  // Posibilidad de nieve
-    "clear": "https://www.weatherbit.io/static/img/icons/c01d.png", // Clear icon for "clear"
-    "mt_cloudy": "https://www.weatherbit.io/static/img/icons/c04d.png",  // Mountain cloudy
-    "overcast": "https://www.weatherbit.io/static/img/icons/c04d.png",  // Overcast
-    "sn": "https://www.weatherbit.io/static/img/icons/t01d.png",  // Snow (heavy snow)
-    "mt_cloudy_night": "https://www.weatherbit.io/static/img/icons/c04n.png", // Noche montañosa nublada
-    "pt_cloudy": "https://www.weatherbit.io/static/img/icons/c03d.png", // Cielo parcialmente nublado
-    "ts_ra": "https://www.weatherbit.io/static/img/icons/t01d.png",   // Tormenta con lluvia (ts_ra)
-    "ra": "https://www.weatherbit.io/static/img/icons/t01d.png",     // Lluvia (ra)
-};
-
-
-const iconoViento = {
-    "WNW": "<i class='fas fa-wind wind-icon wind-wnw'></i>",
-    "SW": "<i class='fas fa-wind wind-icon wind-sw'></i>",  // Suroeste
-    "NW": "<i class='fas fa-wind wind-icon wind-nw'></i>",  // Noroeste
-    "NNW": "<i class='fas fa-wind wind-icon wind-nnw'></i>", // Noroeste-norte
-    "N": "<i class='fas fa-wind wind-icon wind-n'></i>",   // Norte
-    "NE": "<i class='fas fa-wind wind-icon wind-ne'></i>",  // Noreste
-    "ENE": "<i class='fas fa-wind wind-icon wind-ene'></i>", // Este-Noreste (nuevo)
-    "E": "<i class='fas fa-wind wind-icon wind-e'></i>",   // Este
-    "SE": "<i class='fas fa-wind wind-icon wind-se'></i>",  // Sureste
-    "S": "<i class='fas fa-wind wind-icon wind-s'></i>",   // Sur
-    "SSW": "<i class='fas fa-wind wind-icon wind-ssw'></i>", // Suroeste-sur
-    "WSW": "<i class='fas fa-wind wind-icon wind-wsw'></i>", // Oeste-suroeste
-    "W": "<i class='fas fa-wind wind-icon wind-w'></i>",   // Oeste
-    "ESE": "<i class='fas fa-wind wind-icon wind-ese'></i>",  // Este-sureste
-    "SSE": "<i class='fas fa-wind wind-icon wind-sse'></i>" // Sur-sureste
-};
-
-async function AreaOnClick (area) {
-    console.log(area.title);
-    console.log(estados[area.title]);
-
-    const response = await fetch(`https://api.weatherusa.net/v1/forecast?q=${estados[area.title].latitude},${estados[area.title].longitude}&daily=0&units=m&maxtime=1d`);
-    const data = await response.json();
-    console.log(data);
-
-    // localtime: Hora
-    // rhm: Humedad relativa en el aire
-    // temp: Temperatura actual en grados Celsius
-    // wdir: Dirección del viento en grados
-    // wx_icon: Icono que representa las condiciones meteorológicas
-    // pop12: Probabilidad de precipitación en las próximas 12 horas
-    // wdir_compass: Dirección del viento en términos de los puntos cardinales
-    // wspd: Velocidad del viento promedio
-
-    // • validt: que se trata de la marca de tiempo. Hay que convertirla en formato fecha.
-    // • localtime: Indica la hora en la que nos encontramos.
-    // • temp: temperatura para la hora indicada.
-    // • wdir_compass: Dirección del tiempo.
-    // • wspd: Velocidad del viento.
-
-    let prim = data[0];
-    let titulo = document.getElementById("titulo");
-    titulo.innerHTML = area.title;
-    let table = document.getElementById("tbody");
-    // Vaciar la tabla
-    table.innerHTML = "";
-
-    let miliseg = prim.validt * 1000;
-    let fecha = new Date(miliseg);
-    document.getElementById("fecha").innerText = fecha.toLocaleDateString("es-ES", {
-        year: "numeric",
-        month: "2-digit",
-        day: "2-digit"
-    });
-
-    document.getElementById("hora").innerHTML = fecha.toLocaleTimeString("es-ES", {
-        hour: "2-digit",
-        minute: "2-digit"
-    });
-
-    data.slice(0, 11).forEach(temp => {
-        //console.log(temp.wx_icon);
-        let img = icono[temp.wx_icon];
-        if (img === undefined) {
-            console.log(`TEMP undefined ${temp.wx_icon}`);
-            img = "https://icones.pro/wp-content/uploads/2021/05/icone-question-bleu.png"
-        }
-
-        let imgDirVent = iconoViento[temp.wdir_compass];
-        if (imgDirVent === undefined) {
-            console.log(`TEMP undefined ${temp.wdir_compass}`);
-            imgDirVent = "<i class='fas fa-wind wind-icon wind-ese'></i>";
-        }
-
-        let miliseg = temp.validt * 1000;
-        
-        // tener la hora en milisegundos
-        let horaalli = new Date(miliseg + (estados[area.title].hora * 3600000));
-        
-        let formattedDate = horaalli.toLocaleTimeString("es-ES", {
-            hour: "2-digit",
-            minute: "2-digit"
-        });
-
-        table.innerHTML += `
-            <tr>
-                <td>${formattedDate} <img src="${img}" width="32" height="32" alt="Icono ${temp.wx_icon}"></td>
-                <td>${temp.temp}<img src="https://cdn.eltiempo.es/dist/images/icons/general/svg/temperature-blue.svg" width="32" height="32" alt="Icono Temp"></td>
-                <td>${temp.wspd}Km/h</td>
-                <td>${temp.wdir_compass} ${imgDirVent}</td>
-            </tr>
-        `;
-    });
-
-    MostrarModal();
-
-    const responseIMG = await fetch(`https://api.weatherusa.net/v1/skycams?q=${estados[area.title].latitude},${estados[area.title].longitude}`);
-    const dataIMG = await responseIMG.json();
-
-    let todasLasImg = [];
-
-    dataIMG.forEach(data => {
-        todasLasImg.push(data.image);
-    });
-
-    console.log(todasLasImg);
-
-    // Construir el carrusel dinámicamente
-    const carouselInner = document.getElementById("carousel-inner");
-    // Limpiar el carrusel antes de agregar nuevas imágenes
-    carouselInner.innerHTML = "";
-
-    if (todasLasImg.length > 0) {
-        todasLasImg.forEach((img, index) => {
-            const carouselItem = document.createElement("div");
-            carouselItem.classList.add("carousel-item");
-            if (index === 0) {
-                carouselItem.classList.add("active"); // La primera imagen estará activa
+// Creación de la aplicación Vue
+Vue.createApp({
+    data() {
+        return {
+            showModal: false,
+            showImgModal: false,
+            selectedState: "",
+            currentDate: "",
+            currentTime: "",
+            forecastData: [],
+            carouselImages: []
+        };
+    },
+    methods: {
+        async areaOnClick(area) {
+            // area es el elemento <area> clickeado
+            this.selectedState = area.title;
+            const coords = estados[area.title];
+            if (!coords) {
+                console.error("No se encontraron coordenadas para el estado:", area.title);
+                return;
             }
+            try {
+                // Solicita el pronóstico
+                const response = await fetch(`https://api.weatherusa.net/v1/forecast?q=${coords.latitude},${coords.longitude}&daily=0&units=m&maxtime=1d`);
+                const data = await response.json();
+                this.procesarPronostico(data, coords);
+            } catch (error) {
+                console.error("Error al obtener el pronóstico:", error);
+            }
+            try {
+                // Solicita las imágenes de la cámara
+                const responseIMG = await fetch(`https://api.weatherusa.net/v1/skycams?q=${coords.latitude},${coords.longitude}`);
+                const dataIMG = await responseIMG.json();
+                this.procesarImagenes(dataIMG);
+            } catch (error) {
+                console.error("Error al obtener las imágenes:", error);
+            }
+            this.showModal = true;
+        },
+        procesarPronostico(data, coords) {
+            if (!data || data.length === 0) return;
+            const first = data[0];
+            let baseDate = new Date(first.validt * 1000);
+            // Ajustamos la hora según el desfase del estado
+            baseDate = new Date(baseDate.getTime() + coords.hora * 3600000);
+            this.currentDate = baseDate.toLocaleDateString("es-ES", {
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit"
+            });
+            this.currentTime = baseDate.toLocaleTimeString("es-ES", {
+                hour: "2-digit",
+                minute: "2-digit"
+            });
+            // Procesa los primeros 11 registros del pronóstico
+            this.forecastData = data.slice(0, 11).map(item => {
+                const itemDate = new Date(item.validt * 1000 + coords.hora * 3600000);
+                return {
+                    formattedTime: itemDate.toLocaleTimeString("es-ES", { hour: "2-digit", minute: "2-digit" }),
+                    temp: item.temp,
+                    wspd: item.wspd,
+                    wdir_compass: item.wdir_compass,
+                    wx_icon: item.wx_icon,
+                    img: icono[item.wx_icon] || "https://icones.pro/wp-content/uploads/2021/05/icone-question-bleu.png",
+                    imgDirVent: iconoViento[item.wdir_compass] || "<i class='fas fa-wind wind-icon wind-ese'></i>"
+                };
+            });
+        },
+        procesarImagenes(dataIMG, stateName) {
+            this.selectedState = stateName; // Guardar el nombre del estado o categoría
+            this.carouselImages = dataIMG.map(data => data.image);
 
-            const imgElement = document.createElement("img");
-            imgElement.src = img;
-            imgElement.alt = `Imagen ${index + 1} de ${area.title}`;
-            imgElement.classList.add("d-block", "w-100");
-            imgElement.style.maxHeight = "400px";
-            // Para que no sea mas grande que el contenedor
-            imgElement.style.objectFit = "cover";
-
-            carouselItem.appendChild(imgElement);
-            carouselInner.appendChild(carouselItem);
+            // Si no hay imágenes, poner una imagen de error
+            if (this.carouselImages.length === 0) {
+                this.carouselImages = [
+                    "https://img.freepik.com/premium-photo/tv-has-no-signal-no-signal-noise-background_41050-4394.jpg",
+                ];
+            }
+        },
+        ocultarModal() {
+            this.showModal = false;
+            this.showImgModal = false;
+        },
+        verImgEstado() {
+            this.showModal = false;
+            document.getElementById("fondo").classList.add("oculto");
+            this.showImgModal = true;
+            const fondo = document.getElementById("fondo");
+            fondo.addEventListener("click", () => {
+                this.cerrarImgEstado();
+            });
+        },
+        cerrarImgEstado() {
+            this.showImgModal = false;
+            this.showModal = true;
+        }
+    },
+    mounted() {
+        // Agrega un listener a cada elemento <area> para que invoque areaOnClick al hacer click
+        const areas = document.querySelectorAll("area");
+        areas.forEach(area => {
+            area.addEventListener("click", event => {
+                event.preventDefault();
+                this.areaOnClick(area);
+            });
         });
-    } else {
-        // Si no hay imágenes, mostrar una imagen de placeholder
-        const carouselItem = document.createElement("div");
-        carouselItem.classList.add("carousel-item", "active");
-
-        const imgElement = document.createElement("img");
-        imgElement.src = "https://img.freepik.com/premium-photo/tv-has-no-signal-no-signal-noise-background_41050-4394.jpg";
-        imgElement.alt = "No hay imágenes disponibles";
-        imgElement.classList.add("d-block", "w-100");
-        imgElement.style.maxHeight = "400px";
-        imgElement.style.objectFit = "cover";
-
-        carouselItem.appendChild(imgElement);
-        carouselInner.appendChild(carouselItem);
     }
-
-    document.getElementById("titulo-imagen").innerText = "Imágenes de " + area.title;
-}
-
-
-function MostrarModal() {
-    let fondo = document.getElementById("fondo");
-    let modal = document.getElementById("modal");
-
-    fondo.classList.remove("oculto");
-    modal.classList.remove("oculto");
-
-    fondo.addEventListener("click", function(){OcultarModal()});
-}
-
-function OcultarModal() {
-    let fondo = document.getElementById("fondo");
-    let modal = document.getElementById("modal");
-
-    fondo.classList.add("oculto");
-    modal.classList.add("oculto");
-
-    let modalimg = document.getElementById("modal-img");
-
-
-    modalimg.classList.add("oculto");
-}
-
-function VerImgEstado() {
-    OcultarModal();
-    let fondo = document.getElementById("fondo");
-
-    fondo.classList.remove("oculto");
-    let modalimg = document.getElementById("modal-img");
-
-    modalimg.classList.remove("oculto");
-
-    fondo.addEventListener("click", function(){cerrarImgEstado()});
-}
-
-function cerrarImgEstado() {
-    let modalimg = document.getElementById("modal-img");
-
-    modalimg.classList.add("oculto");
-    MostrarModal();
-}
+}).mount("#app");
