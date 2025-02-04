@@ -84,8 +84,5 @@ switch ($perfil) {
     }
     ?>
 
-    <form action="logout.php" method="POST">
-        <input type="submit" value="Cerrar sesión">
-    </form>
 </body>
 </html>

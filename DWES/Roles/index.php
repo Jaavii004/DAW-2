@@ -1,5 +1,26 @@
 <?php
 session_start();
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $nombre = $_POST["nombre"];
+    $perfil = $_POST["perfil"];
+    
+    $_SESSION["nombre"] = $nombre;
+    $_SESSION["perfil"] = $perfil;
+    
+    switch ($perfil) {
+        case "Gerente":
+            header("Location: gerente.php");
+            break;
+        case "Sindicalista":
+            header("Location: sindicalista.php");
+            break;
+        case "Responsable de Nóminas":
+            header("Location: nominas.php");
+            break;
+    }
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="es">
@@ -10,8 +31,7 @@ session_start();
 </head>
 <body>
     <h1>Formulario de Autenticación - Empresa XYZ</h1>
-
-    <form action="dashboard.php" method="POST">
+    <form action="" method="POST">
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" required><br><br>
 
