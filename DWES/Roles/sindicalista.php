@@ -33,11 +33,20 @@ function salario_medio($empleados) {
 </head>
 <body>
     <h1>Bienvenido, <?php echo $_SESSION["nombre"]; ?> (Sindicalista)</h1>
-    <p>Contenido exclusivo para sindicalistas.</p>
     <?php
         echo "<h2>Datos Salariales:</h2>";
         echo "Salario medio: " . salario_minimo($empleados) . "€<br>";
     ?>
+
+    <!-- Lista de todos los empleados y sus salarios -->
+    <h3>Lista de empleados y salarios:</h3>
+    <ul>
+        <?php
+            foreach ($empleados as $nombre => $salario) {
+                echo "<li>$nombre - $salario €</li>";
+            }
+        ?>
+    </ul>
 
     <form action="logout.php" method="POST">
         <input type="submit" value="Cerrar sesión">

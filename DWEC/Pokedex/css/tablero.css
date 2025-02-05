@@ -1,0 +1,85 @@
+/* Estilo general */
+body {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(to right, #373B44, #4286f4);
+}
+
+/* Contenedor principal */
+.contenedor {
+    text-align: center;
+    width: 80%; /* Aseguramos que el contenedor ocupe el 80% del ancho */
+    height: 80%; /* Aseguramos que el contenedor ocupe el 80% del alto */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Estilo para el tablero de cartas */
+.tablero {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%; /* El tablero ocupa todo el ancho disponible dentro de su contenedor */
+    height: 100%; /* El tablero ocupa todo el alto disponible dentro de su contenedor */
+    background-image: url("../img/pock.jpg");
+    background-size: cover;
+    background-position: center;
+    padding: 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+}
+
+/* Estilo para las filas */
+.fila {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    align-items: center; /* Centrar verticalmente el contenido */
+}
+
+.fila-superior {
+    margin-bottom: 120px;
+}
+
+.fila-inferior {
+    margin-top: 120px;
+}
+
+/* Estilo para las cartas */
+.carta {
+    width: 120px;
+    height: 180px;
+    background-color: #fff;
+    border: 2px solid #000;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    color: #333;
+}
+
+/* Estilo para los botones de elección en las filas */
+.boton-eleccion {
+    background-color: #44a2c7;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-left: 20px; /* Separar el botón de las cartas */
+}
+
+.boton-eleccion:hover {
+    background-color: #3770da;
+}

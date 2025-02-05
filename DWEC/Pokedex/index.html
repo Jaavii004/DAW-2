@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tablero de Cartas</title>
+    <link rel="stylesheet" href="css/tablero.css">
+    <!-- Vue 3 -->
+    <script src="https://unpkg.com/vue@3"></script>
+</head>
+<body>
+    <div class="contenedor" id="app">
+        <!-- Tablero de cartas -->
+        <div class="tablero">
+            <!-- Fila superior con botón Jugador 1 al lado -->
+            <div class="fila fila-superior">
+                <button class="boton-eleccion" id="jugador1">J1</button>
+                <div class="carta">Carta 1</div>
+                <div class="carta">Carta 2</div>
+                <div class="carta">Carta 3</div>
+                <div class="carta">Carta 4</div>
+                <div class="carta">Carta 5</div>
+            </div>
+
+            <!-- Fila inferior con las cartas generadas por Vue -->
+            <div class="fila fila-inferior" >
+                <button class="boton-eleccion" id="jugador1">J1</button>
+                <div class="carta" v-for="item in arrmaq">{{ item }}</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        Vue.createApp({
+            data() {
+                return {
+                    arrmaq: []
+                };
+            },
+            methods: {
+                obtenerAleatorios() {
+                    return ["carta 1", "carta 2", "carta 3", "carta 4", "carta 5"];
+                }
+            },
+            mounted() {
+                this.arrmaq = this.obtenerAleatorios();
+            }
+        }).mount("#app");
+    </script>
+</body>
+</html>
