@@ -14,7 +14,7 @@
         <div class="tablero">
             <!-- Fila superior con botón Jugador 1 al lado -->
             <div class="fila fila-superior">
-                <button class="boton-eleccion" @click="most" id="jugador1">J1</button>
+                <button class="boton-eleccion" @click="most()" id="jugador1">J1</button>
                 <div class="carta">{{ hola }}</div>
                 <div class="carta">Carta 2</div>
                 <div class="carta">Carta 3</div>
@@ -22,8 +22,15 @@
                 <div class="carta">Carta 5</div>
             </div>
 
+            <!-- Fila del medio -->
+            <div class="fila fila-media">
+                <div class="carta">J1</div>
+                <div class="vs"><span>VS</span></div>
+                <div class="carta">J2</div>
+            </div>
+
             <!-- Fila inferior con las cartas generadas por Vue -->
-            <div class="fila fila-inferior" v-if="nomostrar">
+            <div class="fila fila-inferior">
                 <button class="boton-eleccion" id="jugador1">J1</button>
                 <div class="carta" v-for="item in arrmaq">{{ item }}</div>
             </div>
@@ -35,7 +42,6 @@
             data() {
                 return {
                     arrmaq: [],
-                    nomostrar: false,
                     hola: "hol123"
                 };
             },
@@ -44,7 +50,6 @@
                     return ["carta 1", "carta 2", "carta 3", "carta 4", "carta 5"];
                 },
                 most() {
-                    this.nomostrar = true
                     this.hola = "he pulsado"
                 }
             },

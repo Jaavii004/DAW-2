@@ -12,7 +12,7 @@ body {
 /* Contenedor principal */
 .contenedor {
     text-align: center;
-    width: 80%; /* Aseguramos que el contenedor ocupe el 80% del ancho */
+    width: 90%; /* Aseguramos que el contenedor ocupe el 80% del ancho */
     height: 80%; /* Aseguramos que el contenedor ocupe el 80% del alto */
     display: flex;
     justify-content: center;
@@ -44,11 +44,37 @@ body {
 }
 
 .fila-superior {
-    margin-bottom: 120px;
+    margin-bottom: 20px;
 }
 
+.fila-media {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center; /* Centra los elementos en la fila */
+    align-items: center;
+    gap: 10px; /* Ajustamos la distancia entre los elementos */
+}
+
+.vs {
+    font-size: 60px; /* Un tamaño mayor para dar énfasis */
+    font-weight: bold;
+    padding: 20px 40px; /* Aumentamos el padding para mayor impacto */
+    border-radius: 20px; /* Bordes redondeados más grandes */
+    margin: 25px; /* Centrado con márgenes */
+    background-color: transparent;
+    font-family: "Pokemon", Arial, sans-serif;
+    text-shadow: 6px 6px 12px rgba(0, 0, 0, 0.7), 2px 2px 5px rgba(255, 255, 255, 0.3); /* Sombras más fuertes y con un toque de brillo */
+}
+
+span {
+    color: #ff0000;
+    text-shadow: 2px 2px 4px rgb(0, 0, 0);
+}
+
+
 .fila-inferior {
-    margin-top: 120px;
+    margin-top: 20px; /* Ajustamos el margen */
 }
 
 /* Estilo para las cartas */
