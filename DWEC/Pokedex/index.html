@@ -6,7 +6,7 @@
     <title>Tablero de Cartas</title>
     <link rel="stylesheet" href="css/tablero.css">
     <!-- Vue 3 -->
-    <script src="https://unpkg.com/vue@3"></script>
+    <script src=" "></script>
 </head>
 <body>
     <div class="contenedor" id="app">
@@ -15,11 +15,11 @@
             <!-- Fila superior con botón Jugador 1 al lado -->
             <div class="fila fila-superior">
                 <button class="boton-eleccion" @click="most()" id="jugador1">J1</button>
-                <div class="carta">{{ hola }}</div>
-                <div class="carta">Carta 2</div>
-                <div class="carta">Carta 3</div>
-                <div class="carta">Carta 4</div>
-                <div class="carta">Carta 5</div>
+                <div class="carta">{{ cardJ1_1 }}</div>
+                <div class="carta">{{ cardJ1_2 }}</div>
+                <div class="carta">{{ cardJ1_3 }}</div>
+                <div class="carta">{{ cardJ1_4 }}</div>
+                <div class="carta">{{ cardJ1_5 }}</div>
             </div>
 
             <!-- Fila del medio -->
@@ -32,7 +32,11 @@
             <!-- Fila inferior con las cartas generadas por Vue -->
             <div class="fila fila-inferior">
                 <button class="boton-eleccion" id="jugador1">J1</button>
-                <div class="carta" v-for="item in arrmaq">{{ item }}</div>
+                <div class="carta">{{ cardJ2_1 }}</div>
+                <div class="carta">{{ cardJ2_2 }}</div>
+                <div class="carta">{{ cardJ2_3 }}</div>
+                <div class="carta">{{ cardJ2_4 }}</div>
+                <div class="carta">{{ cardJ2_5 }}</div>
             </div>
         </div>
     </div>
@@ -42,19 +46,63 @@
             data() {
                 return {
                     arrmaq: [],
-                    hola: "hol123"
+                    // Cartas del J1
+                    cardJ1_1: "Carta 1",
+                    cardJ1_2: "Carta 2",
+                    cardJ1_3: "Carta 3",
+                    cardJ1_4: "Carta 4",
+                    cardJ1_5: "Carta 5",
+                    // Cartas del J2
+                    cardJ2_1: "Carta 1",
+                    cardJ2_2: "Carta 2",
+                    cardJ2_3: "Carta 3",
+                    cardJ2_4: "Carta 4",
+                    cardJ2_5: "Carta 5",
+                    // imgs y pock
+                    pockemons: []
                 };
             },
             methods: {
                 obtenerAleatorios() {
-                    return ["carta 1", "carta 2", "carta 3", "carta 4", "carta 5"];
+                    let pokemonsAleatorios = [];
+                    // Generar 5 pokemons aleatorios de la lista
+                    while (pokemonsAleatorios.length < 5) {
+                        const randomIndex = Math.floor(Math.random() * this.pockemons.length);
+                        const pokemon = this.pockemons[randomIndex];
+                        // Evitar repetir pokemones
+                        if (!pokemonsAleatorios.includes(pokemon)) {
+                            pokemonsAleatorios.push(pokemon);
+                        }
+                    }
+                    return pokemonsAleatorios;
                 },
                 most() {
-                    this.hola = "he pulsado"
+                    this.cardJ2_1 = this.arrmaq[0];
+                    this.cardJ2_2 = this.arrmaq[1];
+                    this.cardJ2_3 = this.arrmaq[2];
+                    this.cardJ2_4 = this.arrmaq[3];
+                    this.cardJ2_5 = this.arrmaq[4];
+                    console.log(this.pockemons);
+                },
+                async ObtenerPokemons() {
+                    const response = await fetch(`https://pokeapi.co/api/v2/pokemon?limit=151`);
+                    const data = await response.json();
+
+                    data.results.forEach(async element => {
+                        // console.log(element.url);
+                        let response = await fetch(element.url);
+                        const data = await response.json();
+                        let arr = [data.name, data.sprites.other.dream_world.front_default];
+                        // console.log(data.sprites.other.dream_world.front_default);
+                        this.pockemons.push(arr);
+                        // pockemons.push(data.sprites.other.dream_world.front_default);
+                    });
+                    //console.log(this.pockemons);
                 }
             },
             mounted() {
                 this.arrmaq = this.obtenerAleatorios();
+                this.ObtenerPokemons();
             }
         }).mount("#app");
     </script>
