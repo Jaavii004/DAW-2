@@ -15,7 +15,7 @@
             <!-- Fila superior con botón Jugador 1 al lado -->
             <div class="fila fila-superior">
                 <button class="boton-eleccion" @click="most" id="jugador1">J1</button>
-                <div class="carta">Carta 1</div>
+                <div class="carta">{{ hola }}</div>
                 <div class="carta">Carta 2</div>
                 <div class="carta">Carta 3</div>
                 <div class="carta">Carta 4</div>
@@ -35,7 +35,8 @@
             data() {
                 return {
                     arrmaq: [],
-                    nomostrar: false
+                    nomostrar: false,
+                    hola: "hol123"
                 };
             },
             methods: {
@@ -44,6 +45,7 @@
                 },
                 most() {
                     this.nomostrar = true
+                    this.hola = "he pulsado"
                 }
             },
             mounted() {

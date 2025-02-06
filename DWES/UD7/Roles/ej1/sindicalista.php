@@ -1,4 +1,9 @@
 <?php
+
+/**
+ * @Author: Javier Puertas
+ */
+
 session_start();
 if (!isset($_SESSION["nombre"]) || $_SESSION["perfil"] !== "Sindicalista") {
     header("Location: index.php");

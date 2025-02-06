@@ -1,11 +1,14 @@
 <?php
+
+/**
+ * @Author: Javier Puertas
+ */
+
 session_start();
-if (!isset($_SESSION["nombre"]) || $_SESSION["perfil"] !== "Gerente") {
+if (!isset($_SESSION["nombre"]) || $_SESSION["perfil"] !== "Responsable de Nóminas") {
     header("Location: index.php");
     exit();
 }
-
-// Datos de empleados y salarios
 $empleados = [
     "Juan" => 2000,
     "Ana" => 2500,
@@ -34,24 +37,22 @@ $salario_mostrar = [];
 if (isset($_POST['salario'])) {
     $salario_mostrar = $_POST['salario'];
 }
-
 ?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Panel de Gerente</title>
+    <title>Panel de Nóminas</title>
 </head>
 <body>
-    <h1>Bienvenido, <?php echo $_SESSION["nombre"]; ?> (Gerente)</h1>
-        
+    <h1>Bienvenido, <?php echo $_SESSION["nombre"]; ?> (Responsable de Nóminas)</h1>
+
     <form method="POST">
         <label for="salario">Selecciona qué salario mostrar: </label>
         <br>
         <select name="salario[]" id="salario" multiple>
             <option value="minimo" <?php echo (in_array('minimo', $salario_mostrar)) ? 'selected' : ''; ?>>Salario Mínimo</option>
             <option value="maximo" <?php echo (in_array('maximo', $salario_mostrar)) ? 'selected' : ''; ?>>Salario Máximo</option>
-            <option value="medio" <?php echo (in_array('medio', $salario_mostrar)) ? 'selected' : ''; ?>>Salario Medio</option>
         </select>
         <br>
         <input type="submit" value="Mostrar salario">
@@ -69,13 +70,8 @@ if (isset($_POST['salario'])) {
             echo "Salario máximo: " . salario_maximo($empleados) . "€";
             echo "<br>";
         } 
-        if (in_array('medio', $salario_mostrar)) {
-            echo "Salario medio: " . salario_medio($empleados) . "€";
-            echo "<br>";
-        }
         ?>
     </p>
-
     <!-- Lista de todos los empleados y sus salarios -->
     <h3>Lista de empleados y salarios:</h3>
     <ul>
