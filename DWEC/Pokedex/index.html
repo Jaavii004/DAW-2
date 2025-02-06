@@ -14,7 +14,7 @@
         <div class="tablero">
             <!-- Fila superior con botón Jugador 1 al lado -->
             <div class="fila fila-superior">
-                <button class="boton-eleccion" id="jugador1">J1</button>
+                <button class="boton-eleccion" @click="most" id="jugador1">J1</button>
                 <div class="carta">Carta 1</div>
                 <div class="carta">Carta 2</div>
                 <div class="carta">Carta 3</div>
@@ -23,7 +23,7 @@
             </div>
 
             <!-- Fila inferior con las cartas generadas por Vue -->
-            <div class="fila fila-inferior" >
+            <div class="fila fila-inferior" v-if="nomostrar">
                 <button class="boton-eleccion" id="jugador1">J1</button>
                 <div class="carta" v-for="item in arrmaq">{{ item }}</div>
             </div>
@@ -34,12 +34,16 @@
         Vue.createApp({
             data() {
                 return {
-                    arrmaq: []
+                    arrmaq: [],
+                    nomostrar: false
                 };
             },
             methods: {
                 obtenerAleatorios() {
                     return ["carta 1", "carta 2", "carta 3", "carta 4", "carta 5"];
+                },
+                most() {
+                    this.nomostrar = true
                 }
             },
             mounted() {
