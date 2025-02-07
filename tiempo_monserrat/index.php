@@ -70,7 +70,7 @@ foreach ($rows as $row) {
             grid-gap: 40px;
             width: 90%;
             max-width: 1200px;
-            background-color: rgba(0, 0, 0, 0.9);
+            background-color: rgba(0, 0, 0, 0.7);
             border-radius: 20px;
             padding: 40px;
             text-align: center;
