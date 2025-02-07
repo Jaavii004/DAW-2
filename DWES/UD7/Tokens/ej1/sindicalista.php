@@ -9,6 +9,14 @@ if (!isset($_SESSION["nombre"]) || $_SESSION["perfil"] !== "Sindicalista") {
     header("Location: index.php");
     exit();
 }
+
+if (hash_equals($_GET['token'], $_SESSION['token']) === false) {
+    print('El token no coincide!');
+} else {
+    //El token es correcto y continúa el procesamiento con seguridad
+    print('El token es correcto y podemos ejecutar acciones');
+}
+
 $empleados = [
     "Juan" => 2000,
     "Ana" => 2500,

@@ -32,13 +32,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["inises"])) {
         // Redirigir al usuario según el perfil
         switch ($perfil) {
             case "Gerente":
-                header("Location: gerente.php");
+                header("Location: gerente.php?token=". $_POST['token']);
                 break;
             case "Sindicalista":
-                header("Location: sindicalista.php");
+                header("Location: sindicalista.php?token=". $_POST['token']);
                 break;
             case "Responsable de Nóminas":
-                header("Location: nominas.php");
+                header("Location: nominas.php?token=". $_POST['token']);
                 break;
         }
         exit();
@@ -48,11 +48,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["inises"])) {
 
 // Si el botón "Cambiar SID" es presionado, se genera un nuevo token
 if (isset($_POST['cambiar_sid'])) {
-    // Verificar el token antes de cambiar SID
-    if (!isset($_POST["token"]) || $_POST["token"] !== $_SESSION["token"]) {
-        echo "Token de sesión no válido.";
-        exit();
-    }
 
     $_SESSION["token"] =  bin2hex(openssl_random_pseudo_bytes(24));
     echo "El token de sesión ha sido cambiado.";
@@ -63,10 +58,10 @@ if (isset($_POST['cambiar_sid'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario de Autenticación - Empresa XYZ</title>
+    <title>Formulario de Autenticación</title>
 </head>
 <body>
-    <h1>Formulario de Autenticación - Empresa XYZ</h1>
+    <h1>Formulario de Autenticación</h1>
     <form action="" method="POST">
         <label for="nombre">Nombre:</label>
         <input type="text" id="nombre" name="nombre" ><br><br>
@@ -83,10 +78,8 @@ if (isset($_POST['cambiar_sid'])) {
     </form>
 
     <?php
-    // Mostrar el token actual de la sesión
-    if (isset($_SESSION["token"])) {
-        echo "<p>Token actual de sesión: " . $_SESSION["token"] . "</p>";
-    }
+    echo "<p>Token actual de sesión: " . $_SESSION["token"] . "</p>";
+    
     ?>
 </body>
 </html>
