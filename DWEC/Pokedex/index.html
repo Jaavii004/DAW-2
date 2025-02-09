@@ -140,14 +140,14 @@
                         let pokemon = {
                             name: pokemonData.name,
                             img: pokemonData.sprites.other.dream_world.front_default,
-                            json: pokemonData,
-                            stats: pokemonData.stats, // Estadísticas del Pokémon
-                            moves: pokemonData.moves // Movimientos del Pokémon
+                            json: pokemonData
                         };
                         pokemonsTemp.push(pokemon);
                     }
 
                     this.pockemons = pokemonsTemp;
+                    //console.log("Pokémon cargados:", this.pockemons);
+                    // Seleccionar los Pokémon de la máquina
                     this.eleguirPockMaquina();
                 },
                 obtenerAleatorios() {
@@ -177,6 +177,7 @@
                     this.cardJ2_3 = this.pockemonsMaquina[2].name;
                     this.cardJ2_4 = this.pockemonsMaquina[3].name;
                     this.cardJ2_5 = this.pockemonsMaquina[4].name;
+                    // Vamos a guardas los disponibles para el jugador
                     this.pockemons.forEach(pokemon => {
                         if (!this.pockemonsMaquina.includes(pokemon)) {
                             this.pockemonsDisponibles.push(pokemon);
@@ -217,56 +218,6 @@
                     if (this.cartaArrastrada) {
                         this.cartaSeleccionada = this.cartaArrastrada;
                         this.cartaArrastrada = null;
-                    }
-                },
-
-                // Cálculo de daño
-                calcularDanio(ataque, pokemonAtacante, pokemonDefensor) {
-                    const poderAtaque = ataque.power;  // Poder del ataque
-                    const defensaDefensor = pokemonDefensor.stats[4].base_stat; // Defensa del defensor
-                    const factorAleatorio = Math.random() * (1 - 0.85) + 0.85; // Factor aleatorio entre 0.85 y 1.00
-                    const danio = (poderAtaque * factorAleatorio) / defensaDefensor;
-
-                    // Descontamos vida al defensor
-                    pokemonDefensor.hp -= danio;
-                    return danio;
-                },
-
-                // Método para realizar un ataque
-                realizarAtaque(pokemonAtacante, pokemonDefensor) {
-                    // Seleccionamos un movimiento aleatorio
-                    const ataqueAleatorio = pokemonAtacante.moves[Math.floor(Math.random() * pokemonAtacante.moves.length)];
-
-                    if (ataqueAleatorio.power === null) {
-                        console.log(`${pokemonAtacante.name} no puede usar este ataque`);
-                        return;
-                    }
-
-                    // Calculamos el daño
-                    const danio = this.calcularDanio(ataqueAleatorio, pokemonAtacante, pokemonDefensor);
-                    console.log(`${pokemonAtacante.name} ataca con ${ataqueAleatorio.name}, causando ${danio} de daño.`);
-                    
-                    // Verificamos si el Pokémon defensor ha sido derrotado
-                    if (pokemonDefensor.hp <= 0) {
-                        console.log(`${pokemonDefensor.name} ha sido derrotado.`);
-                    } else {
-                        console.log(`${pokemonDefensor.name} tiene ${pokemonDefensor.hp} puntos de vida restantes.`);
-                    }
-                },
-
-                // Lógica para realizar la batalla completa (turnos, velocidad, etc.)
-                iniciarBatalla() {
-                    // Suponemos que los Pokémon ya están seleccionados y listos
-                    const pokemonJ1 = this.pockemonsJ1[0];  // Selección de un Pokémon del jugador 1
-                    const pokemonMaquina = this.pockemonsMaquina[0];  // Selección de un Pokémon de la máquina
-                    
-                    // Comparamos las velocidades para determinar quién ataca primero
-                    if (pokemonJ1.stats[5].base_stat > pokemonMaquina.stats[5].base_stat) {
-                        this.realizarAtaque(pokemonJ1, pokemonMaquina);  // Jugador 1 ataca primero
-                        if (pokemonMaquina.hp > 0) this.realizarAtaque(pokemonMaquina, pokemonJ1);  // La máquina responde
-                    } else {
-                        this.realizarAtaque(pokemonMaquina, pokemonJ1);  // La máquina ataca primero
-                        if (pokemonJ1.hp > 0) this.realizarAtaque(pokemonJ1, pokemonMaquina);  // El jugador 1 responde
                     }
                 }
             },
