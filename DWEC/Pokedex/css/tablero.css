@@ -67,7 +67,7 @@ body {
     text-shadow: 6px 6px 12px rgba(0, 0, 0, 0.7), 2px 2px 5px rgba(255, 255, 255, 0.3); /* Sombras más fuertes y con un toque de brillo */
 }
 
-span {
+.span_vs {
     color: #ff0000;
     text-shadow: 2px 2px 4px rgb(0, 0, 0);
 }
@@ -86,10 +86,21 @@ span {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     display: flex;
+    flex-direction: column; /* Apilar imagen y texto */
     justify-content: center;
     align-items: center;
-    font-size: 24px;
+    font-size: 18px;
     color: #333;
+    text-align: center;
+    padding: 5px;
+}
+
+/* Estilo para las imágenes dentro de las cartas */
+.carta img {
+    width: 80px;  /* Ajustar tamaño para que no ocupe todo el espacio */
+    height: 80px;
+    object-fit: contain; /* Mantener la proporción */
+    margin-bottom: 5px; /* Separar la imagen del nombre */
 }
 
 /* Estilo para los botones de elección en las filas */
@@ -108,4 +119,67 @@ span {
 
 .boton-eleccion:hover {
     background-color: #3770da;
+}
+
+/* Estilos para el modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-contenido {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 60%;
+    max-height: 80%;
+    overflow-y: auto;
+    text-align: center;
+}
+
+.pokemon-lista {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.pokemon-item {
+    border: 2px solid transparent;
+    padding: 10px;
+    cursor: pointer;
+    text-align: center;
+    transition: 0.3s;
+}
+
+.pokemon-item img {
+    width: 80px;
+    height: 80px;
+}
+
+.seleccionado {
+    border: 2px solid blue;
+    border-radius: 10px;
+}
+
+.boton-cerrar {
+    margin-top: 15px;
+    padding: 10px;
+    background: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.boton-cerrar:disabled {
+    background: grey;
+    cursor: not-allowed;
 }
