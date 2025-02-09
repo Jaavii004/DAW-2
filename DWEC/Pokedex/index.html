@@ -49,7 +49,7 @@
                     <div v-else>
                         J1
                     </div>
-                </div>                
+                </div>
                 <div class="vs"><span class="span_vs">VS</span></div>
                 <div class="carta">J2</div>
             </div>
@@ -98,6 +98,28 @@
                 </div>
             </div>
 
+            <!-- Modal de resultado de batalla -->
+            <div class="modal" v-if="mostrarModalResultado">
+                <div class="modal-contenido">
+                    <h2>Resultado de la Batalla</h2>
+                    <div class="fila">
+                        <!-- Carta del jugador 1 -->
+                        <div :class="{'carta': true, 'ganador': ganador === 'j1'}">
+                            <img v-if="cartaSeleccionada" :src="cartaSeleccionada.img" :alt="cartaSeleccionada.name">
+                            <p>{{ cartaSeleccionada?.name || "???" }}</p>
+                        </div>
+                        <div class="vs">VS</div>
+                        <!-- Carta de la máquina -->
+                        <div :class="{'carta': true, 'ganador': ganador === 'j2'}">
+                            <img v-if="cartaMaquina" :src="cartaMaquina.img" :alt="cartaMaquina.name">
+                            <p>{{ cartaMaquina?.name || "???" }}</p>
+                        </div>
+                    </div>
+                    <p class="resultado" style="font-size: 2em;">{{ resultadoBatalla }}</p>
+                    <button class="boton-cerrar" @click="cerrarModalResultado">Cerrar</button>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -125,7 +147,13 @@
                     cartaArrastrada: null,
                     indexCartaArrastrada: null,
                     cartaSeleccionada: null,
-                    iniciarJuego: false
+                    iniciarJuego: false,
+                    mostrarModalResultado: false,
+                    resultadoBatalla: "",
+                    cartaMaquina: null,
+                    cartasJ1Visibles: [true, true, true, true, true],
+                    cartasMaquinaVisibles: [true, true, true, true, true]
+
                 };
             },
             methods: {
@@ -140,9 +168,16 @@
                         let pokemon = {
                             name: pokemonData.name,
                             img: pokemonData.sprites.other.dream_world.front_default,
-                            json: pokemonData
+                            hp: pokemonData.stats[0].base_stat,
+                            attack: pokemonData.stats[1].base_stat,
+                            defense: pokemonData.stats[2].base_stat,
+                            special_attack: pokemonData.stats[3].base_stat,
+                            special_defense: pokemonData.stats[4].base_stat,
+                            speed: pokemonData.stats[5].base_stat
                         };
                         pokemonsTemp.push(pokemon);
+                        console.log(pokemon);
+
                     }
 
                     this.pockemons = pokemonsTemp;
@@ -185,7 +220,7 @@
                     });
                 },
                 mostrarModalPockJ1() {
-                    if (this.iniciarJuego){
+                    if (this.iniciarJuego) {
                         console.log("Ya se ha iniciado el juego no puedes volver a seleccionar los Pokémon");
                     } else {
                         console.log("Mostrar modal de selección de Pokémon");
@@ -218,8 +253,49 @@
                     if (this.cartaArrastrada) {
                         this.cartaSeleccionada = this.cartaArrastrada;
                         this.cartaArrastrada = null;
+
+                        // Seleccionar un Pokémon aleatorio de la máquina para la batalla
+                        const indexMaquina = Math.floor(Math.random() * this.pockemonsMaquina.length);
+                        this.cartaMaquina = this.pockemonsMaquina[indexMaquina];
+
+                        // Iniciar batalla
+                        this.iniciarBatalla();
                     }
+                },
+                iniciarBatalla() {
+                    if (!this.cartaSeleccionada || !this.cartaMaquina) return;
+
+                    const pokemonJ1 = this.cartaSeleccionada;
+                    const pokemonJ2 = this.cartaMaquina;
+
+                    const poderJ1 = pokemonJ1.attack + pokemonJ1.special_attack;
+                    const defensaJ2 = pokemonJ2.defense + pokemonJ2.special_defense;
+                    const dañoJ1 = poderJ1 - (defensaJ2 / 2);
+
+                    const poderJ2 = pokemonJ2.attack + pokemonJ2.special_attack;
+                    const defensaJ1 = pokemonJ1.defense + pokemonJ1.special_defense;
+                    const dañoJ2 = poderJ2 - (defensaJ1 / 2);
+
+                    // Decidir el ganador
+                    if (dañoJ1 > dañoJ2) {
+                        this.resultadoBatalla = `🔥 ¡${pokemonJ1.name} gana la batalla!`;
+                        this.ganador = 'j1'; // Guardamos que el ganador es J1
+                    } else if (dañoJ2 > dañoJ1) {
+                        this.resultadoBatalla = `💀 ${pokemonJ2.name} derrota a ${pokemonJ1.name}`;
+                        this.ganador = 'j2'; // Guardamos que el ganador es J2
+                    } else {
+                        this.resultadoBatalla = "⚖️ ¡Empate!";
+                        this.ganador = 'empate'; // Caso de empate
+                    }
+
+                    // Mostrar modal
+                    this.mostrarModalResultado = true;
+                },
+
+                cerrarModalResultado() {
+                    this.mostrarModalResultado = false;
                 }
+
             },
             mounted() {
                 this.ObtenerPokemons();

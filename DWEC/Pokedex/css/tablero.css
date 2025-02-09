@@ -183,3 +183,31 @@ body {
     background: grey;
     cursor: not-allowed;
 }
+
+.carta.escondido {
+    background-image: url('../img/dorso.png');
+    background-size: cover;
+    background-position: center;
+    border: none;
+    width: 100px; /* Ajusta el tamaño según tus necesidades */
+    height: 140px; /* Ajusta el tamaño según tus necesidades */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: transparent; /* Oculta el texto si lo hubiera */
+}
+
+.ganador {
+    border: 3px solid gold;
+    box-shadow: 0 0 10px gold;
+    animation: ganadorAnimacion 1s infinite alternate;
+}
+
+@keyframes ganadorAnimacion {
+    from {
+        transform: scale(1);
+    }
+    to {
+        transform: scale(1.1);
+    }
+}
