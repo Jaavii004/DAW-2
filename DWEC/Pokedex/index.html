@@ -42,7 +42,7 @@
             <!-- Fila del medio -->
             <div class="fila fila-media">
                 <div class="carta" @dragover.prevent @drop="dropCard">
-                    <img v-if="cartaSeleccionada" :src="cartaSeleccionada.img" :alt="cartaSeleccionada.name">
+                    <img v-if="cartaSeleccionada" :src="cartaSeleccionada.img" :alt="cartaSeleccionada.name" :class="{'movimiento': cartaSeleccionada}">
                     <div v-if="cartaSeleccionada">
                         {{ cartaSeleccionada.name }}
                     </div>
@@ -50,7 +50,7 @@
                         J1
                     </div>
                 </div>
-                <div class="vs"><span class="span_vs">VS</span></div>
+                <div class="vs"></div>
                 <div class="carta">J2</div>
             </div>
 
@@ -106,21 +106,22 @@
                         <!-- Carta del jugador 1 -->
                         <div :class="{'carta': true, 'ganador': ganador === 'j1'}">
                             <img v-if="cartaSeleccionada" :src="cartaSeleccionada.img" :alt="cartaSeleccionada.name">
-                            <p>{{ cartaSeleccionada?.name || "???" }}</p>
+                            <p>{{ cartaSeleccionada.name }}</p>
                         </div>
-                        <div class="vs">VS</div>
+                        <div class="vs"></div>
                         <!-- Carta de la máquina -->
                         <div :class="{'carta': true, 'ganador': ganador === 'j2'}">
                             <img v-if="cartaMaquina" :src="cartaMaquina.img" :alt="cartaMaquina.name">
-                            <p>{{ cartaMaquina?.name || "???" }}</p>
+                            <p>{{ cartaMaquina.name }}</p>
                         </div>
                     </div>
                     <p class="resultado" style="font-size: 2em;">{{ resultadoBatalla }}</p>
                     <button class="boton-cerrar" @click="cerrarModalResultado">Cerrar</button>
                 </div>
             </div>
-
         </div>
+        <audio :src="`audios/${pistaAudio}`" autoplay loop></audio>
+    </div>
     </div>
 
     <script>
@@ -152,7 +153,8 @@
                     resultadoBatalla: "",
                     cartaMaquina: null,
                     cartasJ1Visibles: [true, true, true, true, true],
-                    cartasMaquinaVisibles: [true, true, true, true, true]
+                    cartasMaquinaVisibles: [true, true, true, true, true],
+                    pistaAudio: "inicio.mp3",
 
                 };
             },
@@ -265,6 +267,8 @@
                 iniciarBatalla() {
                     if (!this.cartaSeleccionada || !this.cartaMaquina) return;
 
+                    this.pistaAudio = "batalla.mp3";
+
                     const pokemonJ1 = this.cartaSeleccionada;
                     const pokemonJ2 = this.cartaMaquina;
 
@@ -294,11 +298,13 @@
 
                 cerrarModalResultado() {
                     this.mostrarModalResultado = false;
+                    this.pistaAudio = "inicio.mp3";
                 }
 
             },
             mounted() {
                 this.ObtenerPokemons();
+
             }
         }).mount("#app");
     </script>

@@ -7,6 +7,10 @@ body {
     align-items: center;
     height: 100vh;
     background: linear-gradient(to right, #373B44, #4286f4);
+    background-image: url("../img/pock.jpg"); 
+    background-size: cover;
+    background-position: center;   
+
 }
 
 /* Contenedor principal */
@@ -17,6 +21,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    
 }
 
 /* Estilo para el tablero de cartas */
@@ -27,11 +32,10 @@ body {
     align-items: center;
     width: 100%; /* El tablero ocupa todo el ancho disponible dentro de su contenedor */
     height: 100%; /* El tablero ocupa todo el alto disponible dentro de su contenedor */
-    background-image: url("../img/pock.jpg");
-    background-size: cover;
-    background-position: center;
+
     padding: 40px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.8);
     border-radius: 10px;
 }
 
@@ -57,21 +61,18 @@ body {
 }
 
 .vs {
-    font-size: 60px; /* Un tamaño mayor para dar énfasis */
-    font-weight: bold;
-    padding: 20px 40px; /* Aumentamos el padding para mayor impacto */
+
+    padding: 40px 40px; /* Aumentamos el padding para mayor impacto */
     border-radius: 20px; /* Bordes redondeados más grandes */
     margin: 25px; /* Centrado con márgenes */
     background-color: transparent;
     font-family: "Pokemon", Arial, sans-serif;
     text-shadow: 6px 6px 12px rgba(0, 0, 0, 0.7), 2px 2px 5px rgba(255, 255, 255, 0.3); /* Sombras más fuertes y con un toque de brillo */
+    background-image: url("https://comicvine.gamespot.com/a/uploads/original/11140/111409382/7758673-0112870914-daqrp.png");
+    background-repeat: no-repeat;
+    background-size: contain; /* Ajustar el tamaño de la imagen para que se vea correctamente */
+    background-position: center; /* Centrar la imagen */
 }
-
-.span_vs {
-    color: #ff0000;
-    text-shadow: 2px 2px 4px rgb(0, 0, 0);
-}
-
 
 .fila-inferior {
     margin-top: 20px; /* Ajustamos el margen */
@@ -188,13 +189,14 @@ body {
     background-image: url('../img/dorso.png');
     background-size: cover;
     background-position: center;
-    border: none;
-    width: 100px; /* Ajusta el tamaño según tus necesidades */
-    height: 140px; /* Ajusta el tamaño según tus necesidades */
-    display: flex;
-    justify-content: center;
     align-items: center;
-    color: transparent; /* Oculta el texto si lo hubiera */
+    color: transparent; /* Esto hará que el texto no sea visible */
+    display: flex; /* Asegúrate de que los elementos estén alineados */
+    justify-content: center;
+    position: relative; /* Asegura que el contenido se posicione correctamente */
+    img, span {
+        display: none;
+    }
 }
 
 .ganador {
