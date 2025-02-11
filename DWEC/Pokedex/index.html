@@ -41,8 +41,14 @@
 
             <!-- Fila del medio -->
             <div class="fila fila-media">
+                <!-- Botón para detener/reanudar música -->
+                <button class="boton-musica" @click="inmuted = !inmuted">
+                    <img v-if="inmuted" src="img/pause.svg" alt="Pausar Música">
+                    <img v-else src="img/play-button.png" alt="Reproducir Música">
+                </button>
                 <div class="carta" @dragover.prevent @drop="dropCard">
-                    <img v-if="cartaSeleccionada" :src="cartaSeleccionada.img" :alt="cartaSeleccionada.name" :class="{'movimiento': cartaSeleccionada}">
+                    <img v-if="cartaSeleccionada" :src="cartaSeleccionada.img" :alt="cartaSeleccionada.name"
+                        :class="{'movimiento': cartaSeleccionada}">
                     <div v-if="cartaSeleccionada">
                         {{ cartaSeleccionada.name }}
                     </div>
@@ -120,7 +126,9 @@
                 </div>
             </div>
         </div>
-        <audio :src="`audios/${pistaAudio}`" autoplay loop></audio>
+        <div v-if="inmuted">
+            <audio :src="`audios/${pistaAudio}`" autoplay loop></audio>
+        </div>
     </div>
     </div>
 
@@ -155,7 +163,7 @@
                     cartasJ1Visibles: [true, true, true, true, true],
                     cartasMaquinaVisibles: [true, true, true, true, true],
                     pistaAudio: "inicio.mp3",
-
+                    inmuted: false
                 };
             },
             methods: {
@@ -167,6 +175,7 @@
                     for (let element of data.results) {
                         let response = await fetch(element.url);
                         let pokemonData = await response.json();
+                        //console.log(pokemonData.moves)
                         let pokemon = {
                             name: pokemonData.name,
                             img: pokemonData.sprites.other.dream_world.front_default,
@@ -175,10 +184,11 @@
                             defense: pokemonData.stats[2].base_stat,
                             special_attack: pokemonData.stats[3].base_stat,
                             special_defense: pokemonData.stats[4].base_stat,
-                            speed: pokemonData.stats[5].base_stat
+                            speed: pokemonData.stats[5].base_stat,
+                            moves: pokemonData.moves
                         };
                         pokemonsTemp.push(pokemon);
-                        console.log(pokemon);
+                        //console.log(pokemon);
 
                     }
 
@@ -202,19 +212,63 @@
                     }
                     return pokemonsAleatorios;
                 },
-                eleguirPockMaquina() {
+                async eleguirPockMaquina() {
                     if (this.pockemons.length === 0) {
                         console.warn("Aún no se han cargado los Pokémon.");
                         return;
                     }
 
+                    // Seleccionar Pokémon aleatorios para la máquina
                     this.pockemonsMaquina = this.obtenerAleatorios();
                     this.cardJ2_1 = this.pockemonsMaquina[0].name;
                     this.cardJ2_2 = this.pockemonsMaquina[1].name;
                     this.cardJ2_3 = this.pockemonsMaquina[2].name;
                     this.cardJ2_4 = this.pockemonsMaquina[3].name;
                     this.cardJ2_5 = this.pockemonsMaquina[4].name;
-                    // Vamos a guardas los disponibles para el jugador
+
+                    for (let pock of this.pockemonsMaquina) {
+                        let randomMoves = [];
+                        let nummax = 20;
+                        while (randomMoves.length < nummax) {
+                            let randomMove = pock.moves[Math.floor(Math.random() * pock.moves.length)];
+                            if (!randomMoves.includes(randomMove)) {
+                                randomMoves.push({
+                                    name: randomMove.move.name,
+                                    url: randomMove.move.url
+                                });
+                            }
+                        }
+                        console.log(randomMoves);
+
+                        // Obtener los datos de poder de los movimientos seleccionados
+                        let movesWithPower = [];
+                        let count = 0;
+                        for (let move of randomMoves) {
+                            // Realizar la petición para obtener los detalles del movimiento
+                            let moveDataResponse = await fetch(move.url);
+                            let moveData = await moveDataResponse.json();
+                            let power = moveData.power || 0;  // Si no tiene poder, asignamos 0
+
+                            if (power != 0) {
+                                // Añadir el movimiento con su poder
+                                movesWithPower.push({
+                                    name: move.name,
+                                    power: power
+                                });
+                                count++;
+                            }
+
+                            if (count >= 5) {
+                                break;
+                            }
+                        }
+
+                        // Guardar los movimientos aleatorios con su poder en el Pokémon de la máquina
+                        pock.movesWithPower = movesWithPower;
+                        console.log(pock);
+                    }
+
+                    // Ahora, guardar los Pokémon que no están en la máquina en los disponibles para el jugador
                     this.pockemons.forEach(pokemon => {
                         if (!this.pockemonsMaquina.includes(pokemon)) {
                             this.pockemonsDisponibles.push(pokemon);
