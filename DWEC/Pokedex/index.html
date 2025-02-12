@@ -113,6 +113,9 @@
                         <div :class="{'carta': true, 'ganador': ganador === 'j1'}">
                             <img v-if="cartaSeleccionada" :src="cartaSeleccionada.img" :alt="cartaSeleccionada.name">
                             <p>{{ cartaSeleccionada.name }}</p>
+                            <div class="poderes" v-for="poder as poderesJugador">
+                                {{ poder }}
+                            </div>
                         </div>
                         <div class="vs"></div>
                         <!-- Carta de la máquina -->
@@ -247,7 +250,7 @@
                             // Realizar la petición para obtener los detalles del movimiento
                             let moveDataResponse = await fetch(move.url);
                             let moveData = await moveDataResponse.json();
-                            let power = moveData.power || 0;  // Si no tiene poder, asignamos 0
+                            let power = moveData.power || 0;
 
                             if (power != 0) {
                                 // Añadir el movimiento con su poder
@@ -314,8 +317,8 @@
                         const indexMaquina = Math.floor(Math.random() * this.pockemonsMaquina.length);
                         this.cartaMaquina = this.pockemonsMaquina[indexMaquina];
 
-                        // Iniciar batalla
-                        this.iniciarBatalla();
+                        // Mostrar modal
+                    this.mostrarModalResultado = true;
                     }
                 },
                 iniciarBatalla() {
@@ -345,9 +348,6 @@
                         this.resultadoBatalla = "⚖️ ¡Empate!";
                         this.ganador = 'empate'; // Caso de empate
                     }
-
-                    // Mostrar modal
-                    this.mostrarModalResultado = true;
                 },
 
                 cerrarModalResultado() {

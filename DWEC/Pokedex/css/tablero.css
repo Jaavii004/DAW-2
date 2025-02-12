@@ -233,3 +233,46 @@ body {
     width: 30px;
     height: 30px;
 }
+
+.poderes {
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Sombra suave para destacar */
+    display: flex;
+    justify-content: space-around; /* Distribuir elementos */
+    align-items: center;
+    width: 100%;
+    height: auto; /* Ajustar al contenido */
+    flex-wrap: wrap; /* Permitir que los elementos se ajusten en varias líneas */
+    margin-top: 30px;
+    font-family: "Pokemon", Arial, sans-serif;
+    color: #333;
+}
+
+.poderes .poder {
+    width: 120px;
+    height: 120px;
+    background-color: #4CAF50;
+    border: 2px solid #388E3C;
+    border-radius: 8px;
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.poderes .poder:hover {
+    background-color: #388E3C;
+    transform: scale(1.05);
+}
+
+.poderes .poder:active {
+    transform: scale(0.95);
+}
