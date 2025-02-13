@@ -4,36 +4,34 @@ include "Terminal.php";
 
 class Movil extends Terminal {
     private $tarifa; // "rata", "mono", "bisonte"
-    private $tarificados; // Tiempo en segundos de conversación tarificado
+    private $segundosTarificados; // Tiempo tarificado en segundos
+    private $importeTarificado; // Coste total de llamadas en euros
 
     public function __construct($numero, $tarifa) {
         parent::__construct($numero); // Llamamos al constructor de la clase base
         $this->tarifa = $tarifa;
-        $this->tarificados = 0;
+        $this->segundosTarificados = 0;
+        $this->importeTarificado = 0;
     }
 
     public function __toString() {
         $minutosConversacion = floor($this->tiempoConversacion / 60);
         $segundosConversacion = $this->tiempoConversacion % 60;
-        $minutosTarificados = floor($this->tarificados / 60);
-        $segundosTarificados = $this->tarificados % 60;
+        $minutosTarificados = floor($this->segundosTarificados / 60);
+        $segundosTarificados = $this->segundosTarificados % 60;
 
-        // Calcular el importe
-        $costePorMinuto = $this->calcularCostePorMinuto();
-        $importe = ($this->tarificados / 60) * $costePorMinuto;
-
-        return "Nº $this->numero – $minutosConversacion m y $segundosConversacion s de conversación en total - tarificados $minutosTarificados m y $segundosTarificados s por un importe de " . number_format($importe, 2) . " euros";
+        return "Nº $this->numero – $minutosConversacion m y $segundosConversacion s de conversación en total - tarificados $minutosTarificados m y $segundosTarificados s por un importe de " . number_format($this->importeTarificado, 2) . " euros<br>";
     }
 
-    private function calcularCostePorMinuto() {
-        // Definir coste por minuto según la tarifa
+    private function calcularCostePorSegundo() {
+        // Definir coste por segundo según la tarifa
         switch ($this->tarifa) {
             case "rata":
-                return 0.06; // 6 céntimos por minuto
+                return 0.06 / 60; // 6 céntimos por minuto
             case "mono":
-                return 0.12; // 12 céntimos por minuto
+                return 0.12 / 60; // 12 céntimos por minuto
             case "bisonte":
-                return 0.30; // 30 céntimos por minuto
+                return 0.30 / 60; // 30 céntimos por minuto
             default:
                 return 0;
         }
@@ -43,10 +41,14 @@ class Movil extends Terminal {
     public function llama($terminal, $segundosDeLlamada) {
         // Actualizamos el tiempo de conversación de ambos terminales
         $this->actualizarTiempo($segundosDeLlamada);
-        $this->tarificados += $segundosDeLlamada;
+        $terminal->actualizarTiempo($segundosDeLlamada);
 
-        // El receptor no tiene que actualizar su tiempo de llamada
-        // solo el que llama (este)
+        // Calcular coste de la llamada
+        $costeLlamada = $this->calcularCostePorSegundo() * $segundosDeLlamada;
+
+        // Acumular el importe y tiempo tarificado en el móvil que llama
+        $this->importeTarificado += $costeLlamada;
+        $this->segundosTarificados += $segundosDeLlamada;
     }
 }
 ?>

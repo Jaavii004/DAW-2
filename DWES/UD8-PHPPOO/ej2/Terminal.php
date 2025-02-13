@@ -1,4 +1,9 @@
 <?php
+
+/**
+ * @Author: Javier Puertas
+ */
+
 // Clase base Terminal
 class Terminal {
     protected $numero;

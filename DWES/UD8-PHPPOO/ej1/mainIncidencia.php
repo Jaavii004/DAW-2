@@ -3,6 +3,7 @@
  * @author Silvia Vilar
  * Ej1UD8 - mainIncidencia.php
  */ 
+
 include "Incidencia.php";
 $inc1 = new Incidencia(105, "No tiene acceso a internet");
 $inc2 = new Incidencia(14, "No arranca");
@@ -17,4 +18,5 @@ print $inc3;
 print $inc4;
 print $inc5;
 print "Incidencias pendientes: " . Incidencia::getPendientes();
+
 ?>

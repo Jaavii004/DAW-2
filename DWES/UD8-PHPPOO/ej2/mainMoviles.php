@@ -12,7 +12,7 @@ print $m1 . "<br>\n";
 print $m2 . "<br>\n";
 $m1->llama($m2, 320);
 $m1->llama($m3, 200);
-$m2->llama($m3, 550);
+$m2->llama($m3, segundosDeLlamada: 550);
 print $m1 . "<br>\n";
 print $m2 . "<br>\n";
 print $m3 . "<br>\n";
