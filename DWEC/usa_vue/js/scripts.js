@@ -1,38 +1,37 @@
 const icono = {
-    "lt_sn": "https://www.weatherbit.io/static/img/icons/t01d.png",
-    "pt_cloudy_night": "https://www.weatherbit.io/static/img/icons/c02n.png",
-    "clear_night": "https://www.weatherbit.io/static/img/icons/c01n.png",
-    "few_clouds": "https://www.weatherbit.io/static/img/icons/c03d.png",
-    "scattered_clouds": "https://www.weatherbit.io/static/img/icons/c04d.png",
-    "chance_of_snow": "https://www.weatherbit.io/static/img/icons/t02d.png",
-    "clear": "https://www.weatherbit.io/static/img/icons/c01d.png",
-    "mt_cloudy": "https://www.weatherbit.io/static/img/icons/c04d.png",
-    "overcast": "https://www.weatherbit.io/static/img/icons/c04d.png",
-    "sn": "https://www.weatherbit.io/static/img/icons/t01d.png",
-    "mt_cloudy_night": "https://www.weatherbit.io/static/img/icons/c04n.png",
-    "pt_cloudy": "https://www.weatherbit.io/static/img/icons/c03d.png",
-    "ts_ra": "https://www.weatherbit.io/static/img/icons/t01d.png",
-    "ra": "https://www.weatherbit.io/static/img/icons/t01d.png",
+    "lt_sn": "https://www.weatherbit.io/static/img/icons/t01d.png",   // Lluvia ligera o nevada
+    "pt_cloudy_night": "https://www.weatherbit.io/static/img/icons/c02n.png", // Noche parcialmente nublada
+    "clear_night": "https://www.weatherbit.io/static/img/icons/c01n.png",   // Noche despejada
+    "few_clouds": "https://www.weatherbit.io/static/img/icons/c03d.png",    // Pocas nubes
+    "scattered_clouds": "https://www.weatherbit.io/static/img/icons/c04d.png", // Nubes dispersas
+    "chance_of_snow": "https://www.weatherbit.io/static/img/icons/t02d.png",  // Posibilidad de nieve
+    "clear": "https://www.weatherbit.io/static/img/icons/c01d.png", // Clear icon for "clear"
+    "mt_cloudy": "https://www.weatherbit.io/static/img/icons/c04d.png",  // Mountain cloudy
+    "overcast": "https://www.weatherbit.io/static/img/icons/c04d.png",  // Overcast
+    "sn": "https://www.weatherbit.io/static/img/icons/t01d.png",  // Snow (heavy snow)
+    "mt_cloudy_night": "https://www.weatherbit.io/static/img/icons/c04n.png", // Noche montañosa nublada
+    "pt_cloudy": "https://www.weatherbit.io/static/img/icons/c03d.png", // Cielo parcialmente nublado
+    "ts_ra": "https://www.weatherbit.io/static/img/icons/t01d.png",   // Tormenta con lluvia (ts_ra)
+    "ra": "https://www.weatherbit.io/static/img/icons/t01d.png",     // Lluvia (ra)
 };
 
 const iconoViento = {
     "WNW": "<i class='fas fa-wind wind-icon wind-wnw'></i>",
-    "SW": "<i class='fas fa-wind wind-icon wind-sw'></i>",
-    "NW": "<i class='fas fa-wind wind-icon wind-nw'></i>",
-    "NNW": "<i class='fas fa-wind wind-icon wind-nnw'></i>",
-    "N": "<i class='fas fa-wind wind-icon wind-n'></i>",
-    "NE": "<i class='fas fa-wind wind-icon wind-ne'></i>",
-    "ENE": "<i class='fas fa-wind wind-icon wind-ene'></i>",
-    "E": "<i class='fas fa-wind wind-icon wind-e'></i>",
-    "SE": "<i class='fas fa-wind wind-icon wind-se'></i>",
-    "S": "<i class='fas fa-wind wind-icon wind-s'></i>",
-    "SSW": "<i class='fas fa-wind wind-icon wind-ssw'></i>",
-    "WSW": "<i class='fas fa-wind wind-icon wind-wsw'></i>",
-    "W": "<i class='fas fa-wind wind-icon wind-w'></i>",
-    "ESE": "<i class='fas fa-wind wind-icon wind-ese'></i>",
-    "SSE": "<i class='fas fa-wind wind-icon wind-sse'></i>"
+    "SW": "<i class='fas fa-wind wind-icon wind-sw'></i>",  // Suroeste
+    "NW": "<i class='fas fa-wind wind-icon wind-nw'></i>",  // Noroeste
+    "NNW": "<i class='fas fa-wind wind-icon wind-nnw'></i>", // Noroeste-norte
+    "N": "<i class='fas fa-wind wind-icon wind-n'></i>",   // Norte
+    "NE": "<i class='fas fa-wind wind-icon wind-ne'></i>",  // Noreste
+    "ENE": "<i class='fas fa-wind wind-icon wind-ene'></i>", // Este-Noreste (nuevo)
+    "E": "<i class='fas fa-wind wind-icon wind-e'></i>",   // Este
+    "SE": "<i class='fas fa-wind wind-icon wind-se'></i>",  // Sureste
+    "S": "<i class='fas fa-wind wind-icon wind-s'></i>",   // Sur
+    "SSW": "<i class='fas fa-wind wind-icon wind-ssw'></i>", // Suroeste-sur
+    "WSW": "<i class='fas fa-wind wind-icon wind-wsw'></i>", // Oeste-suroeste
+    "W": "<i class='fas fa-wind wind-icon wind-w'></i>",   // Oeste
+    "ESE": "<i class='fas fa-wind wind-icon wind-ese'></i>",  // Este-sureste
+    "SSE": "<i class='fas fa-wind wind-icon wind-sse'></i>" // Sur-sureste
 };
-
 const estados = {
     Alabama: { latitude: 32.806671, longitude: -86.79113, hora: -6 },
     Alaska: { latitude: 61.370716, longitude: -152.404419, hora: -9 },
@@ -86,7 +85,6 @@ const estados = {
     Wyoming: { latitude: 42.755966, longitude: -107.30249, hora: -7 }
 };
 
-// Creación de la aplicación Vue
 Vue.createApp({
     data() {
         return {
