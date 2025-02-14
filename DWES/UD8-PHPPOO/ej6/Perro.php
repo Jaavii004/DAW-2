@@ -3,32 +3,53 @@ include_once "Mamifero.php";
 
 
 class Perro extends Mamifero {
-    protected $raza;
-
-    public function __construct($sexo = 'M', $nombre = null, $raza = null) {
+    private $raza;
+    
+    // En consSexoNombre asignamos por defecto la raza "teckel"
+    public function __construct($sexo = "M", $raza = "") {
         parent::__construct($sexo);
-        $this->nombre = $nombre;
         $this->raza = $raza;
     }
-
+    
+    public function setRaza($raza) {
+        $this->raza = $raza;
+    }
+    
+    public function getRaza() {
+        return $this->raza;
+    }
+    
+    // Fábricas
     public static function consSexoNombre($sexo, $nombre) {
-        return new static($sexo, $nombre);
+        $obj = new self($sexo, "teckel");
+        $obj->setNombre($nombre);
+        return $obj;
     }
-
+    
     public static function consFull($sexo, $nombre, $raza) {
-        return new static($sexo, $nombre, $raza);
+        $obj = new self($sexo, $raza);
+        $obj->setNombre($nombre);
+        return $obj;
     }
-
+    
+    // El perro come carne
+    public function alimentarse($comida = "") {
+        echo $this->getClassIdentifier() . ": Estoy comiendo carne<br>";
+    }
+    
     public function ladra() {
-        echo "Perro" . ($this->nombre ? " " . $this->nombre : "") . ": Guau guau<br>";
+        echo $this->getClassIdentifier() . ": Guau guau<br>";
     }
-
-    public function alimentarse() {
-        parent::alimentarse("carne");
+    
+    // Para los mensajes de acción se muestra: "Perro [nombre]"
+    protected function getClassIdentifier() {
+        return "Perro" . ($this->nombre != "" ? " " . $this->nombre : "");
     }
-
+    
     public function __toString() {
-        return parent::__toString() . "Soy un Perro, raza " . ($this->raza ? $this->raza : "desconocida") . "<br>";
+        $nombreText = ($this->nombre != "") ? ", mi nombre es " . $this->nombre : " y no tengo nombre";
+        $razaText = ($this->raza != "") ? " raza " . $this->raza : " raza";
+        return "Soy un Animal, un Mamífero, en concreto un Perro, con sexo " . $this->getSexoCompleto() . $razaText . $nombreText . "<br>";
     }
 }
 ?>

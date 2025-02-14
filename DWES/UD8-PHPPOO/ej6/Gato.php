@@ -2,32 +2,51 @@
 include_once "Mamifero.php";
 
 class Gato extends Mamifero {
-    protected $raza;
-
-    public function __construct($sexo = 'M', $nombre = null, $raza = null) {
+    private $raza;
+    
+    public function __construct($sexo = "M", $raza = "") {
         parent::__construct($sexo);
-        $this->nombre = $nombre;
         $this->raza = $raza;
     }
-
+    
+    public function setRaza($raza) {
+        $this->raza = $raza;
+    }
+    
+    public function getRaza() {
+        return $this->raza;
+    }
+    
+    // Fábricas
     public static function consSexoNombre($sexo, $nombre) {
-        return new static($sexo, $nombre);
+        $obj = new self($sexo);
+        $obj->setNombre($nombre);
+        return $obj;
     }
-
+    
     public static function consFull($sexo, $nombre, $raza) {
-        return new static($sexo, $nombre, $raza);
+        $obj = new self($sexo, $raza);
+        $obj->setNombre($nombre);
+        return $obj;
     }
-
+    
+    // El gato come pescado
+    public function alimentarse($comida = "") {
+        echo $this->getClassIdentifier() . ": Estoy comiendo pescado<br>";
+    }
+    
     public function maulla() {
-        echo "Gato" . ($this->nombre ? " " . $this->nombre : "") . ": Miauuuu<br>";
+        echo $this->getClassIdentifier() . ": Miauuuu<br>";
     }
-
-    public function alimentarse() {
-        parent::alimentarse("pescado");
+    
+    protected function getClassIdentifier() {
+        return "Gato" . ($this->nombre != "" ? " " . $this->nombre : "");
     }
-
+    
     public function __toString() {
-        return parent::__toString() . "Soy un Gato, raza " . ($this->raza ? $this->raza : "desconocida") . "<br>";
+        $nombreText = ($this->nombre != "") ? ", mi nombre es " . $this->nombre : " y no tengo nombre";
+        $razaText = ($this->raza != "") ? " raza " . $this->raza : " raza";
+        return "Soy un Animal, un Mamífero, en concreto un Gato, con sexo " . $this->getSexoCompleto() . $razaText . $nombreText . "<br>";
     }
 }
 ?>

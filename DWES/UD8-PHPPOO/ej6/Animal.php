@@ -1,47 +1,54 @@
 <?php
+
+/**
+ * @Author: Javier Puertas
+ */
+
 abstract class Animal {
     protected $sexo;
-    protected static $totalAnimales = 0;
-    protected $nombre;
-
-    public function __construct($sexo = 'M') {
+    protected $nombre = "";
+    static protected $totalAnimales = 0;
+    
+    public function __construct($sexo) {
         $this->sexo = $sexo;
         self::$totalAnimales++;
     }
-
-    public static function consSexo($sexo) {
-        return new static($sexo);
-    }
-
-    public static function consFull($sexo, $nombre) {
-        $animal = new static($sexo);
-        $animal->nombre = $nombre;
-        return $animal;
-    }
-
+    
     public function setNombre($nombre) {
         $this->nombre = $nombre;
     }
-
+    
+    public function getNombre() {
+        return $this->nombre;
+    }
+    
+    public function getSexo() {
+        return $this->sexo;
+    }
+    
+    protected function getSexoCompleto() {
+        return ($this->sexo == "H") ? "HEMBRA" : "MACHO";
+    }
+    
     public function dormirse() {
-        echo get_class($this) . ($this->nombre ? " " . $this->nombre : "") . ": Zzzzzzz<br>";
+        echo $this->getClassIdentifier() . ": Zzzzzzz<br>";
     }
-
-    public function alimentarse($comida) {
-        echo get_class($this) . ($this->nombre ? " " . $this->nombre : "") . ": Estoy comiendo $comida<br>";
+    
+    public function alimentarse($comida = "") {
+        echo $this->getClassIdentifier() . ": Estoy comiendo " . $comida . "<br>";
     }
-
+    
     public function morirse() {
-        echo get_class($this) . ($this->nombre ? " " . $this->nombre : "") . ": Adiós!<br>";
+        echo $this->getClassIdentifier() . ": Adiós!<br>";
         self::$totalAnimales--;
     }
-
+    
     public static function getTotalAnimales() {
         return "Hay un total de " . self::$totalAnimales . " animales<br>";
     }
-
-    public function __toString() {
-        return "Soy un Animal, en concreto un " . get_class($this) . ", con sexo " . ($this->sexo == 'H' ? 'HEMBRA' : 'MACHO') . ($this->nombre ? ", llamado " . $this->nombre : "") . "<br>";
-    }
+    
+    abstract protected function getClassIdentifier();
+    
+    abstract public function __toString();
 }
 ?>
