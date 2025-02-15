@@ -32,20 +32,20 @@ class Gato extends Mamifero {
     
     // El gato come pescado
     public function alimentarse($comida = "") {
-        echo $this->getClassIdentifier() . ": Estoy comiendo pescado<br>";
+        echo $this->getNombreClass() . ": Estoy comiendo pescado<br>";
     }
     
     public function maulla() {
-        echo $this->getClassIdentifier() . ": Miauuuu<br>";
+        echo $this->getNombreClass() . ": Miauuuu<br>";
     }
     
-    protected function getClassIdentifier() {
+    protected function getNombreClass() {
         return "Gato" . ($this->nombre != "" ? " " . $this->nombre : "");
     }
     
     public function __toString() {
         $nombreText = ($this->nombre != "") ? ", mi nombre es " . $this->nombre : " y no tengo nombre";
-        $razaText = ($this->raza != "") ? " raza " . $this->raza : " raza";
+        $razaText = ($this->raza != "") ? ", raza " . $this->raza : " raza";
         return "Soy un Animal, un Mamífero, en concreto un Gato, con sexo " . $this->getSexoCompleto() . $razaText . $nombreText . "<br>";
     }
 }

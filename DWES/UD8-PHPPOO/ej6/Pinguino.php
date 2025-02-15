@@ -19,20 +19,24 @@ class Pinguino extends Ave {
     
     // El pingüino come peces
     public function alimentarse($comida = "") {
-        echo $this->getClassIdentifier() . ": Estoy comiendo peces<br>";
+        echo $this->getNombreClass() . ": Estoy comiendo peces<br>";
     }
     
     public function programar() {
-        echo $this->getClassIdentifier() . ": Soy un pingüino programandor en PHP<br>";
+        echo $this->getNombreClass() . ": Soy un pingüino programandor en PHP<br>";
     }
     
-    protected function getClassIdentifier() {
+    protected function getNombreClass() {
         return "Pingüino" . ($this->nombre != "" ? " " . $this->nombre : "");
     }
     
     public function __toString() {
         $nombreText = ($this->nombre != "") ? ", llamado " . $this->nombre : "";
         return "Soy un Animal, un Ave, en concreto un Pingüino, con sexo " . $this->getSexoCompleto() . $nombreText . "<br>";
+    }
+
+    public function ponerHuevo($especie = "") {
+        parent::ponerHuevo("Pingüino");
     }
 }
 ?>

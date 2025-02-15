@@ -6,8 +6,7 @@ class Lagarto extends Animal {
     public function __construct($sexo = "M") {
         parent::__construct($sexo);
     }
-    
-    // Métodos fábrica
+
     public static function consSexo($sexo) {
         return new self($sexo);
     }
@@ -17,24 +16,21 @@ class Lagarto extends Animal {
         $obj->setNombre($nombre);
         return $obj;
     }
-    
-    // El lagarto come insectos
+
     public function alimentarse($comida = "") {
-        echo $this->getClassIdentifier() . ": Estoy comiendo insectos<br>";
+        echo $this->getNombreClass() . ": Estoy comiendo insectos<br>";
     }
     
     public function tomarSol() {
-        echo $this->getClassIdentifier() . ": Estoy tomando el Sol<br>";
+        echo $this->getNombreClass() . ": Estoy tomando el Sol<br>";
     }
-    
-    // Para los mensajes de acciode animales
-    protected function getClassIdentifier() {
-        return "Lagarto" . ($this->nombre != "" ? " " . $this->nombre : "");
+
+    protected function getNombreClass() {
+        return "Lagarto " . $this->nombre;
     }
     
     public function __toString() {
-        $nombreText = ($this->nombre != "") ? ", llamado " . $this->nombre : ", no tengo nombre";
-        return "Soy un Animal, en concreto un Lagarto, con sexo " . $this->getSexoCompleto() . $nombreText . "<br>";
+        return "Soy un Animal, en concreto un Lagarto, con sexo " . $this->getSexoCompleto() . ", llamado " . $this->nombre . "<br>";
     }
 }
 ?>

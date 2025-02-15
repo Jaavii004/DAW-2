@@ -16,7 +16,7 @@ abstract class Ave extends Animal {
     
     public function morirse() {
         self::$totalAves--;
-        parent::morirse(); // Llama al método de Animal para reducir también totalAnimales
+        parent::morirse();
     }
 
     public static function getTotalAves() {
@@ -24,11 +24,11 @@ abstract class Ave extends Animal {
     }
 
     // Método específico para las aves.
-    public function ponerHuevo() {
+    public function ponerHuevo($especie) {
         if ($this->sexo == "M") {
-            echo static::class . " " . ($this->nombre ?: "") . ": Soy macho, no puedo poner huevos<br>";
+            echo $especie . " " . $this->nombre . ": Soy macho, no puedo poner huevos<br>";
         } else {
-            echo static::class . " " . ($this->nombre ?: "") . ": He puesto un huevo!<br>";
+            echo $especie . " " . $this->nombre . ": He puesto un huevo!<br>";
         }
     }
 }

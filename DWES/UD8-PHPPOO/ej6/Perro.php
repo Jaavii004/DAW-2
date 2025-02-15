@@ -34,20 +34,20 @@ class Perro extends Mamifero {
     
     // El perro come carne
     public function alimentarse($comida = "") {
-        echo $this->getClassIdentifier() . ": Estoy comiendo carne<br>";
+        echo $this->getNombreClass() . ": Estoy comiendo carne<br>";
     }
     
     public function ladra() {
-        echo $this->getClassIdentifier() . ": Guau guau<br>";
+        echo $this->getNombreClass() . ": Guau guau<br>";
     }
     
     // Para los mensajes de acción se muestra: "Perro [nombre]"
-    protected function getClassIdentifier() {
+    protected function getNombreClass() {
         return "Perro" . ($this->nombre != "" ? " " . $this->nombre : "");
     }
     
     public function __toString() {
-        $nombreText = ($this->nombre != "") ? ", mi nombre es " . $this->nombre : " y no tengo nombre";
+        $nombreText = ($this->nombre != "") ? " y mi nombre es " . $this->nombre : " y no tengo nombre";
         $razaText = ($this->raza != "") ? " raza " . $this->raza : " raza";
         return "Soy un Animal, un Mamífero, en concreto un Perro, con sexo " . $this->getSexoCompleto() . $razaText . $nombreText . "<br>";
     }

@@ -10,7 +10,6 @@ abstract class Mamifero extends Animal {
     }
     
     public function morirse() {
-        echo static::class . " " . ($this->nombre ?: "") . ": He muerto...<br>";
         self::$totalMamiferos--; // Restamos un mamífero
         parent::morirse(); // Restamos un animal
     }
@@ -24,7 +23,7 @@ abstract class Mamifero extends Animal {
         if ($this->sexo == "M") {
             echo static::class . " " . ($this->nombre ?: "") . ": Soy macho, no puedo amamantar<br>";
         } else {
-            echo static::class . " " . ($this->nombre ?: "") . ": Amamantando a mis crías<br>";
+            echo static::class . " " . ($this->nombre ?: "") . ": Amamantando a mis crias<br>";
         }
     }
 }
