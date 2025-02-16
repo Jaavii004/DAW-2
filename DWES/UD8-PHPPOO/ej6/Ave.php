@@ -23,7 +23,6 @@ abstract class Ave extends Animal {
         return "Hay un total de " . self::$totalAves . " aves<br>";
     }
 
-    // Método específico para las aves.
     public function ponerHuevo($especie) {
         if ($this->sexo == "M") {
             echo $especie . " " . $this->nombre . ": Soy macho, no puedo poner huevos<br>";

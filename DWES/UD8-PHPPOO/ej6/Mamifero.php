@@ -15,15 +15,14 @@ abstract class Mamifero extends Animal {
     }
     
     public function morirse() {
-        self::$totalMamiferos--; // Restamos un mamífero
-        parent::morirse(); // Restamos un animal
+        self::$totalMamiferos--;
+        parent::morirse();
     }
     
     public static function getTotalMamiferos() {
         return "Hay un total de " . self::$totalMamiferos . " mamíferos<br>";
     }
 
-    // Método propio de los mamíferos.
     public function amamantar() {
         if ($this->sexo == "M") {
             echo static::class . " " . ($this->nombre ?: "") . ": Soy macho, no puedo amamantar<br>";

@@ -11,7 +11,6 @@ class Canario extends Ave {
         parent::__construct($sexo);
     }
     
-    // Métodos fábrica
     public static function consSexo($sexo) {
         return new self($sexo);
     }
@@ -22,7 +21,6 @@ class Canario extends Ave {
         return $obj;
     }
     
-    // El canario come alpiste
     public function alimentarse($comida = "") {
         echo $this->getNombreClass() . ": Estoy comiendo alpiste<br>";
     }

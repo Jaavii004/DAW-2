@@ -7,21 +7,23 @@ body {
     align-items: center;
     height: 100vh;
     background: linear-gradient(to right, #373B44, #4286f4);
-    background-image: url("../img/pock.jpg"); 
+    background-image: url("../img/pock.jpg");
     background-size: cover;
-    background-position: center;   
+    background-position: center;
 
 }
 
 /* Contenedor principal */
 .contenedor {
     text-align: center;
-    width: 90%; /* Aseguramos que el contenedor ocupe el 80% del ancho */
-    height: 80%; /* Aseguramos que el contenedor ocupe el 80% del alto */
+    width: 90%;
+    /* Aseguramos que el contenedor ocupe el 80% del ancho */
+    height: 80%;
+    /* Aseguramos que el contenedor ocupe el 80% del alto */
     display: flex;
     justify-content: center;
     align-items: center;
-    
+
 }
 
 /* Estilo para el tablero de cartas */
@@ -30,8 +32,10 @@ body {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    width: 100%; /* El tablero ocupa todo el ancho disponible dentro de su contenedor */
-    height: 100%; /* El tablero ocupa todo el alto disponible dentro de su contenedor */
+    width: 100%;
+    /* El tablero ocupa todo el ancho disponible dentro de su contenedor */
+    height: 100%;
+    /* El tablero ocupa todo el alto disponible dentro de su contenedor */
 
     padding: 40px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
@@ -44,7 +48,8 @@ body {
     display: flex;
     justify-content: space-around;
     width: 100%;
-    align-items: center; /* Centrar verticalmente el contenido */
+    align-items: center;
+    /* Centrar verticalmente el contenido */
 }
 
 .fila-superior {
@@ -55,27 +60,36 @@ body {
     margin-top: 20px;
     margin-bottom: 20px;
     display: flex;
-    justify-content: center; /* Centra los elementos en la fila */
+    justify-content: center;
+    /* Centra los elementos en la fila */
     align-items: center;
-    gap: 10px; /* Ajustamos la distancia entre los elementos */
+    gap: 10px;
+    /* Ajustamos la distancia entre los elementos */
 }
 
 .vs {
 
-    padding: 40px 40px; /* Aumentamos el padding para mayor impacto */
-    border-radius: 20px; /* Bordes redondeados más grandes */
-    margin: 25px; /* Centrado con márgenes */
+    padding: 40px 40px;
+    /* Aumentamos el padding para mayor impacto */
+    border-radius: 20px;
+    /* Bordes redondeados más grandes */
+    margin: 25px;
+    /* Centrado con márgenes */
     background-color: transparent;
     font-family: "Pokemon", Arial, sans-serif;
-    text-shadow: 6px 6px 12px rgba(0, 0, 0, 0.7), 2px 2px 5px rgba(255, 255, 255, 0.3); /* Sombras más fuertes y con un toque de brillo */
+    text-shadow: 6px 6px 12px rgba(0, 0, 0, 0.7), 2px 2px 5px rgba(255, 255, 255, 0.3);
+    /* Sombras más fuertes y con un toque de brillo */
     background-image: url("https://comicvine.gamespot.com/a/uploads/original/11140/111409382/7758673-0112870914-daqrp.png");
     background-repeat: no-repeat;
-    background-size: contain; /* Ajustar el tamaño de la imagen para que se vea correctamente */
-    background-position: center; /* Centrar la imagen */
+    background-size: contain;
+    /* Ajustar el tamaño de la imagen para que se vea correctamente */
+    background-position: center;
+    /* Centrar la imagen */
 }
 
 .fila-inferior {
-    margin-top: 20px; /* Ajustamos el margen */
+    margin-top: 20px;
+    /* Ajustamos el margen */
 }
 
 /* Estilo para las cartas */
@@ -87,7 +101,8 @@ body {
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     display: flex;
-    flex-direction: column; /* Apilar imagen y texto */
+    flex-direction: column;
+    /* Apilar imagen y texto */
     justify-content: center;
     align-items: center;
     font-size: 18px;
@@ -98,10 +113,13 @@ body {
 
 /* Estilo para las imágenes dentro de las cartas */
 .carta img {
-    width: 80px;  /* Ajustar tamaño para que no ocupe todo el espacio */
+    width: 80px;
+    /* Ajustar tamaño para que no ocupe todo el espacio */
     height: 80px;
-    object-fit: contain; /* Mantener la proporción */
-    margin-bottom: 5px; /* Separar la imagen del nombre */
+    object-fit: contain;
+    /* Mantener la proporción */
+    margin-bottom: 5px;
+    /* Separar la imagen del nombre */
 }
 
 /* Estilo para los botones de elección en las filas */
@@ -115,7 +133,8 @@ body {
     border-radius: 10px;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    margin-left: 20px; /* Separar el botón de las cartas */
+    margin-left: 20px;
+    /* Separar el botón de las cartas */
 }
 
 .boton-eleccion:hover {
@@ -190,11 +209,16 @@ body {
     background-size: cover;
     background-position: center;
     align-items: center;
-    color: transparent; /* Esto hará que el texto no sea visible */
-    display: flex; /* Asegúrate de que los elementos estén alineados */
+    color: transparent;
+    /* Esto hará que el texto no sea visible */
+    display: flex;
+    /* Asegúrate de que los elementos estén alineados */
     justify-content: center;
-    position: relative; /* Asegura que el contenido se posicione correctamente */
-    img, span {
+    position: relative;
+
+    /* Asegura que el contenido se posicione correctamente */
+    img,
+    span {
         display: none;
     }
 }
@@ -209,6 +233,7 @@ body {
     from {
         transform: scale(1);
     }
+
     to {
         transform: scale(1.1);
     }
@@ -233,18 +258,17 @@ body {
     width: 30px;
     height: 30px;
 }
-
 .poderes {
-    background-color: rgba(255, 255, 255, 0.8); /* Fondo semitransparente */
+    background-color: rgba(255, 255, 255, 0.8);
     padding: 20px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Sombra suave para destacar */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     display: flex;
-    justify-content: space-around; /* Distribuir elementos */
+    justify-content: space-around;
     align-items: center;
     width: 100%;
-    height: auto; /* Ajustar al contenido */
-    flex-wrap: wrap; /* Permitir que los elementos se ajusten en varias líneas */
+    height: auto;
+    flex-wrap: wrap;
     margin-top: 30px;
     font-family: "Pokemon", Arial, sans-serif;
     color: #333;
@@ -275,4 +299,42 @@ body {
 
 .poderes .poder:active {
     transform: scale(0.95);
+}
+
+.poderes button {
+    background: linear-gradient(45deg, #2196F3, #21CBF3);
+    border: none;
+    color: white;
+    padding: 8px 16px;
+    margin: 5px;
+    border-radius: 8px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.poderes button:hover {
+    background: linear-gradient(45deg, #1976D2, #1E88E5);
+}
+
+.carta.lost {
+    filter: grayscale(100%);
+    pointer-events: none;
+    position: relative;
+}
+
+.carta.lost::after {
+    content: "X";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    font-size: 3em;
+    color: red;
+    background: rgba(255, 255, 255, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
 }

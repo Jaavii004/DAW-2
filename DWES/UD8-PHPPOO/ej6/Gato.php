@@ -22,7 +22,6 @@ class Gato extends Mamifero {
         return $this->raza;
     }
     
-    // Fábricas
     public static function consSexoNombre($sexo, $nombre) {
         $obj = new self($sexo);
         $obj->setNombre($nombre);
@@ -35,7 +34,6 @@ class Gato extends Mamifero {
         return $obj;
     }
     
-    // El gato come pescado
     public function alimentarse($comida = "") {
         echo $this->getNombreClass() . ": Estoy comiendo pescado<br>";
     }

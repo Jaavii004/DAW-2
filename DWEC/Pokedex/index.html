@@ -8,86 +8,6 @@
     <link rel="stylesheet" href="css/tablero.css">
     <!-- Vue 3 -->
     <script src="https://unpkg.com/vue@3.5.13/dist/vue.global.js"></script>
-    <style>
-        /* Botones generales */
-        .boton-eleccion {
-            background: linear-gradient(45deg, #4CAF50, #8BC34A);
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 1.1em;
-            margin: 5px;
-            transition: background 0.3s ease;
-        }
-
-        .boton-eleccion:hover {
-            background: linear-gradient(45deg, #43A047, #7CB342);
-        }
-
-        .boton-musica {
-            background: transparent;
-            border: none;
-            cursor: pointer;
-        }
-
-        .boton-cerrar {
-            background: #f44336;
-            color: #fff;
-            border: none;
-            border-radius: 8px;
-            padding: 8px 16px;
-            cursor: pointer;
-            font-size: 1em;
-            margin: 5px;
-            transition: background 0.3s ease;
-        }
-
-        .boton-cerrar:hover {
-            background: #d32f2f;
-        }
-
-        /* Botones de poder */
-        .poderes button {
-            background: linear-gradient(45deg, #2196F3, #21CBF3);
-            border: none;
-            color: white;
-            padding: 8px 16px;
-            margin: 5px;
-            border-radius: 8px;
-            font-size: 1em;
-            cursor: pointer;
-            transition: background 0.3s ease;
-        }
-
-        .poderes button:hover {
-            background: linear-gradient(45deg, #1976D2, #1E88E5);
-        }
-
-        /* Estilo para carta derrotada */
-        .carta.lost {
-            filter: grayscale(100%);
-            pointer-events: none;
-            position: relative;
-        }
-
-        .carta.lost::after {
-            content: "X";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            font-size: 3em;
-            color: red;
-            background: rgba(255, 255, 255, 0.5);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-weight: bold;
-        }
-    </style>
 </head>
 
 <body>
@@ -199,7 +119,7 @@
                             <p>{{ cartaSeleccionada.name }}</p>
                             <p>Vida: {{ playerHP }} / {{ cartaSeleccionada.hp }}</p>
                         </div>
-                        <div class="vs">VS</div>
+                        <div class="vs"></div>
                         <!-- Carta de la máquina en combate -->
                         <div class="carta"
                             :class="{'ganador': battleFinished && machineHP > 0, 'lost': battleFinished && machineHP === 0}">
