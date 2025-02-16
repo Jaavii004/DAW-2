@@ -1,4 +1,9 @@
 <?php
+
+/**
+ * @Author: Javier Puertas
+ */
+
 include_once "Animal.php";
 
 class Lagarto extends Animal {

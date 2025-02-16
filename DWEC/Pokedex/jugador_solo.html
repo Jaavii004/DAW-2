@@ -359,13 +359,8 @@
                     if (this.cartaArrastrada) {
                         this.cartaSeleccionada = this.cartaArrastrada;
                         this.cartaArrastrada = null;
-                        let aliveMachine = [];
-                        // Verificar si todos los Pokémon de la máquina han sido derrotados
-                        for (let p of this.pockemonsMaquina) {
-                            if (!p.dead) {
-                                aliveMachine.push(p);
-                            }
-                        }
+                        // Seleccionar un Pokémon vivo de la máquina
+                        let aliveMachine = this.pockemonsMaquina.filter(p => !p.dead);
                         if (aliveMachine.length === 0) {
                             this.resultadoBatalla = `🔥 ¡${this.cartaSeleccionada.name} gana la batalla definitiva!`;
                             this.battleFinished = true;
@@ -386,7 +381,7 @@
                 async procesarMovimientos(pokemon) {
                     if (pokemon.movesWithPower) return;
                     let randomMoves = [];
-                    let nummax = 22;
+                    let nummax = 20;
                     while (randomMoves.length < nummax && pokemon.moves.length > 0) {
                         let randomMove = pokemon.moves[Math.floor(Math.random() * pokemon.moves.length)];
                         if (!randomMoves.find(m => m.name === randomMove.move.name)) {
@@ -399,17 +394,25 @@
                     let movesWithPower = [];
                     let count = 0;
                     for (let move of randomMoves) {
-                        let response = await fetch(move.url);
-                        let moveData = await response.json();
-                        let power = moveData.power || 0;
-                        if (power !== 0) {
-                            movesWithPower.push({
-                                name: move.name,
-                                power: power
-                            });
-                            count++;
+                        try {
+                            let response = await fetch(move.url);
+                            let moveData = await response.json();
+                            let power = moveData.power || 0;
+                            if (power !== 0) {
+                                movesWithPower.push({
+                                    name: move.name,
+                                    power: power
+                                });
+                                count++;
+                            }
+                        } catch (e) {
+                            // Si hay error, omitir
                         }
                         if (count >= 5) break;
+                    }
+                    // Si no se encontraron movimientos válidos, asignar uno por defecto
+                    if (movesWithPower.length === 0) {
+                        movesWithPower.push({ name: 'Ataque Básico', power: 10 });
                     }
                     pokemon.movesWithPower = movesWithPower;
                 },

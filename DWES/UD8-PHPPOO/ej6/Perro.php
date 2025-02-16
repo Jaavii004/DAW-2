@@ -1,6 +1,10 @@
 <?php
-include_once "Mamifero.php";
 
+/**
+ * @Author: Javier Puertas
+ */
+
+include_once "Mamifero.php";
 
 class Perro extends Mamifero {
     private $raza;

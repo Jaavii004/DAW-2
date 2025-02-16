@@ -1,4 +1,9 @@
 <?php
+
+/**
+ * @Author: Javier Puertas
+ */
+
 include_once "Mamifero.php";
 
 class Gato extends Mamifero {
