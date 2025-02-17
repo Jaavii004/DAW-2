@@ -7,7 +7,6 @@
 include_once "Mamifero.php";
 
 class Perro extends Mamifero {
-    private $raza;
 
     public function __construct($sexo = "M", $raza = "teckel") {
         parent::__construct($sexo);
@@ -46,10 +45,8 @@ class Perro extends Mamifero {
         return "Perro " . $this->nombre;
     }
 
-    public function __toString() {
-        $nombreText = ($this->nombre != "") ? " y mi nombre es " . $this->nombre : " y no tengo nombre";
-        $razaText = ($this->raza != "") ? " raza " . $this->raza : " raza";
-        return "Soy un Animal, un Mamífero, en concreto un Perro, con sexo " . $this->getSexoCompleto() . $razaText . $nombreText . "<br>  \n";
+    public function getClase() {
+        return "Perro";
     }
 }
 ?>

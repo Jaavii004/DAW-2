@@ -30,5 +30,11 @@ abstract class Ave extends Animal {
             echo $especie . " " . $this->nombre . ": He puesto un huevo!<br> \n";
         }
     }
+
+    public function __toString() {
+        return "Soy un Animal, un Ave, en concreto un " . $this->getClase() . ", con sexo " . $this->getSexoCompleto() . ", llamado " . $this->nombre . "<br> \n";
+    }
+    abstract function getClase();
+
 }
 ?>

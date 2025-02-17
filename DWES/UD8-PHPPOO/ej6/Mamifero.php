@@ -7,6 +7,7 @@
 include_once "Animal.php";
 
 abstract class Mamifero extends Animal {
+    protected $raza;
     static protected $totalMamiferos = 0;
     
     public function __construct($sexo = "M") {
@@ -30,5 +31,13 @@ abstract class Mamifero extends Animal {
             echo static::class . " " . ($this->nombre ?: "") . ": Amamantando a mis crias<br> \n";
         }
     }
+    
+    public function __toString() {
+        $nombreText = ($this->nombre != "") ? " y mi nombre es " . $this->nombre : " y no tengo nombre";
+        $razaText = ($this->raza != "") ? ", raza " . $this->raza : " raza";
+        return "Soy un Animal, un Mamífero, en concreto un " . $this->getClase() . ", con sexo " . $this->getSexoCompleto() . $razaText . $nombreText . "<br> \n";
+    }
+
+    abstract function getClase();
 }
 ?>

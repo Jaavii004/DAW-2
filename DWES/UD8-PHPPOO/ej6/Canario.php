@@ -32,9 +32,9 @@ class Canario extends Ave {
     protected function getNombreClass() {
         return "Canario " . $this->nombre;
     }
-    
-    public function __toString() {
-        return "Soy un Animal, un Ave, en concreto un Canario, con sexo " . $this->getSexoCompleto() . ", llamado " . $this->nombre . "<br> \n";
+
+    public function getClase() {
+        return "Canario";
     }
 
     public function ponerHuevo($especie = "") {

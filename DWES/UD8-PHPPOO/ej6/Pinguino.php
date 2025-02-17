@@ -32,10 +32,8 @@ class Pinguino extends Ave {
     protected function getNombreClass() {
         return "Pingüino " . $this->nombre;
     }
-    
-    public function __toString() {
-        $nombreText = ($this->nombre != "") ? ", llamado " . $this->nombre : "";
-        return "Soy un Animal, un Ave, en concreto un Pingüino, con sexo " . $this->getSexoCompleto() . $nombreText . "<br> \n";
+    public function getClase() {
+        return "Pingüino";
     }
 
     public function ponerHuevo($especie = "") {
