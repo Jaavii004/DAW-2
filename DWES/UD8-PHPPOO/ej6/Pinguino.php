@@ -11,7 +11,6 @@ class Pinguino extends Ave {
         parent::__construct($sexo);
     }
     
-    // Métodos fábrica
     public static function consSexo($sexo) {
         return new self($sexo);
     }
@@ -22,22 +21,21 @@ class Pinguino extends Ave {
         return $obj;
     }
     
-    // El pingüino come peces
     public function alimentarse($comida = "") {
-        echo $this->getNombreClass() . ": Estoy comiendo peces<br>";
+        echo $this->getNombreClass() . ": Estoy comiendo peces<br> \n";
     }
     
     public function programar() {
-        echo $this->getNombreClass() . ": Soy un pingüino programandor en PHP<br>";
+        echo $this->getNombreClass() . ": Soy un pingüino programandor en PHP<br> \n";
     }
     
     protected function getNombreClass() {
-        return "Pingüino" . ($this->nombre != "" ? " " . $this->nombre : "");
+        return "Pingüino " . $this->nombre;
     }
     
     public function __toString() {
         $nombreText = ($this->nombre != "") ? ", llamado " . $this->nombre : "";
-        return "Soy un Animal, un Ave, en concreto un Pingüino, con sexo " . $this->getSexoCompleto() . $nombreText . "<br>";
+        return "Soy un Animal, un Ave, en concreto un Pingüino, con sexo " . $this->getSexoCompleto() . $nombreText . "<br> \n";
     }
 
     public function ponerHuevo($especie = "") {

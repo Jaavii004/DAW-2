@@ -9,7 +9,7 @@ abstract class Animal {
     protected $nombre = "";
     static protected $totalAnimales = 0;
     
-    public function __construct($sexo = "H") {
+    public function __construct($sexo = "M") {
         $this->sexo = $sexo;
         self::$totalAnimales++;
     }
@@ -19,11 +19,11 @@ abstract class Animal {
     }
     
     public function getNombre() {
-        return $this->nombre;
+        return $this->nombre . " \n";
     }
     
     public function getSexo() {
-        return $this->sexo;
+        return $this->sexo . " \n";
     }
     
     protected function getSexoCompleto() {
@@ -31,24 +31,24 @@ abstract class Animal {
     }
     
     public function dormirse() {
-        echo $this->getNombreClass() . ": Zzzzzzz<br>";
+        echo $this->getNombreClass() . ": Zzzzzzz<br> \n";
     }
     
     public function alimentarse($comida = "") {
-        echo $this->getNombreClass() . ": Estoy comiendo " . $comida . "<br>";
+        echo $this->getNombreClass() . ": Estoy comiendo " . $comida . "<br> \n";
     }
     
     public function morirse() {
-        echo $this->getNombreClass() . ": Adiós!<br>";
+        echo $this->getNombreClass() . ": Adiós!<br> \n";
         self::$totalAnimales--;
     }
-    
+
     public static function getTotalAnimales() {
-        return "Hay un total de " . self::$totalAnimales . " animales<br>";
+        return "Hay un total de " . self::$totalAnimales . " animales<br> \n";
     }
-    
+
     abstract protected function getNombreClass();
-    
+
     abstract public function __toString();
 }
 ?>

@@ -23,11 +23,11 @@ class Lagarto extends Animal {
     }
 
     public function alimentarse($comida = "") {
-        echo $this->getNombreClass() . ": Estoy comiendo insectos<br>";
+        echo $this->getNombreClass() . ": Estoy comiendo insectos<br> \n";
     }
     
     public function tomarSol() {
-        echo $this->getNombreClass() . ": Estoy tomando el Sol<br>";
+        echo $this->getNombreClass() . ": Estoy tomando el Sol<br> \n";
     }
 
     protected function getNombreClass() {
@@ -35,7 +35,7 @@ class Lagarto extends Animal {
     }
     
     public function __toString() {
-        return "Soy un Animal, en concreto un Lagarto, con sexo " . $this->getSexoCompleto() . ", llamado " . $this->nombre . "<br>";
+        return "Soy un Animal, en concreto un Lagarto, con sexo " . $this->getSexoCompleto() . ", llamado " . $this->nombre . "<br> \n";
     }
 }
 ?>

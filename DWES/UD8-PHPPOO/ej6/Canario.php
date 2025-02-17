@@ -22,19 +22,19 @@ class Canario extends Ave {
     }
     
     public function alimentarse($comida = "") {
-        echo $this->getNombreClass() . ": Estoy comiendo alpiste<br>";
+        echo $this->getNombreClass() . ": Estoy comiendo alpiste<br> \n";
     }
     
     public function pia() {
-        echo $this->getNombreClass() . ": Pio pio pio<br>";
+        echo $this->getNombreClass() . ": Pio pio pio<br> \n";
     }
     
     protected function getNombreClass() {
-        return "Canario" . ($this->nombre != "" ? " " . $this->nombre : "");
+        return "Canario " . $this->nombre;
     }
     
     public function __toString() {
-        return "Soy un Animal, un Ave, en concreto un Canario, con sexo " . $this->getSexoCompleto() . ", llamado " . $this->nombre . "<br>";
+        return "Soy un Animal, un Ave, en concreto un Canario, con sexo " . $this->getSexoCompleto() . ", llamado " . $this->nombre . "<br> \n";
     }
 
     public function ponerHuevo($especie = "") {

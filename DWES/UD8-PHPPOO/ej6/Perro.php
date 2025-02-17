@@ -9,7 +9,7 @@ include_once "Mamifero.php";
 class Perro extends Mamifero {
     private $raza;
 
-    public function __construct($sexo = "M", $raza = "") {
+    public function __construct($sexo = "M", $raza = "teckel") {
         parent::__construct($sexo);
         $this->raza = $raza;
     }
@@ -23,7 +23,7 @@ class Perro extends Mamifero {
     }
 
     public static function consSexoNombre($sexo, $nombre) {
-        $obj = new self($sexo, "teckel");
+        $obj = new self($sexo);
         $obj->setNombre($nombre);
         return $obj;
     }
@@ -35,21 +35,21 @@ class Perro extends Mamifero {
     }
     
     public function alimentarse($comida = "") {
-        echo $this->getNombreClass() . ": Estoy comiendo carne<br>";
+        echo $this->getNombreClass() . ": Estoy comiendo carne<br>  \n";
     }
     
     public function ladra() {
-        echo $this->getNombreClass() . ": Guau guau<br>";
+        echo $this->getNombreClass() . ": Guau guau<br>  \n";
     }
     
     protected function getNombreClass() {
-        return "Perro" . ($this->nombre != "" ? " " . $this->nombre : "");
+        return "Perro " . $this->nombre;
     }
 
     public function __toString() {
         $nombreText = ($this->nombre != "") ? " y mi nombre es " . $this->nombre : " y no tengo nombre";
         $razaText = ($this->raza != "") ? " raza " . $this->raza : " raza";
-        return "Soy un Animal, un Mamífero, en concreto un Perro, con sexo " . $this->getSexoCompleto() . $razaText . $nombreText . "<br>";
+        return "Soy un Animal, un Mamífero, en concreto un Perro, con sexo " . $this->getSexoCompleto() . $razaText . $nombreText . "<br>  \n";
     }
 }
 ?>
