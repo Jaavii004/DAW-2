@@ -22,6 +22,10 @@ abstract class Animal {
         return $this->nombre . " \n";
     }
     
+    public function setSexo($sexo) {
+        $this->sexo = $sexo;
+    }
+
     public function getSexo() {
         return $this->sexo . " \n";
     }
@@ -49,6 +53,8 @@ abstract class Animal {
 
     abstract protected function getNombreClass();
 
-    abstract public function __toString();
+    public function __toString(){
+        return "Soy un Animal, ";
+    }
 }
 ?>

@@ -7,8 +7,9 @@
 include_once "Ave.php";
 
 class Canario extends Ave {
-    public function __construct($sexo = "M") {
+    public function __construct($sexo = "M", $nombre = "") {
         parent::__construct($sexo);
+        $this->nombre = $nombre;
     }
     
     public static function consSexo($sexo) {
@@ -22,15 +23,15 @@ class Canario extends Ave {
     }
     
     public function alimentarse($comida = "") {
-        echo $this->getNombreClass() . ": Estoy comiendo alpiste<br> \n";
+        echo "Canario " . $this->nombre . ": Estoy comiendo alpiste<br> \n";
     }
     
     public function pia() {
-        echo $this->getNombreClass() . ": Pio pio pio<br> \n";
+        echo "Canario " . $this->nombre . ": Pio pio pio<br> \n";
     }
     
     protected function getNombreClass() {
-        return "Canario " . $this->nombre;
+        return ;
     }
 
     public function getClase() {

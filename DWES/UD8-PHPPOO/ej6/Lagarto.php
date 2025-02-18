@@ -35,7 +35,7 @@ class Lagarto extends Animal {
     }
     
     public function __toString() {
-        return "Soy un Animal, en concreto un Lagarto, con sexo " . $this->getSexoCompleto() . ", llamado " . $this->nombre . "<br> \n";
+        return parent::__toString() . "en concreto un Lagarto, con sexo " . $this->getSexoCompleto() . ", llamado " . $this->nombre . "<br> \n";
     }
 }
 ?>

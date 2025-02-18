@@ -33,6 +33,7 @@ class Incidencia {
         )");
     }
 
+
     public static function creaIncidencia($codigo, $descripcion) {
         $sql = "INSERT INTO incidencias (codigo, descripcion, fecha_creacion) 
                 VALUES (:codigo, :descripcion, NOW())";
@@ -41,14 +42,29 @@ class Incidencia {
             ':codigo' => $codigo,
             ':descripcion' => $descripcion
         ];
-        
-        $result = self::queryPreparadaDB($sql, $params);
-        
-        if ($result) {
-            echo "Incidencia $codigo creada correctamente.\n";
-            return self::obtenerPorCodigo($codigo);
-        } else {
-            echo "Error al crear incidencia $codigo.\n";
+    
+        try {
+            $result = traitDB::queryPreparadaDB($sql, $params);
+            
+            if ($result) {
+                echo "Incidencia $codigo creada correctamente.\n";
+                
+                // Verificación adicional
+                $sqlCheck = "SELECT * FROM incidencias WHERE codigo = :codigo";
+                $resultCheck = traitDB::queryPreparadaDB($sqlCheck, [':codigo' => $codigo]);
+                
+                if (empty($resultCheck)) {
+                    echo "No se ha insertado la incidencia correctamente.\n";
+                } else {
+                    echo "La incidencia se insertó correctamente.\n";
+                }
+                
+                return self::obtenerPorCodigo($codigo);
+            } else {
+                return false;
+            }
+        } catch (PDOException $e) {
+            echo "Error al ejecutar la consulta: " . $e->getMessage() . "\n";
             return false;
         }
     }

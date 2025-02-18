@@ -32,7 +32,7 @@ abstract class Ave extends Animal {
     }
 
     public function __toString() {
-        return "Soy un Animal, un Ave, en concreto un " . $this->getClase() . ", con sexo " . $this->getSexoCompleto() . ", llamado " . $this->nombre . "<br> \n";
+        return parent::__toString() . "un Ave, en concreto un " . $this->getClase() . ", con sexo " . $this->getSexoCompleto() . ", llamado " . $this->nombre . "<br> \n";
     }
     abstract function getClase();
 
