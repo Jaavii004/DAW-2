@@ -8,10 +8,17 @@ public class ProductsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        // Verificar que el usuario esté logueado
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            response.sendRedirect("login"); // redirige a login si no hay sesión o no hay usuario
+            return;
+        }
+        
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         
-        // Database connection parameters
+        // Parámetros de conexión a la base de datos
         String dbUrl = "jdbc:mysql://localhost/java_store?allowPublicKeyRetrieval=true&useSSL=false";
         String dbUser = "alumno";
         String dbPass = "mipassword";

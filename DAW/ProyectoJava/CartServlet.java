@@ -2,6 +2,7 @@ import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.util.*;
+import java.sql.*;
 
 public class CartServlet extends HttpServlet {
 
@@ -26,14 +27,12 @@ public class CartServlet extends HttpServlet {
         public void setQuantity(int quantity) { this.quantity = quantity; }
     }
 
-    // Muestra el carrito y permite editarlo
+    // Muestra el carrito y, si el usuario está logueado, permite el checkout.
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-
-        // Recupera o inicializa el carrito en la sesión
         HttpSession session = request.getSession();
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
         if (cart == null) {
@@ -72,13 +71,19 @@ public class CartServlet extends HttpServlet {
             out.println("<tr><td colspan='3'>Total:</td><td colspan='2'>" + total + "</td></tr>");
             out.println("</table>");
             out.println("<br><input type='submit' name='update' value='Update Cart'/>");
+            // Mostrar el botón de Checkout solo si el usuario ha iniciado sesión
+            if (session.getAttribute("user") != null) {
+                out.println("<br><br><input type='submit' name='checkout' value='Checkout'/>");
+            } else {
+                out.println("<br><br><a href='login'>Log in to Checkout</a>");
+            }
             out.println("</form>");
         }
         out.println("<br><a href='products'>Continue Shopping</a>");
         out.println("</body></html>");
     }
 
-    // Procesa las acciones del carrito
+    // Procesa las acciones del carrito: add, remove, update y checkout.
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -89,7 +94,7 @@ public class CartServlet extends HttpServlet {
             session.setAttribute("cart", cart);
         }
 
-        // Acción "add" proveniente de ProductsServlet
+        // Si se recibe la acción "add" desde ProductsServlet
         String action = request.getParameter("action");
         if (action != null && action.equals("add")) {
             int productId = Integer.parseInt(request.getParameter("productId"));
@@ -97,7 +102,6 @@ public class CartServlet extends HttpServlet {
             double price = Double.parseDouble(request.getParameter("price"));
             int quantity = Integer.parseInt(request.getParameter("quantity"));
             
-            // Si el producto ya está en el carrito, actualiza la cantidad
             boolean found = false;
             for (CartItem item : cart) {
                 if (item.getProductId() == productId) {
@@ -110,36 +114,115 @@ public class CartServlet extends HttpServlet {
                 cart.add(new CartItem(productId, productName, price, quantity));
             }
         } 
-        // Otras acciones: remover o actualizar desde la vista del carrito
-        else {
-            String remove = request.getParameter("remove");
-            if (remove != null) {
-                int removeId = Integer.parseInt(remove);
-                Iterator<CartItem> it = cart.iterator();
-                while(it.hasNext()){
-                    CartItem item = it.next();
-                    if(item.getProductId() == removeId) {
-                        it.remove();
-                        break;
-                    }
+        // Si se pulsa el botón "remove" en la vista del carrito
+        else if (request.getParameter("remove") != null) {
+            int removeId = Integer.parseInt(request.getParameter("remove"));
+            Iterator<CartItem> it = cart.iterator();
+            while(it.hasNext()){
+                CartItem item = it.next();
+                if(item.getProductId() == removeId) {
+                    it.remove();
+                    break;
                 }
-            } else if (request.getParameter("update") != null) {
-                for (CartItem item : cart) {
-                    String paramName = "quantity_" + item.getProductId();
-                    String quantityStr = request.getParameter(paramName);
-                    if (quantityStr != null) {
-                        try {
-                            int newQuantity = Integer.parseInt(quantityStr);
-                            if (newQuantity > 0) {
-                                item.setQuantity(newQuantity);
-                            }
-                        } catch (NumberFormatException e) {
-                            // Se ignoran los valores no numéricos
+            }
+        } 
+        // Si se pulsa el botón "update" en la vista del carrito
+        else if (request.getParameter("update") != null) {
+            for (CartItem item : cart) {
+                String paramName = "quantity_" + item.getProductId();
+                String quantityStr = request.getParameter(paramName);
+                if (quantityStr != null) {
+                    try {
+                        int newQuantity = Integer.parseInt(quantityStr);
+                        if (newQuantity > 0) {
+                            item.setQuantity(newQuantity);
                         }
+                    } catch (NumberFormatException e) {
+                        // Ignorar valores inválidos
                     }
                 }
             }
         }
+        // Si se pulsa el botón "checkout" para pagar
+        else if (request.getParameter("checkout") != null) {
+            // Verificar que el usuario esté logueado
+            if (session.getAttribute("user_id") == null) {
+                response.sendRedirect("login");
+                return;
+            }
+            // Procesar el pago y crear el pedido en la base de datos
+            double total = 0.0;
+            for (CartItem item : cart) {
+                total += item.getPrice() * item.getQuantity();
+            }
+            
+            // Parámetros de conexión a la base de datos
+            String dbUrl = "jdbc:mysql://localhost/java_store?allowPublicKeyRetrieval=true&useSSL=false";
+            String dbUser = "alumno";
+            String dbPass = "mipassword";
+            
+            try {
+                Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPass);
+                conn.setAutoCommit(false);
+                
+                // Insertar en la tabla orders
+                int userId = (Integer) session.getAttribute("user_id");
+                String trackingNumber = "TRK" + System.currentTimeMillis(); // Generación simple del tracking number
+                String orderSql = "INSERT INTO orders (user_id, total, tracking_number) VALUES (?, ?, ?)";
+                PreparedStatement orderStmt = conn.prepareStatement(orderSql, Statement.RETURN_GENERATED_KEYS);
+                orderStmt.setInt(1, userId);
+                orderStmt.setDouble(2, total);
+                orderStmt.setString(3, trackingNumber);
+                orderStmt.executeUpdate();
+                
+                ResultSet generatedKeys = orderStmt.getGeneratedKeys();
+                int orderId = 0;
+                if (generatedKeys.next()) {
+                    orderId = generatedKeys.getInt(1);
+                }
+                generatedKeys.close();
+                orderStmt.close();
+                
+                // Insertar en la tabla order_details por cada ítem
+                String detailSql = "INSERT INTO order_details (order_id, product_id, quantity, subtotal) VALUES (?, ?, ?, ?)";
+                PreparedStatement detailStmt = conn.prepareStatement(detailSql);
+                for (CartItem item : cart) {
+                    detailStmt.setInt(1, orderId);
+                    detailStmt.setInt(2, item.getProductId());
+                    detailStmt.setInt(3, item.getQuantity());
+                    detailStmt.setDouble(4, item.getPrice() * item.getQuantity());
+                    detailStmt.addBatch();
+                }
+                detailStmt.executeBatch();
+                detailStmt.close();
+                
+                conn.commit();
+                conn.close();
+                
+                // Vaciar el carrito tras el pago
+                cart.clear();
+                session.setAttribute("cart", cart);
+                
+                // Mostrar confirmación al usuario
+                response.setContentType("text/html");
+                PrintWriter out = response.getWriter();
+                out.println("<html><head><title>Order Confirmation</title></head><body>");
+                out.println("<h2>Thank you for your purchase!</h2>");
+                out.println("<p>Your order has been placed with tracking number: " + trackingNumber + "</p>");
+                out.println("<a href='products'>Continue Shopping</a>");
+                out.println("</body></html>");
+                return;
+                
+            } catch (Exception e) {
+                e.printStackTrace();
+                try {
+                    // En caso de error, se debería hacer rollback (si la conexión lo permite)
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        }
+        
         session.setAttribute("cart", cart);
         response.sendRedirect("cart");
     }

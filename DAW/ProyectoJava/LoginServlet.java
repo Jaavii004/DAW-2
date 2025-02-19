@@ -56,7 +56,7 @@ public class LoginServlet extends HttpServlet {
                     out.println("<p><a href='admin'>Go to Admin Panel</a></p>");
                 } else {
                     out.println("<h3>Welcome, " + userName + "!</h3>");
-                    out.println("<p><a href='shop'>Go to Shop</a></p>");
+                    out.println("<p><a href='products'>Go to products</a></p>");
                 }
             } else {
                 out.println("<h3>Invalid email or password. Try again.</h3>");
