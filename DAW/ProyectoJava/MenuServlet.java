@@ -14,7 +14,7 @@ public class MenuServlet extends HttpServlet {
         out.println("<ul>");
         out.println("<li><a href='login'>Iniciar Sesión</a></li>");
         out.println("<li><a href='register'>Registrarse</a></li>");
-        out.println("<li><a href='productos'>Ver Productos</a></li>");
+        out.println("<li><a href='products'>Ver Productos</a></li>");
         out.println("<li><a href='carrito'>Ver Carrito</a></li>");
         out.println("<li><a href='compras'>Mis Compras</a></li>");
         out.println("</ul>");

@@ -36,7 +36,6 @@ public class RegisterServlet extends HttpServlet {
         String dbPass = "mipassword";
 
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
             Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPass);
 
             PreparedStatement checkStmt = conn.prepareStatement("SELECT * FROM users WHERE email = ?");
