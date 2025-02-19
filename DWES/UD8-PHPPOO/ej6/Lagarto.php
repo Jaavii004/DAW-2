@@ -22,17 +22,22 @@ class Lagarto extends Animal {
         return $obj;
     }
 
-    public function alimentarse($comida = "") {
-        echo $this->getNombreClass() . ": Estoy comiendo insectos<br> \n";
-    }
-    
-    public function tomarSol() {
-        echo $this->getNombreClass() . ": Estoy tomando el Sol<br> \n";
+    public function alimentarse($comida = "insectos") {
+        echo "Lagarto " . $this->nombre . parent::alimentarse($comida);
     }
 
-    protected function getNombreClass() {
-        return "Lagarto " . $this->nombre;
+    public function morirse() {
+        echo "Lagarto " . $this->nombre . parent::morirse();
     }
+
+    public function dormirse() {
+        echo "Lagarto " . $this->nombre . parent::dormirse();
+    }
+
+    public function tomarSol() {
+        echo "Lagarto " . $this->nombre . ": Estoy tomando el Sol<br> \n";
+    }
+
     
     public function __toString() {
         return parent::__toString() . "en concreto un Lagarto, con sexo " . $this->getSexoCompleto() . ", llamado " . $this->nombre . "<br> \n";

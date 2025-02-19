@@ -11,7 +11,11 @@ class Canario extends Ave {
         parent::__construct($sexo);
         $this->nombre = $nombre;
     }
-    
+
+    // public function __construct($sexo = "M") {
+    //     parent::__construct($sexo);
+    // }
+
     public static function consSexo($sexo) {
         return new self($sexo);
     }
@@ -22,16 +26,12 @@ class Canario extends Ave {
         return $obj;
     }
     
-    public function alimentarse($comida = "") {
-        echo "Canario " . $this->nombre . ": Estoy comiendo alpiste<br> \n";
+    public function alimentarse($comida = "alpiste") {
+        echo "Canario " . $this->nombre . parent::alimentarse($comida);
     }
     
     public function pia() {
         echo "Canario " . $this->nombre . ": Pio pio pio<br> \n";
-    }
-    
-    protected function getNombreClass() {
-        return ;
     }
 
     public function getClase() {
@@ -40,6 +40,14 @@ class Canario extends Ave {
 
     public function ponerHuevo($especie = "") {
         parent::ponerHuevo("Canario");
+    }
+
+    public function morirse() {
+        echo "Canario " . $this->nombre . parent::morirse();
+    }
+
+    public function __toString() {
+        return parent::__toString() . "Canario, con sexo " . $this->getSexoCompleto() . ", llamado " . $this->nombre . "<br> \n";
     }
 }
 

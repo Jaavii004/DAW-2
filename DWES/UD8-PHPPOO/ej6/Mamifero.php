@@ -33,11 +33,10 @@ abstract class Mamifero extends Animal {
     }
     
     public function __toString() {
-        $nombreText = ($this->nombre != "") ? " y mi nombre es " . $this->nombre : " y no tengo nombre";
-        $razaText = ($this->raza != "") ? ", raza " . $this->raza : " raza";
-        return parent::__toString() . "un Mamífero, en concreto un " . $this->getClase() . ", con sexo " . $this->getSexoCompleto() . $razaText . $nombreText . "<br> \n";
+        // $nombreText = ($this->nombre != "") ? " y mi nombre es " . $this->nombre : " y no tengo nombre";
+        // $razaText = ($this->raza != "") ? ", raza " . $this->raza : " raza";
+        return parent::__toString() . "un Mamífero, en concreto un "; //. $this->getClase() . ", con sexo " . $this->getSexoCompleto() . $razaText . $nombreText . "<br> \n";
     }
 
-    abstract function getClase();
 }
 ?>

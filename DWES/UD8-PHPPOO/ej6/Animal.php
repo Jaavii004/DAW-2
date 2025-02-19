@@ -35,23 +35,25 @@ abstract class Animal {
     }
     
     public function dormirse() {
-        echo $this->getNombreClass() . ": Zzzzzzz<br> \n";
+        return ": Zzzzzzz<br> \n";
     }
     
     public function alimentarse($comida = "") {
-        echo $this->getNombreClass() . ": Estoy comiendo " . $comida . "<br> \n";
+        return ": Estoy comiendo " . $comida . "<br> \n";
     }
     
     public function morirse() {
-        echo $this->getNombreClass() . ": Adiós!<br> \n";
         self::$totalAnimales--;
+        return ": Adiós!<br> \n";
     }
 
     public static function getTotalAnimales() {
         return "Hay un total de " . self::$totalAnimales . " animales<br> \n";
     }
 
-    abstract protected function getNombreClass();
+    protected function getNombreClass(){
+        return;
+    }
 
     public function __toString(){
         return "Soy un Animal, ";

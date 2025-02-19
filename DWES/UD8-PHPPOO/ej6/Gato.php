@@ -33,19 +33,18 @@ class Gato extends Mamifero {
         return $obj;
     }
     
-    public function alimentarse($comida = "") {
-        echo $this->getNombreClass() . ": Estoy comiendo pescado<br> \n";
+    public function alimentarse($comida = "pescado") {
+        echo "Gato " . $this->nombre . parent::alimentarse($comida);
     }
     
     public function maulla() {
-        echo $this->getNombreClass() . ": Miauuuu<br>  \n";
+        echo "Gato " . $this->nombre . ": Miauuuu<br>  \n";
     }
-    
-    protected function getNombreClass() {
-        return "Gato " . $this->nombre;
-    }
-    public function getClase() {
-        return "Gato";
+
+    public function __toString() {
+        $nombreText = ($this->nombre != "") ? " y mi nombre es " . $this->nombre : " y no tengo nombre";
+        $razaText = ($this->raza != "") ? ", raza " . $this->raza : " raza";
+        return parent::__toString() . " Gato, con sexo " . $this->getSexoCompleto() . $razaText . $nombreText . "<br> \n";
     }
 }
 ?>

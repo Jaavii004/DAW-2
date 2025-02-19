@@ -39,5 +39,9 @@ class Pinguino extends Ave {
     public function ponerHuevo($especie = "") {
         parent::ponerHuevo("Pingüino");
     }
+
+    public function __toString() {
+        return parent::__toString() . " Pingüino" . $this->getSexoCompleto() . ", llamado " . $this->nombre . "<br> \n";
+    }
 }
 ?>
