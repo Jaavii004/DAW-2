@@ -41,6 +41,10 @@ class Perro extends Mamifero {
         echo "Perro " . $this->nombre . ": Guau guau<br>  \n";
     }
 
+    public function amamantar() {
+        echo "Perro " . parent::amamantar();
+    }
+
     public function __toString() {
         $nombreText = ($this->nombre != "") ? " y mi nombre es " . $this->nombre : " y no tengo nombre";
         $razaText = ($this->raza != "") ? ", raza " . $this->raza : " raza";

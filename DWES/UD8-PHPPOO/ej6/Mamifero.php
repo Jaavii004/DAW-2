@@ -26,9 +26,9 @@ abstract class Mamifero extends Animal {
 
     public function amamantar() {
         if ($this->sexo == "M") {
-            echo static::class . " " . ($this->nombre ?: "") . ": Soy macho, no puedo amamantar<br> \n";
+            return $this->nombre . ": Soy macho, no puedo amamantar<br> \n";
         } else {
-            echo static::class . " " . ($this->nombre ?: "") . ": Amamantando a mis crias<br> \n";
+            return $this->nombre . ": Amamantando a mis crias<br> \n";
         }
     }
     

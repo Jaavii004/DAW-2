@@ -34,12 +34,8 @@ class Canario extends Ave {
         echo "Canario " . $this->nombre . ": Pio pio pio<br> \n";
     }
 
-    public function getClase() {
-        return "Canario";
-    }
-
-    public function ponerHuevo($especie = "") {
-        parent::ponerHuevo("Canario");
+    public function ponerHuevo() {
+        echo "Canario" . parent::ponerHuevo();
     }
 
     public function morirse() {

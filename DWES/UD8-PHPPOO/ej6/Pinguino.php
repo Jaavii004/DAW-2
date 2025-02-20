@@ -21,23 +21,16 @@ class Pinguino extends Ave {
         return $obj;
     }
     
-    public function alimentarse($comida = "") {
-        echo $this->getNombreClass() . ": Estoy comiendo peces<br> \n";
+    public function alimentarse($comida = "peces") {
+        echo "Pingüino " . $this->nombre . parent::alimentarse($comida);
     }
     
     public function programar() {
-        echo $this->getNombreClass() . ": Soy un pingüino programandor en PHP<br> \n";
-    }
-    
-    protected function getNombreClass() {
-        return "Pingüino " . $this->nombre;
-    }
-    public function getClase() {
-        return "Pingüino";
+        echo "Pingüino " . $this->nombre . ": Soy un pingüino programandor en PHP<br> \n";
     }
 
-    public function ponerHuevo($especie = "") {
-        parent::ponerHuevo("Pingüino");
+    public function ponerHuevo() {
+        echo "Pingüino" . parent::ponerHuevo();
     }
 
     public function __toString() {

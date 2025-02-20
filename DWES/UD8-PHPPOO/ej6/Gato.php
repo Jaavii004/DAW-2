@@ -41,6 +41,14 @@ class Gato extends Mamifero {
         echo "Gato " . $this->nombre . ": Miauuuu<br>  \n";
     }
 
+    public function morirse() {
+        echo "Gato " . $this->nombre . parent::morirse();
+    }
+
+    public function amamantar() {
+        echo "Gato " . parent::amamantar();
+    }
+
     public function __toString() {
         $nombreText = ($this->nombre != "") ? " y mi nombre es " . $this->nombre : " y no tengo nombre";
         $razaText = ($this->raza != "") ? ", raza " . $this->raza : " raza";

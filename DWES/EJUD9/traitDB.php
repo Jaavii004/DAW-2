@@ -29,8 +29,8 @@ trait TraitDB
         return $conn->exec($sql);
     }
 // Cambiar de estático a no estático
-public function queryPreparadaDB($sql, $parametros = []) {
-    $conn = $this->connectDB(); // Aquí usas $this para referirte a la conexión.
+public static function queryPreparadaDB($sql, $parametros = []) {
+    $conn = connectDB(); // Aquí usas $this para referirte a la conexión.
     
     try {
         $stmt = $conn->prepare($sql);

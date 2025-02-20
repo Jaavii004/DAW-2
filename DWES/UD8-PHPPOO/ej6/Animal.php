@@ -41,7 +41,7 @@ abstract class Animal {
     public function alimentarse($comida = "") {
         return ": Estoy comiendo " . $comida . "<br> \n";
     }
-    
+
     public function morirse() {
         self::$totalAnimales--;
         return ": Adiós!<br> \n";
@@ -49,10 +49,6 @@ abstract class Animal {
 
     public static function getTotalAnimales() {
         return "Hay un total de " . self::$totalAnimales . " animales<br> \n";
-    }
-
-    protected function getNombreClass(){
-        return;
     }
 
     public function __toString(){
