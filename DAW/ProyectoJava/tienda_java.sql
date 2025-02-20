@@ -18,12 +18,13 @@ CREATE TABLE sellers (
     password VARCHAR(255) NOT NULL
 );
 
--- Products Table
+
 CREATE TABLE products (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     price DECIMAL(10,2) NOT NULL,
-    stock INT NOT NULL
+    stock INT NOT NULL,
+    photo VARCHAR(255)
 );
 
 -- Orders Table

@@ -11,7 +11,7 @@ public class ProductsServlet extends HttpServlet {
         // Verificar que el usuario esté logueado
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
-            response.sendRedirect("login"); // redirige a login si no hay sesión o no hay usuario
+            response.sendRedirect("login"); // redirige a login si no hay sesión o usuario
             return;
         }
         
@@ -33,6 +33,7 @@ public class ProductsServlet extends HttpServlet {
             out.println("<h2>Products List</h2>");
             out.println("<table border='1' cellpadding='5'>");
             out.println("<tr>");
+            out.println("<th>Photo</th>"); // Nueva columna para la foto
             out.println("<th>Name</th>");
             out.println("<th>Price</th>");
             out.println("<th>Stock</th>");
@@ -45,8 +46,15 @@ public class ProductsServlet extends HttpServlet {
                 String name = rs.getString("name");
                 double price = rs.getDouble("price");
                 int stock = rs.getInt("stock");
+                String photo = rs.getString("photo");
                 
                 out.println("<tr>");
+                // Mostrar la imagen si existe, o un mensaje alternativo
+                if (photo != null && !photo.trim().isEmpty()) {
+                    out.println("<td><img src='" + photo + "' alt='" + name + "' width='100' height='100'/></td>");
+                } else {
+                    out.println("<td>No Image</td>");
+                }
                 out.println("<td>" + name + "</td>");
                 out.println("<td>" + price + "</td>");
                 out.println("<td>" + stock + "</td>");

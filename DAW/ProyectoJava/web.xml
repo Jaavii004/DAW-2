@@ -56,4 +56,32 @@
         <servlet-name>ComprasServlet</servlet-name>
         <url-pattern>/compras</url-pattern>
     </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdminServlet</servlet-name>
+        <servlet-class>AdminServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminServlet</servlet-name>
+        <url-pattern>/admin</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdminPurchasesServlet</servlet-name>
+        <servlet-class>AdminPurchasesServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminPurchasesServlet</servlet-name>
+        <url-pattern>/adminPurchases</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>AdminOrderDetailsServlet</servlet-name>
+        <servlet-class>AdminOrderDetailsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AdminOrderDetailsServlet</servlet-name>
+        <url-pattern>/adminOrderDetails</url-pattern>
+    </servlet-mapping>
+
 </web-app>

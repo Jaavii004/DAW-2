@@ -290,6 +290,7 @@
                             this.resultadoBatalla = `🔥 ¡${this.cartaSeleccionada.name} gana la batalla definitiva!`;
                             this.battleFinished = true;
                             this.mostrarModalResultado = true;
+                            this.pistaAudio = "batalla.mp3";
                             return;
                         }
                         const indexMaquina = Math.floor(Math.random() * aliveMachine.length);
@@ -301,6 +302,7 @@
                         this.battleLog = [];
                         this.battleFinished = false;
                         this.mostrarModalResultado = true;
+                        this.pistaAudio = "batalla.mp3";
                     }
                 },
                 async procesarMovimientos(pokemon) {
@@ -335,13 +337,13 @@
                 },
                 async realizarAtaque(move) {
                     if (this.battleFinished) return;
+
                     // Ataque del jugador
                     let damagePlayer = move.power + this.cartaSeleccionada.attack - (this.cartaMaquina.defense / 2);
                     damagePlayer = Math.max(0, Math.round(damagePlayer));
                     this.machineHP -= damagePlayer;
                     this.battleLog.push(`${this.cartaSeleccionada.name} usa ${move.name} causando ${damagePlayer} de daño.`);
 
-                    // Si el Pokémon de la máquina es derrotado
                     if (this.machineHP <= 0) {
                         this.machineHP = 0;
                         this.cartaMaquina.dead = true;
@@ -362,31 +364,28 @@
                     // Contraataque de la máquina
                     if (!this.battleFinished) {
                         let machineMoves = this.cartaMaquina.movesWithPower;
-                        if (!machineMoves || machineMoves.length === 0) {
-                            machineMoves = [{ name: 'Ataque Básico', power: 10 }];
-                        }
                         let machineMove = machineMoves[Math.floor(Math.random() * machineMoves.length)];
                         let damageMachine = machineMove.power + this.cartaMaquina.attack - (this.cartaSeleccionada.defense / 2);
                         damageMachine = Math.max(0, Math.round(damageMachine));
                         this.playerHP -= damageMachine;
                         this.battleLog.push(`${this.cartaMaquina.name} usa ${machineMove.name} causando ${damageMachine} de daño.`);
 
-                        // Si el Pokémon del jugador es derrotado
                         if (this.playerHP <= 0) {
                             this.playerHP = 0;
                             this.cartaSeleccionada.dead = true;
                             this.battleLog.push(`${this.cartaSeleccionada.name} ha sido derrotado.`);
+                            
                             let alivePlayer = this.pockemonsJ1.filter(p => !p.dead);
                             if (alivePlayer.length > 0) {
-                                this.cartaSeleccionada = alivePlayer[0];
-                                this.playerHP = this.cartaSeleccionada.hp;
-                                await this.procesarMovimientos(this.cartaSeleccionada);
-                                this.battleLog.push(`Cambia a ${this.cartaSeleccionada.name}.`);
-                            } else {
-                                this.resultadoBatalla = `💀 ¡Todos los Pokémon del jugador han sido derrotados! La máquina gana la partida.`;
+                                // Cerrar modal y resetear selección
+                                this.mostrarModalResultado = false;
+                                this.cartaSeleccionada = null;
                                 this.battleFinished = true;
-                                return;
+                            } else {
+                                this.resultadoBatalla = `💀 ¡Todos los Pokémon del jugador han sido derrotados!`;
+                                this.battleFinished = true;
                             }
+                            return;
                         }
                     }
                 },
