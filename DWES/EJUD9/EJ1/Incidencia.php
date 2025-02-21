@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . "/../traitDB.php";
+require_once __DIR__ . "/traitDB.php";
 
 class Incidencia {
     use traitDB;
@@ -33,25 +33,24 @@ class Incidencia {
         )");
     }
 
-
     public static function creaIncidencia($codigo, $descripcion) {
         $sql = "INSERT INTO incidencias (codigo, descripcion, fecha_creacion) 
                 VALUES (:codigo, :descripcion, NOW())";
-        
+
         $params = [
             ':codigo' => $codigo,
             ':descripcion' => $descripcion
         ];
     
         try {
-            $result = traitDB::queryPreparadaDB($sql, $params);
+            $result = self::queryPreparadaDB($sql, $params);
             
             if ($result) {
                 echo "Incidencia $codigo creada correctamente.\n";
                 
                 // Verificación adicional
                 $sqlCheck = "SELECT * FROM incidencias WHERE codigo = :codigo";
-                $resultCheck = traitDB::queryPreparadaDB($sqlCheck, [':codigo' => $codigo]);
+                $resultCheck = self::queryPreparadaDB($sqlCheck, [':codigo' => $codigo]);
                 
                 if (empty($resultCheck)) {
                     echo "No se ha insertado la incidencia correctamente.\n";

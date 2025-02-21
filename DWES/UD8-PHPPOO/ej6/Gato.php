@@ -34,15 +34,15 @@ class Gato extends Mamifero {
     }
     
     public function alimentarse($comida = "pescado") {
-        echo "Gato " . $this->nombre . parent::alimentarse($comida);
+        echo "Gato " . $this->getNombre() . parent::alimentarse($comida);
     }
     
     public function maulla() {
-        echo "Gato " . $this->nombre . ": Miauuuu<br>  \n";
+        echo "Gato " . $this->getNombre() . ": Miauuuu<br>  \n";
     }
 
     public function morirse() {
-        echo "Gato " . $this->nombre . parent::morirse();
+        echo "Gato " . $this->getNombre() . parent::morirse();
     }
 
     public function amamantar() {
@@ -50,7 +50,7 @@ class Gato extends Mamifero {
     }
 
     public function __toString() {
-        $nombreText = ($this->nombre != "") ? " y mi nombre es " . $this->nombre : " y no tengo nombre";
+        $nombreText = ($this->getNombre() != "") ? " y mi nombre es " . $this->getNombre() : " y no tengo nombre";
         $razaText = ($this->raza != "") ? ", raza " . $this->raza : " raza";
         return parent::__toString() . " Gato, con sexo " . $this->getSexoCompleto() . $razaText . $nombreText . "<br> \n";
     }

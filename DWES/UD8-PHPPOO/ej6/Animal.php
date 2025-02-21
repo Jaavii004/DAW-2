@@ -19,7 +19,7 @@ abstract class Animal {
     }
     
     public function getNombre() {
-        return $this->nombre . " \n";
+        return $this->nombre;
     }
     
     public function setSexo($sexo) {

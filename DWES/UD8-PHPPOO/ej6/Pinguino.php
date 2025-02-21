@@ -22,11 +22,11 @@ class Pinguino extends Ave {
     }
     
     public function alimentarse($comida = "peces") {
-        echo "Pingüino " . $this->nombre . parent::alimentarse($comida);
+        echo "Pingüino " . $this->getNombre() . parent::alimentarse($comida);
     }
     
     public function programar() {
-        echo "Pingüino " . $this->nombre . ": Soy un pingüino programandor en PHP<br> \n";
+        echo "Pingüino " . $this->getNombre() . ": Soy un pingüino programandor en PHP<br> \n";
     }
 
     public function ponerHuevo() {
@@ -34,7 +34,7 @@ class Pinguino extends Ave {
     }
 
     public function __toString() {
-        return parent::__toString() . " Pingüino" . $this->getSexoCompleto() . ", llamado " . $this->nombre . "<br> \n";
+        return parent::__toString() . " Pingüino" . $this->getSexoCompleto() . ", llamado " . $this->getNombre() . "<br> \n";
     }
 }
 ?>

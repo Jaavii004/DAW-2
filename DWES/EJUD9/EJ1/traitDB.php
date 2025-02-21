@@ -28,26 +28,26 @@ trait TraitDB
         $conn = self::connectDB();
         return $conn->exec($sql);
     }
-// Cambiar de estático a no estático
-public static function queryPreparadaDB($sql, $parametros = []) {
-    $conn = connectDB(); // Aquí usas $this para referirte a la conexión.
-    
-    try {
-        $stmt = $conn->prepare($sql);
-        $stmt->execute($parametros);
+    // Cambiar de estático a no estático
+    public static function queryPreparadaDB($sql, $parametros = []) {
+        $conn = self::connectDB(); // Aquí usas $this para referirte a la conexión.
         
-        // Si la consulta es un SELECT, devuelve los resultados
-        if (stripos($sql, "SELECT") === 0) {
-            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        try {
+            $stmt = $conn->prepare($sql);
+            $stmt->execute($parametros);
+            
+            // Si la consulta es un SELECT, devuelve los resultados
+            if (stripos($sql, "SELECT") === 0) {
+                return $stmt->fetchAll(PDO::FETCH_ASSOC);
+            }
+            
+            // Si la consulta no es SELECT, devuelve true/false
+            return true;
+        } catch (PDOException $e) {
+            echo "Error al ejecutar la consulta: " . $e->getMessage();
+            return false;
         }
-        
-        // Si la consulta no es SELECT, devuelve true/false
-        return true;
-    } catch (PDOException $e) {
-        echo "Error al ejecutar la consulta: " . $e->getMessage();
-        return false;
     }
-}
 
 
     public static function resetearBD()

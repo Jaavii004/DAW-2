@@ -25,15 +25,15 @@ abstract class Ave extends Animal {
 
     public function ponerHuevo() {
         if ($this->sexo == "M") {
-            return " " . $this->nombre . ": Soy macho, no puedo poner huevos<br> \n";
+            return " " . $this->getNombre() . ": Soy macho, no puedo poner huevos<br> \n";
         } else {
-            return " " . $this->nombre . ": He puesto un huevo!<br> \n";
+            return " " . $this->getNombre() . ": He puesto un huevo!<br> \n";
         }
     }
 
     public function __toString() {
         return parent::__toString() . "un Ave, en concreto un ";
-        // " . $this->getClase() . ", con sexo " . $this->getSexoCompleto() . ", llamado " . $this->nombre . "<br> \n";
+        // " . $this->getClase() . ", con sexo " . $this->getSexoCompleto() . ", llamado " . getNombre() . "<br> \n";
     }
 
 }

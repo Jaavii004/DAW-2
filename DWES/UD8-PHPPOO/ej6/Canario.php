@@ -27,11 +27,11 @@ class Canario extends Ave {
     }
     
     public function alimentarse($comida = "alpiste") {
-        echo "Canario " . $this->nombre . parent::alimentarse($comida);
+        echo "Canario " . $this->getNombre() . parent::alimentarse($comida);
     }
     
     public function pia() {
-        echo "Canario " . $this->nombre . ": Pio pio pio<br> \n";
+        echo "Canario " . $this->getNombre() . ": Pio pio pio<br> \n";
     }
 
     public function ponerHuevo() {
@@ -39,11 +39,11 @@ class Canario extends Ave {
     }
 
     public function morirse() {
-        echo "Canario " . $this->nombre . parent::morirse();
+        echo "Canario " . $this->getNombre() . parent::morirse();
     }
 
     public function __toString() {
-        return parent::__toString() . "Canario, con sexo " . $this->getSexoCompleto() . ", llamado " . $this->nombre . "<br> \n";
+        return parent::__toString() . "Canario, con sexo " . $this->getSexoCompleto() . ", llamado " . $this->getNombre() . "<br> \n";
     }
 }
 
