@@ -20,26 +20,32 @@ public class ProductsServlet extends HttpServlet {
         
         // Parámetros de conexión a la base de datos
         String dbUrl = "jdbc:mysql://localhost/java_store?allowPublicKeyRetrieval=true&useSSL=false";
-        String dbUser = "alumno";
+        String dbUser  = "alumno";
         String dbPass = "mipassword";
         
         try {
-            Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPass);
+            Connection conn = DriverManager.getConnection(dbUrl, dbUser , dbPass);
             Statement stmt = conn.createStatement();
             String query = "SELECT * FROM products";
             ResultSet rs = stmt.executeQuery(query);
             
-            out.println("<html><head><title>Products</title></head><body>");
+            out.println("<html><head><title>Products</title>");
+            out.println("<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>");
+            out.println("</head><body>");
+            out.println("<div class='container mt-5'>");
             out.println("<h2>Products List</h2>");
-            out.println("<table border='1' cellpadding='5'>");
+            out.println("<table class='table table-bordered'>");
+            out.println("<thead class='thead-light'>");
             out.println("<tr>");
-            out.println("<th>Photo</th>"); // Nueva columna para la foto
+            out.println("<th>Photo</th>");
             out.println("<th>Name</th>");
             out.println("<th>Price</th>");
             out.println("<th>Stock</th>");
             out.println("<th>Quantity</th>");
             out.println("<th>Action</th>");
             out.println("</tr>");
+            out.println("</thead>");
+            out.println("<tbody>");
             
             while (rs.next()) {
                 int productId = rs.getInt("id");
@@ -51,7 +57,7 @@ public class ProductsServlet extends HttpServlet {
                 out.println("<tr>");
                 // Mostrar la imagen si existe, o un mensaje alternativo
                 if (photo != null && !photo.trim().isEmpty()) {
-                    out.println("<td><img src='" + photo + "' alt='" + name + "' width='100' height='100'/></td>");
+                    out.println("<td><img src='" + photo + "' alt='" + name + "' class='img-fluid' width='100' height='100'/></td>");
                 } else {
                     out.println("<td>No Image</td>");
                 }
@@ -67,19 +73,21 @@ public class ProductsServlet extends HttpServlet {
                 out.println("<input type='hidden' name='productName' value='" + name + "'/>");
                 out.println("<input type='hidden' name='price' value='" + price + "'/>");
                 // Dropdown para seleccionar cantidad (de 1 hasta el stock disponible)
-                out.println("<select name='quantity'>");
+                out.println("<select name='quantity' class='form-control'>");
                 for (int i = 1; i <= stock; i++) {
                     out.println("<option value='" + i + "'>" + i + "</option>");
                 }
                 out.println("</select>");
-                out.println("<input type='submit' value='Add to Cart'/>");
+                out.println("<input type='submit' class='btn btn-primary mt-2' value='Add to Cart'/>");
                 out.println("</form>");
                 out.println("</td>");
                 out.println("</tr>");
             }
             
+            out.println("</tbody>");
             out.println("</table>");
-            out.println("<br><a href='cart'>View Cart</a>");
+            out.println("<br><a href='cart' class='btn btn-secondary'>View Cart</a>");
+            out.println("</div>");
             out.println("</body></html>");
             
             rs.close();
@@ -87,8 +95,7 @@ public class ProductsServlet extends HttpServlet {
             conn.close();
             
         } catch (Exception e) {
-            out.println("<h3>Error connecting to the database.</h3>");
+            out.println("<h3 class='text-danger'>Error connecting to the database.</h3>");
             e.printStackTrace(out);
         }
     }
-}
