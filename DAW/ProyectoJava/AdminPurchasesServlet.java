@@ -13,7 +13,6 @@ public class AdminPurchasesServlet extends HttpServlet {
         return DriverManager.getConnection(dbUrl, dbUser, dbPass);
     }
     
-    // Método auxiliar para imprimir el navbar en todas las páginas
     private void printNavBar(PrintWriter out) {
         out.println("<nav class='navbar navbar-expand-lg navbar-light bg-light'>");
         out.println("  <a class='navbar-brand' href='menu'>MyStore</a>");
@@ -22,9 +21,9 @@ public class AdminPurchasesServlet extends HttpServlet {
         out.println("  </button>");
         out.println("  <div class='collapse navbar-collapse' id='navbarNav'>");
         out.println("    <ul class='navbar-nav'>");
-        out.println("      <li class='nav-item'><a class='nav-link' href='/'>Home</a></li>");
-        out.println("      <li class='nav-item'><a class='nav-link' href='/admin'>Admin</a></li>");
-        out.println("      <li class='nav-item'><a class='nav-link active' href='adminPurchases'>adminPurchases</a></li>");
+        out.println("      <li class='nav-item'><a class='nav-link' href='menu'>Home</a></li>");  // Cambiado
+        out.println("      <li class='nav-item'><a class='nav-link' href='admin'>Admin</a></li>"); // Cambiado
+        out.println("      <li class='nav-item'><a class='nav-link active' href='adminPurchases'>Compras</a></li>");
         out.println("    </ul>");
         out.println("  </div>");
         out.println("</nav>");

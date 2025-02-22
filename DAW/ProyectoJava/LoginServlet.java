@@ -59,10 +59,14 @@ public class LoginServlet extends HttpServlet {
             if (rs.next()) {
                 String role = rs.getString("role");
                 String userName = rs.getString("name");
+                int id = rs.getInt("id");
+                out.println("<h3>Login successful!</h3>");
+                out.println("<p>Welcome, " + id + "!</p>");
 
                 HttpSession session = request.getSession();
                 session.setAttribute("user", userName);
                 session.setAttribute("role", role);
+                session.setAttribute("user_id", id);
 
                 if ("admin".equals(role)) {
                     out.println("<h3>Welcome, Admin " + userName + "!</h3>");

@@ -218,7 +218,7 @@ public class CartServlet extends HttpServlet {
                 session.setAttribute("cart", cart);
                 
                 // Mostrar confirmación del pedido
-                response.setContentType("text/html");
+                response.setContentType("text/html;charset=UTF-8");
                 PrintWriter outResp = response.getWriter();
                 outResp.println("<html><head><title>Order Confirmation</title>");
                 outResp.println("<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>");

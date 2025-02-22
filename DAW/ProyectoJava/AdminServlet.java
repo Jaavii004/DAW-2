@@ -15,9 +15,9 @@ public class AdminServlet extends HttpServlet {
         out.println("  </button>");
         out.println("  <div class='collapse navbar-collapse' id='navbarNav'>");
         out.println("    <ul class='navbar-nav'>");
-        out.println("      <li class='nav-item'><a class='nav-link' href='/'>Home</a></li>");
-        out.println("      <li class='nav-item'><a class='nav-link' href='/admin'>Admin</a></li>");
-        out.println("      <li class='nav-item'><a class='nav-link active' href='adminPurchases'>adminPurchases</a></li>");
+        out.println("      <li class='nav-item'><a class='nav-link' href='menu'>Home</a></li>");  // Cambiado
+        out.println("      <li class='nav-item'><a class='nav-link active' href='admin'>Admin</a></li>"); // Cambiado
+        out.println("      <li class='nav-item'><a class='nav-link' href='adminPurchases'>Compras</a></li>");
         out.println("    </ul>");
         out.println("  </div>");
         out.println("</nav>");
