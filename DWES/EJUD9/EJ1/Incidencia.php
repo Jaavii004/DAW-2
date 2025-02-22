@@ -1,9 +1,12 @@
 <?php
-require_once __DIR__ . "/traitDB.php";
+/**
+ * 
+ */
+
+include_once __DIR__ ."/traitDB.php";
 
 class Incidencia {
-    use traitDB;
-
+    use TraitDB;
     private $codigo;
     private $descripcion;
     private $estado;
@@ -15,8 +18,8 @@ class Incidencia {
         $this->codigo = $codigo;
         $this->descripcion = $descripcion;
         $this->estado = $estado;
-        $this->fecha_creacion = new DateTime($fecha_creacion);
-        $this->fecha_cierre = $fecha_cierre ? new DateTime($fecha_cierre) : null;
+        $this->fecha_creacion = $fecha_creacion;
+        $this->fecha_cierre = $fecha_cierre ? $fecha_cierre : null;
         $this->solucion = $solucion;
     }
 
@@ -46,24 +49,15 @@ class Incidencia {
             $result = self::queryPreparadaDB($sql, $params);
             
             if ($result) {
-                echo "Incidencia $codigo creada correctamente.\n";
-                
-                // Verificación adicional
-                $sqlCheck = "SELECT * FROM incidencias WHERE codigo = :codigo";
-                $resultCheck = self::queryPreparadaDB($sqlCheck, [':codigo' => $codigo]);
-                
-                if (empty($resultCheck)) {
-                    echo "No se ha insertado la incidencia correctamente.\n";
-                } else {
-                    echo "La incidencia se insertó correctamente.\n";
-                }
-                
+                echo "La incidencia $codigo creada correctamente.\n";
+
                 return self::obtenerPorCodigo($codigo);
             } else {
+                echo "La incidencia $codigo no se ha podido crear.\n";
                 return false;
             }
         } catch (PDOException $e) {
-            echo "Error al ejecutar la consulta: " . $e->getMessage() . "\n";
+            echo "Error al crear la consulta: " . $e->getMessage();
             return false;
         }
     }
@@ -75,7 +69,7 @@ class Incidencia {
         
         if (!empty($result)) {
             $row = $result[0];
-            return new self(
+            return new static(
                 $row['codigo'],
                 $row['descripcion'],
                 $row['estado'],
@@ -94,12 +88,11 @@ class Incidencia {
         
         $params = [
             ':solucion' => $solucion,
-            ':codigo' => $this->codigo
+            ':codigo' => $this->getCodigo()
         ];
         
         if (self::queryPreparadaDB($sql, $params)) {
-            echo "Incidencia {$this->codigo} resuelta.\n";
-            self::leeIncidencia($this->codigo);
+            echo "Incidencia {$this->getCodigo()} resuelta.\n";
             return true;
         }
         echo "Error al resolver incidencia.\n";
@@ -133,31 +126,37 @@ class Incidencia {
     }
 
     public function actualizaIncidencia($nueva_descripcion, $nueva_solucion, $nuevo_estado) {
-        $updates = [];
-        $params = [':codigo' => $this->codigo];
+        $sql = "UPDATE incidencias SET ";
+        $params = [':codigo' => $this->getCodigo()];
+        $quieresActualizar = false;
 
         if (!empty($nueva_descripcion)) {
-            $updates[] = "descripcion = :descripcion";
+            $sql .= "descripcion = :descripcion";
             $params[':descripcion'] = $nueva_descripcion;
+            $quieresActualizar = true;
         }
         
         if (!empty($nueva_solucion)) {
-            $updates[] = "solucion = :solucion";
+            $sql .= "solucion = :solucion";
             $params[':solucion'] = $nueva_solucion;
+            $quieresActualizar = true;
         }
         
         if (!empty($nuevo_estado) && in_array($nuevo_estado, ['pendiente', 'resuelta'])) {
-            $updates[] = "estado = :estado";
+            $sql .= "estado = :estado";
             $params[':estado'] = $nuevo_estado;
+            $quieresActualizar = true;
         }
 
-        if (empty($updates)) return false;
+        if (!$quieresActualizar) {
+            echo "No se ha actualizado nada.\n";
+            return false;
+        }
 
-        $sql = "UPDATE incidencias SET " . implode(', ', $updates) . " WHERE codigo = :codigo";
-        
+        $sql .= " WHERE codigo = :codigo";
         if (self::queryPreparadaDB($sql, $params)) {
             echo "Incidencia actualizada.\n";
-            self::leeIncidencia($this->codigo);
+            self::leeIncidencia($this->getCodigo());
             return true;
         }
         return false;
@@ -165,30 +164,30 @@ class Incidencia {
 
     public function borraIncidencia() {
         $sql = "DELETE FROM incidencias WHERE codigo = :codigo";
-        $params = [':codigo' => $this->codigo];
+        $params = [':codigo' => $this->getCodigo()];
         
         if (self::queryPreparadaDB($sql, $params)) {
-            echo "Incidencia eliminada.\n";
+            echo "La incidencia" . $this->getCodigo() . " se ha borrado correctamente.\n";
             self::leeTodasIncidencias();
-            return true;
+        } else {
+            echo "Error al borrar la incidencia " . $this->getCodigo() . ".\n";
         }
-        return false;
     }
 
     public static function getPendientes() {
-        $sql = "SELECT COUNT(*) FROM incidencias WHERE estado = 'pendiente'";
+        $sql = "SELECT COUNT(*) as total FROM incidencias WHERE estado = 'pendiente'";
         $result = self::queryPreparadaDB($sql, []);
-        return $result[0]['COUNT(*)'];
+        return $result[0]['total'] . "\n";
     }
 
     public function __toString() {
-        $output = "Código: {$this->codigo}\n";
+        $output = "Código: {$this->getCodigo()}\n";
         $output .= "Descripción: {$this->descripcion}\n";
         $output .= "Estado: {$this->estado}\n";
-        $output .= "Fecha creación: " . $this->fecha_creacion->format('Y-m-d H:i:s') . "\n";
+        $output .= "Fecha creación: " . $this->fecha_creacion . "\n";
         
         if ($this->estado === 'resuelta') {
-            $output .= "Fecha cierre: " . $this->fecha_cierre->format('Y-m-d H:i:s') . "\n";
+            $output .= "Fecha cierre: " . $this->fecha_cierre . "\n";
             $output .= "Solución: {$this->solucion}\n";
         }
         

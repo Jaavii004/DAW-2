@@ -1,13 +1,11 @@
 <?php
 
 require_once __DIR__ . "/db.php";
-
-trait TraitDB
+trait traitDB
 {
     public static function connectDB()
     {
         try {
-
             // Se crea la conexión usando el charset adecuado
             $conn = new PDO(
                 "mysql:host=" . HOST . ";dbname=INCIDENCIAS;charset=utf8",
@@ -19,29 +17,30 @@ trait TraitDB
         } catch (PDOException $e) {
             die("Conexión fallida: " . $e->getMessage());
         }
+        //devuelve la conexion creada
         return $conn;
     }
 
     public function execDB($sql)
     {
-        // Se usa la conexión para ejecutar la sentencia SQL y se devuelve el número de filas afectadas
-        $conn = self::connectDB();
+        //usa la conexion, ejecuta la sentencia y devuelve el numero de filas afectadas
+        $conn = $this->connectDB();
         return $conn->exec($sql);
     }
-    // Cambiar de estático a no estático
-    public static function queryPreparadaDB($sql, $parametros = []) {
-        $conn = self::connectDB(); // Aquí usas $this para referirte a la conexión.
+
+    public static function queryPreparadaDB($sql, $parametros)
+    {
+        //usa la conexion, prepara la sentencia, la ejecuta con los parametros y devuelve el resultado con todas las filas del conjunto
+        $conn = self::connectDB();
         
         try {
             $stmt = $conn->prepare($sql);
             $stmt->execute($parametros);
             
-            // Si la consulta es un SELECT, devuelve los resultados
-            if (stripos($sql, "SELECT") === 0) {
+            if (stripos($sql, 'SELECT') === 0) {
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
             }
             
-            // Si la consulta no es SELECT, devuelve true/false
             return true;
         } catch (PDOException $e) {
             echo "Error al ejecutar la consulta: " . $e->getMessage();
@@ -49,23 +48,23 @@ trait TraitDB
         }
     }
 
-
     public static function resetearBD()
     {
         $conn = self::connectDB();
-        // Elimina todos los registros de la tabla INCIDENCIA
-        $conn->exec("DELETE FROM INCIDENCIA");
-
-        // Si deseas dropear y recrear la tabla, descomenta el siguiente bloque:
-        /*
-        $conn->exec("DROP TABLE IF EXISTS INCIDENCIA");
-        $conn->exec("CREATE TABLE INCIDENCIA (
-            CODIGO INT PRIMARY KEY,
-            ESTADO VARCHAR(100) NOT NULL,
-            PUESTO VARCHAR(15),
-            PROBLEMA VARCHAR(255),
-            RESOLUCION VARCHAR(255)
-        )");
-        */
+        $sql = "USE INCIDENCIAS";
+        $conn->exec($sql);
+        $sql = "DELETE FROM INCIDENCIA";
+        $conn->exec($sql);
+        // $sql = "DROP TABLE INCIDENCIA IF EXISTS";
+        // $conn->exec($sql);
+        // $sql = "CREATE TABLE INCIDENCIA (
+        //     CODIGO INTEGER,
+        //     ESTADO VARCHAR (100) NOT NULL,
+        //     PUESTO VARCHAR (15),
+        //     PROBLEMA VARCHAR(255),
+        //     RESOLUCION VARCHAR(255),
+        //     CONSTRAINT PK_CODIGO PRIMARY KEY(CODIGO)
+        // )";
+        // $conn->exec($sql);
     }
 }
