@@ -6,24 +6,27 @@ body {
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: linear-gradient(to right, #373B44, #4286f4);
+    background: linear-gradient(to right, #ffcc00, #ff6600); /* Fondo con colores de Pokémon */
     background-image: url("../img/pock.jpg");
     background-size: cover;
     background-position: center;
-
+    font-family: 'Pokemon Solid', sans-serif; /* Fuente de Pokémon */
+    color: #ffcc00; /* Color de texto amarillo */
+    text-shadow: 2px 2px 4px #000; /* Sombra de texto para mejor legibilidad */
 }
 
 /* Contenedor principal */
 .contenedor {
     text-align: center;
     width: 90%;
-    /* Aseguramos que el contenedor ocupe el 80% del ancho */
     height: 80%;
-    /* Aseguramos que el contenedor ocupe el 80% del alto */
     display: flex;
     justify-content: center;
     align-items: center;
-
+    background-color: rgba(255, 255, 255, 0.8); /* Fondo semi-transparente */
+    border: 5px solid #ff6600; /* Borde naranja */
+    border-radius: 15px;
+    box-shadow: 0 0 20px rgba(255, 102, 0, 0.7); /* Sombra naranja */
 }
 
 /* Estilo para el tablero de cartas */
@@ -33,13 +36,10 @@ body {
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    /* El tablero ocupa todo el ancho disponible dentro de su contenedor */
     height: 100%;
-    /* El tablero ocupa todo el alto disponible dentro de su contenedor */
-
     padding: 40px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.7);
-    background-color: rgba(0, 0, 0, 0.8);
+    background-color: rgba(255, 255, 255, 0.9); /* Fondo semi-transparente */
     border-radius: 10px;
 }
 
@@ -49,7 +49,6 @@ body {
     justify-content: space-around;
     width: 100%;
     align-items: center;
-    /* Centrar verticalmente el contenido */
 }
 
 .fila-superior {
@@ -61,35 +60,25 @@ body {
     margin-bottom: 20px;
     display: flex;
     justify-content: center;
-    /* Centra los elementos en la fila */
     align-items: center;
     gap: 10px;
-    /* Ajustamos la distancia entre los elementos */
 }
 
 .vs {
-
     padding: 40px 40px;
-    /* Aumentamos el padding para mayor impacto */
     border-radius: 20px;
-    /* Bordes redondeados más grandes */
     margin: 25px;
-    /* Centrado con márgenes */
     background-color: transparent;
-    font-family: "Pokemon", Arial, sans-serif;
+    font-family: "Pokemon Solid", Arial, sans-serif;
     text-shadow: 6px 6px 12px rgba(0, 0, 0, 0.7), 2px 2px 5px rgba(255, 255, 255, 0.3);
-    /* Sombras más fuertes y con un toque de brillo */
     background-image: url("https://comicvine.gamespot.com/a/uploads/original/11140/111409382/7758673-0112870914-daqrp.png");
     background-repeat: no-repeat;
     background-size: contain;
-    /* Ajustar el tamaño de la imagen para que se vea correctamente */
     background-position: center;
-    /* Centrar la imagen */
 }
 
 .fila-inferior {
     margin-top: 20px;
-    /* Ajustamos el margen */
 }
 
 /* Estilo para las cartas */
@@ -102,29 +91,30 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
-    /* Apilar imagen y texto */
     justify-content: center;
     align-items: center;
     font-size: 18px;
     color: #333;
     text-align: center;
     padding: 5px;
+    transition: transform 0.2s ease;
+}
+
+.carta:hover {
+    transform: scale(1.05); /* Efecto de escala al pasar el mouse */
 }
 
 /* Estilo para las imágenes dentro de las cartas */
 .carta img {
     width: 80px;
-    /* Ajustar tamaño para que no ocupe todo el espacio */
     height: 80px;
     object-fit: contain;
-    /* Mantener la proporción */
     margin-bottom: 5px;
-    /* Separar la imagen del nombre */
 }
 
 /* Estilo para los botones de elección en las filas */
 .boton-eleccion {
-    background-color: #44a2c7;
+    background-color: #ff6600; /* Color naranja */
     color: white;
     border: none;
     padding: 15px 30px;
@@ -134,11 +124,10 @@ body {
     cursor: pointer;
     transition: background-color 0.3s ease;
     margin-left: 20px;
-    /* Separar el botón de las cartas */
 }
 
 .boton-eleccion:hover {
-    background-color: #3770da;
+    background-color: #cc5200; /* Color naranja más oscuro al pasar el mouse */
 }
 
 /* Estilos para el modal */
@@ -185,7 +174,7 @@ body {
 }
 
 .seleccionado {
-    border: 2px solid blue;
+    border: 2px solid #ffcc00; /* Borde amarillo */
     border-radius: 10px;
 }
 
@@ -210,17 +199,14 @@ body {
     background-position: center;
     align-items: center;
     color: transparent;
-    /* Esto hará que el texto no sea visible */
     display: flex;
-    /* Asegúrate de que los elementos estén alineados */
     justify-content: center;
     position: relative;
+}
 
-    /* Asegura que el contenido se posicione correctamente */
-    img,
-    span {
-        display: none;
-    }
+.carta.escondido img,
+.carta.escondido span {
+    display: none;
 }
 
 .ganador {
@@ -258,6 +244,7 @@ body {
     width: 30px;
     height: 30px;
 }
+
 .poderes {
     background-color: rgba(255, 255, 255, 0.8);
     padding: 20px;
@@ -270,15 +257,15 @@ body {
     height: auto;
     flex-wrap: wrap;
     margin-top: 30px;
-    font-family: "Pokemon", Arial, sans-serif;
+    font-family: "Pokemon Solid", Arial, sans-serif;
     color: #333;
 }
 
 .poderes .poder {
     width: 120px;
     height: 120px;
-    background-color: #4CAF50;
-    border: 2px solid #388E3C;
+    background-color: #ff6600; /* Color naranja */
+    border: 2px solid #cc5200; /* Borde naranja más oscuro */
     border-radius: 8px;
     margin: 10px;
     padding: 10px;
@@ -293,7 +280,7 @@ body {
 }
 
 .poderes .poder:hover {
-    background-color: #388E3C;
+    background-color: #cc5200; /* Color naranja más oscuro al pasar el mouse */
     transform: scale(1.05);
 }
 
@@ -302,7 +289,7 @@ body {
 }
 
 .poderes button {
-    background: linear-gradient(45deg, #2196F3, #21CBF3);
+    background: linear-gradient(45deg, #ffcc00, #ff6600); /* Degradado amarillo a naranja */
     border: none;
     color: white;
     padding: 8px 16px;
@@ -314,7 +301,7 @@ body {
 }
 
 .poderes button:hover {
-    background: linear-gradient(45deg, #1976D2, #1E88E5);
+    background: linear-gradient(45deg, #cc5200, #ff6600); /* Degradado más oscuro al pasar el mouse */
 }
 
 .carta.lost {

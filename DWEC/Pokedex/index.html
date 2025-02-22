@@ -4,403 +4,343 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tablero de Cartas</title>
+    <title>Batalla Pokémon 2 Jugadores</title>
     <link rel="stylesheet" href="css/tablero.css">
-    <!-- Vue 3 -->
     <script src="https://unpkg.com/vue@3.5.13/dist/vue.global.js"></script>
 </head>
 
 <body>
     <div class="contenedor" id="app">
-        <!-- Tablero de cartas -->
         <div class="tablero">
-            <!-- Fila superior (Jugador) -->
+            <!-- Selector de modo de juego -->
+            <div>
+                <label for="modoJuego">Selecciona el modo de juego:</label>
+                <select v-model="modoJuego">
+                    <option value="persona">Jugador vs Jugador</option>
+                    <option value="maquina">Jugador vs Máquina</option>
+                </select>
+            </div>
+
+            <!-- Jugador 1 -->
             <div class="fila fila-superior">
-                <button class="boton-eleccion" @click="mostrarModalPockJ1()" id="jugador1">Jugador</button>
-                <div class="carta" @dragstart="dragStart(0)" :draggable="iniciarJuego && !isCardLost(pockemonsJ1[0])"
-                    :class="{'lost': isCardLost(pockemonsJ1[0])}">
-                    <img v-if="pockemonsJ1[0]" :src="pockemonsJ1[0].img" alt="Pokémon">
-                    <span>{{ cardJ1_1 }}</span>
-                </div>
-                <div class="carta" @dragstart="dragStart(1)" :draggable="iniciarJuego && !isCardLost(pockemonsJ1[1])"
-                    :class="{'lost': isCardLost(pockemonsJ1[1])}">
-                    <img v-if="pockemonsJ1[1]" :src="pockemonsJ1[1].img" alt="Pokémon">
-                    <span>{{ cardJ1_2 }}</span>
-                </div>
-                <div class="carta" @dragstart="dragStart(2)" :draggable="iniciarJuego && !isCardLost(pockemonsJ1[2])"
-                    :class="{'lost': isCardLost(pockemonsJ1[2])}">
-                    <img v-if="pockemonsJ1[2]" :src="pockemonsJ1[2].img" alt="Pokémon">
-                    <span>{{ cardJ1_3 }}</span>
-                </div>
-                <div class="carta" @dragstart="dragStart(3)" :draggable="iniciarJuego && !isCardLost(pockemonsJ1[3])"
-                    :class="{'lost': isCardLost(pockemonsJ1[3])}">
-                    <img v-if="pockemonsJ1[3]" :src="pockemonsJ1[3].img" alt="Pokémon">
-                    <span>{{ cardJ1_4 }}</span>
-                </div>
-                <div class="carta" @dragstart="dragStart(4)" :draggable="iniciarJuego && !isCardLost(pockemonsJ1[4])"
-                    :class="{'lost': isCardLost(pockemonsJ1[4])}">
-                    <img v-if="pockemonsJ1[4]" :src="pockemonsJ1[4].img" alt="Pokémon">
-                    <span>{{ cardJ1_5 }}</span>
+                <button class="boton-eleccion" @click="mostrarModal('J1')">Jugador 1</button>
+                <div v-for="(pokemon, index) in pockemonsJ1" :key="'J1-'+index" class="carta"
+                    @dragstart="dragStart('J1', index)" 
+                    :draggable="iniciarJuego && !pokemon.dead"
+                    :class="{'lost': pokemon.dead}">
+                    <img :src="pokemon.img" :alt="pokemon.name">
+                    <span>{{ pokemon.name }}</span>
                 </div>
             </div>
 
-            <!-- Fila del medio -->
+            <!-- Zona de batalla -->
             <div class="fila fila-media">
                 <button class="boton-musica" @click="inmuted = !inmuted">
-                    <img v-if="inmuted" src="img/pause.svg" alt="Pausar Música">
-                    <img v-else src="img/play-button.png" alt="Reproducir Música">
+                    <img v-if="inmuted" src="img/pause.svg" alt="Pausar">
+                    <img v-else src="img/play-button.png" alt="Reproducir">
                 </button>
-                <div class="carta" @dragover.prevent @drop="dropCard">
-                    <img v-if="cartaSeleccionada" :src="cartaSeleccionada.img" :alt="cartaSeleccionada.name">
-                    <div v-if="cartaSeleccionada">
-                        {{ cartaSeleccionada.name }}
-                    </div>
-                    <div v-else>
-                        J1
-                    </div>
+                <div class="carta" @dragover.prevent @drop="dropCard('J1')">
+                    <img v-if="cartaJ1" :src="cartaJ1.img" :alt="cartaJ1.name">
+                    <div v-else>Jugador 1</div>
                 </div>
                 <div class="vs"></div>
-                <div class="carta">J2</div>
+                <div class="carta" @dragover.prevent @drop="dropCard('J2')">
+                    <img v-if="cartaJ2" :src="cartaJ2.img" :alt="cartaJ2.name">
+                    <div v-else>Jugador 2</div>
+                </div>
             </div>
 
-            <!-- Fila inferior (Máquina) -->
+            <!-- Jugador 2 -->
             <div class="fila fila-inferior">
-                <button class="boton-eleccion" id="Maquina">Maquina</button>
-                <div class="carta" :class="{'lost': pockemonsMaquina[0] && pockemonsMaquina[0].dead}">
-                    <img v-if="pockemonsMaquina[0]" :src="pockemonsMaquina[0].img" alt="Pokémon">
-                    <span>{{ cardJ2_1 }}</span>
-                </div>
-                <div class="carta" :class="{'lost': pockemonsMaquina[1] && pockemonsMaquina[1].dead}">
-                    <img v-if="pockemonsMaquina[1]" :src="pockemonsMaquina[1].img" alt="Pokémon">
-                    <span>{{ cardJ2_2 }}</span>
-                </div>
-                <div class="carta" :class="{'lost': pockemonsMaquina[2] && pockemonsMaquina[2].dead}">
-                    <img v-if="pockemonsMaquina[2]" :src="pockemonsMaquina[2].img" alt="Pokémon">
-                    <span>{{ cardJ2_3 }}</span>
-                </div>
-                <div class="carta" :class="{'lost': pockemonsMaquina[3] && pockemonsMaquina[3].dead}">
-                    <img v-if="pockemonsMaquina[3]" :src="pockemonsMaquina[3].img" alt="Pokémon">
-                    <span>{{ cardJ2_4 }}</span>
-                </div>
-                <div class="carta" :class="{'lost': pockemonsMaquina[4] && pockemonsMaquina[4].dead}">
-                    <img v-if="pockemonsMaquina[4]" :src="pockemonsMaquina[4].img" alt="Pokémon">
-                    <span>{{ cardJ2_5 }}</span>
+                <button class="boton-eleccion" @click="mostrarModal('J2')">Jugador 2</button>
+                <div v-for="(pokemon, index) in pockemonsJ2" :key="'J2-'+index" class="carta"
+                    @dragstart="dragStart('J2', index)"
+                    :draggable="iniciarJuego && !pokemon.dead"
+                    :class="{'lost': pokemon.dead}">
+                    <img :src="pokemon.img" :alt="pokemon.name">
+                    <span>{{ pokemon.name }}</span>
                 </div>
             </div>
 
-            <!-- Modal de selección de Pokémon -->
-            <div class="modal" v-if="mostrarModalJ1">
+            <!-- Modal de selección -->
+            <div class="modal" v-if="mostrarModalJ1 || mostrarModalJ2">
                 <div class="modal-contenido">
-                    <h2>Selecciona 5 Pokémon</h2>
+                    <h2>Selecciona 5 Pokémon ({{ jugadorActual }})</h2>
+                    <button @click="seleccionarAleatorio">Seleccionar Aleatorio</button>
                     <div class="pokemon-lista">
-                        <div v-for="pokemon in pockemonsDisponibles" :key="pokemon.name" class="pokemon-item"
-                            :class="{'seleccionado': pockemonsJ1.includes(pokemon)}"
-                            @click="seleccionarPokemon(pokemon)">
+                        <div v-for="pokemon in pockemonsDisponibles" :key="pokemon.name"
+                            class="pokemon-item" 
+                            :class="{'seleccionado': seleccionados.includes(pokemon)}"
+                            @click="toggleSeleccion(pokemon)">
                             <img :src="pokemon.img" :alt="pokemon.name">
                             <p>{{ pokemon.name }}</p>
                         </div>
                     </div>
-                    <button class="boton-cerrar" :disabled="pockemonsJ1.length < 5" @click="confirmarSeleccion">
-                        Confirmar Selección
+                    <button @click="confirmarSeleccion" :disabled="seleccionados.length < 5">
+                        Confirmar ({{ seleccionados.length }}/5)
                     </button>
-                    <button class="boton-cerrar" @click="mostrarModalJ1 = false">Cerrar</button>
+                    <button @click="cerrarModal">Cancelar</button>
                 </div>
             </div>
 
             <!-- Modal de batalla -->
-            <div class="modal" v-if="mostrarModalResultado">
+            <div class="modal" v-if="mostrarBatalla">
                 <div class="modal-contenido">
-                    <h2>Batalla Pokémon</h2>
-                    <div class="fila">
-                        <!-- Carta del jugador en combate -->
-                        <div class="carta"
-                            :class="{'ganador': battleFinished && playerHP > 0, 'lost': battleFinished && playerHP === 0}">
-                            <img v-if="cartaSeleccionada" :src="cartaSeleccionada.img" :alt="cartaSeleccionada.name">
-                            <p>{{ cartaSeleccionada.name }}</p>
-                            <p>Vida: {{ playerHP }} / {{ cartaSeleccionada.hp }}</p>
+                    <h2>Batalla!</h2>
+                    <div class="combate">
+                        <div class="combatiente" :class="{'turno': turno === 'J1'}">
+                            <img :src="cartaJ1.img" :alt="cartaJ1.name">
+                            <div>Vida: {{ vidaJ1 }}/{{ cartaJ1.hp }}</div>
                         </div>
-                        <div class="vs"></div>
-                        <!-- Carta de la máquina en combate -->
-                        <div class="carta"
-                            :class="{'ganador': battleFinished && machineHP > 0, 'lost': battleFinished && machineHP === 0}">
-                            <img v-if="cartaMaquina" :src="cartaMaquina.img" :alt="cartaMaquina.name">
-                            <p>{{ cartaMaquina.name }}</p>
-                            <p>Vida: {{ machineHP }} / {{ cartaMaquina.hp }}</p>
+                        <div class="vs">VS</div>
+                        <div class="combatiente" :class="{'turno': turno === 'J2'}">
+                            <img :src="cartaJ2.img" :alt="cartaJ2.name">
+                            <div>Vida: {{ vidaJ2 }}/{{ cartaJ2.hp }}</div>
                         </div>
                     </div>
-                    <!-- Registro de la batalla -->
-                    <div class="battle-log"
-                        style="overflow-y: auto; max-height: 200px; border: 1px solid #ccc; margin: 10px 0; padding: 5px;">
-                        <p v-for="(log, index) in battleLog" :key="index">{{ log }}</p>
+                    
+                    <div class="registro">
+                        <div v-for="(evento, i) in registro" :key="i">{{ evento }}</div>
                     </div>
-                    <!-- Botones de ataque -->
-                    <div v-if="!battleFinished">
-                        <h3>Elige tu ataque:</h3>
-                        <div class="poderes">
-                            <button v-for="move in cartaSeleccionada.movesWithPower" :key="move.name"
-                                @click="realizarAtaque(move)">
-                                {{ move.name }} (Poder: {{ move.power }})
+
+                    <div v-if="!batallaTerminada">
+                        <h3>{{ turno }} selecciona ataque:</h3>
+                        <div class="ataques">
+                            <button v-for="(ataque, i) in ataquesActuales" :key="i"
+                                @click="realizarAtaque(ataque)">
+                                {{ ataque.name }} ({{ ataque.power }})
                             </button>
                         </div>
                     </div>
-                    <!-- Resultado final -->
                     <div v-else>
-                        <p class="resultado" style="font-size: 2em;">{{ resultadoBatalla }}</p>
-                        <button class="boton-cerrar" @click="cerrarModalResultado">Cerrar</button>
+                        <h2 class="resultado">{{ resultado }}</h2>
+                        <button @click="cerrarBatalla">Cerrar</button>
                     </div>
                 </div>
             </div>
         </div>
-        <div v-if="inmuted">
-            <audio :src="`audios/${pistaAudio}`" autoplay loop></audio>
-        </div>
+
+        <audio v-if="inmuted" :src="`audios/${pistaAudio}`" autoplay loop></audio>
     </div>
 
     <script>
         Vue.createApp({
             data() {
                 return {
-                    pockemons: [],
-                    // Cartas del jugador
-                    cardJ1_1: "Carta 1",
-                    cardJ1_2: "Carta 2",
-                    cardJ1_3: "Carta 3",
-                    cardJ1_4: "Carta 4",
-                    cardJ1_5: "Carta 5",
-                    // Cartas de la máquina
-                    cardJ2_1: "Cargando...",
-                    cardJ2_2: "Cargando...",
-                    cardJ2_3: "Cargando...",
-                    cardJ2_4: "Cargando...",
-                    cardJ2_5: "Cargando...",
-                    pockemonsMaquina: [],
-                    pockemonsJ1: [],
-                    mostrarModalJ1: false,
-                    pockemonsDisponibles: [],
-                    cartaArrastrada: null,
-                    cartaSeleccionada: null,
+                    // Estados del juego
                     iniciarJuego: false,
-                    mostrarModalResultado: false,
-                    resultadoBatalla: "",
-                    cartaMaquina: null,
+                    inmuted: true,
                     pistaAudio: "inicio.mp3",
-                    inmuted: false,
-                    playerHP: 0,
-                    machineHP: 0,
-                    battleFinished: false,
-                    battleLog: []
-                };
+                    
+                    // Jugadores
+                    pockemonsJ1: [],
+                    pockemonsJ2: [],
+                    jugadorActual: 'J1',
+                    mostrarModalJ1: false,
+                    mostrarModalJ2: false,
+                    seleccionados: [],
+                    modoJuego: 'persona', // Modo de juego por defecto
+                    
+                    // Batalla
+                    cartaJ1: null,
+                    cartaJ2: null,
+                    mostrarBatalla: false,
+                    vidaJ1: 0,
+                    vidaJ2: 0,
+                    turno: 'J1',
+                    registro: [],
+                    batallaTerminada: false,
+                    resultado: '',
+                    
+                    // Datos Pokémon
+                    pockemons: [],
+                    pockemonsDisponibles: []
+                }
+            },
+            computed: {
+                ataquesActuales() {
+                    return this.turno === 'J1' 
+                        ? this.cartaJ1.movesWithPower 
+                        : this.cartaJ2.movesWithPower;
+                }
             },
             methods: {
                 async ObtenerPokemons() {
                     const response = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
                     const data = await response.json();
-                    let pokemonsTemp = [];
-                    for (let element of data.results) {
-                        let resp = await fetch(element.url);
-                        let pokemonData = await resp.json();
-                        let pokemon = {
-                            name: pokemonData.name,
-                            img: pokemonData.sprites.other.dream_world.front_default,
-                            hp: pokemonData.stats[0].base_stat,
-                            attack: pokemonData.stats[1].base_stat,
-                            defense: pokemonData.stats[2].base_stat,
-                            special_attack: pokemonData.stats[3].base_stat,
-                            special_defense: pokemonData.stats[4].base_stat,
-                            speed: pokemonData.stats[5].base_stat,
-                            moves: pokemonData.moves,
+                    this.pockemons = await Promise.all(data.results.map(async (pokemon) => {
+                        const res = await fetch(pokemon.url);
+                        const datos = await res.json();
+                        return {
+                            name: datos.name,
+                            img: datos.sprites.other.dream_world.front_default,
+                            hp: datos.stats[0].base_stat,
+                            attack: datos.stats[1].base_stat,
+                            defense: datos.stats[2].base_stat,
+                            moves: datos.moves,
+                            movesWithPower: [],
                             dead: false
                         };
-                        pokemonsTemp.push(pokemon);
-                    }
-                    this.pockemons = pokemonsTemp;
-                    this.eleguirPockMaquina();
+                    }));
+                    this.pockemonsDisponibles = [...this.pockemons];
                 },
-                obtenerAleatorios() {
-                    let indices = new Set();
-                    let result = [];
-                    while (result.length < 5) {
-                        let index = Math.floor(Math.random() * this.pockemons.length);
-                        if (!indices.has(index)) {
-                            indices.add(index);
-                            result.push(this.pockemons[index]);
+
+                // Selección de Pokémon
+                mostrarModal(jugador) {
+                    this.jugadorActual = jugador;
+                    this.seleccionados = jugador === 'J1' 
+                        ? [...this.pockemonsJ1] 
+                        : [...this.pockemonsJ2];
+                    
+                    jugador === 'J1' 
+                        ? this.mostrarModalJ1 = true 
+                        : this.mostrarModalJ2 = true;
+                },
+
+                toggleSeleccion(pokemon) {
+                    if (this.seleccionados.includes(pokemon)) {
+                        this.seleccionados = this.seleccionados.filter(p => p !== pokemon);
+                    } else if (this.seleccionados.length < 5) {
+                        this.seleccionados.push(pokemon);
+                    }
+                },
+
+                async seleccionarAleatorio() {
+                    this.seleccionados = [];
+                    const disponibles = [...this.pockemonsDisponibles];
+                    while (this.seleccionados.length < 5 && disponibles.length > 0) {
+                        const index = Math.floor(Math.random() * disponibles.length);
+                        this.seleccionados.push(disponibles.splice(index, 1)[0]);
+                    }
+                },
+
+                async seleccionarAleatorioMaquina() {
+                    this.pockemonsJ2 = [];
+                    const disponibles = [...this.pockemonsDisponibles];
+                    while (this.pockemonsJ2.length < 5 && disponibles.length > 0) {
+                        const index = Math.floor(Math.random() * disponibles.length);
+                        this.pockemonsJ2.push(disponibles.splice(index, 1)[0]);
+                    }
+                },
+
+                async confirmarSeleccion() {
+                    const jugador = this.jugadorActual;
+                    const equipo = jugador === 'J1' ? this.pockemonsJ1 : this.pockemonsJ2;
+                    
+                    equipo.splice(0, equipo.length, ...this.seleccionados);
+                    
+                    for (const pokemon of equipo) {
+                        if (!pokemon.movesWithPower.length) {
+                            await this.procesarMovimientos(pokemon);
                         }
                     }
-                    return result;
-                },
-                async eleguirPockMaquina() {
-                    if (this.pockemons.length === 0) return;
-                    this.pockemonsMaquina = this.obtenerAleatorios();
-                    this.cardJ2_1 = this.pockemonsMaquina[0].name;
-                    this.cardJ2_2 = this.pockemonsMaquina[1].name;
-                    this.cardJ2_3 = this.pockemonsMaquina[2].name;
-                    this.cardJ2_4 = this.pockemonsMaquina[3].name;
-                    this.cardJ2_5 = this.pockemonsMaquina[4].name;
-                    // Para cada Pokémon de la máquina, obtener sus ataques haciendo la petición a la API
-                    for (let pock of this.pockemonsMaquina) {
-                        await this.procesarMovimientos(pock);
+                    
+                    this.cerrarModal();
+                    
+                    // Si se juega contra la máquina, seleccionar Pokémon automáticamente
+                    if (this.modoJuego === 'maquina' && this.pockemonsJ2.length === 0) {
+                        await this.seleccionarAleatorioMaquina();
                     }
-                    // Los Pokémon disponibles para el jugador son los que no están en la máquina
-                    this.pockemons.forEach(pokemon => {
-                        if (!this.pockemonsMaquina.includes(pokemon)) {
-                            this.pockemonsDisponibles.push(pokemon);
-                        }
-                    });
-                },
-                mostrarModalPockJ1() {
-                    if (this.iniciarJuego) {
-                        console.log("El juego ya ha iniciado; no puedes volver a seleccionar Pokémon.");
-                    } else {
-                        this.mostrarModalJ1 = true;
+
+                    if (this.pockemonsJ1.length === 5 && this.pockemonsJ2.length === 5) {
+                        this.iniciarJuego = true;
                     }
                 },
-                seleccionarPokemon(pokemon) {
-                    if (this.pockemonsJ1.includes(pokemon)) {
-                        const index = this.pockemonsJ1.indexOf(pokemon);
-                        this.pockemonsJ1.splice(index, 1);
-                    } else if (this.pockemonsJ1.length < 5) {
-                        this.pockemonsJ1.push(pokemon);
-                    }
-                },
-                confirmarSeleccion() {
-                    this.cardJ1_1 = this.pockemonsJ1[0].name;
-                    this.cardJ1_2 = this.pockemonsJ1[1].name;
-                    this.cardJ1_3 = this.pockemonsJ1[2].name;
-                    this.cardJ1_4 = this.pockemonsJ1[3].name;
-                    this.cardJ1_5 = this.pockemonsJ1[4].name;
-                    this.iniciarJuego = true;
+
+                cerrarModal() {
                     this.mostrarModalJ1 = false;
+                    this.mostrarModalJ2 = false;
+                    this.seleccionados = [];
                 },
-                dragStart(index) {
-                    if (!this.iniciarJuego) return;
-                    this.cartaArrastrada = this.pockemonsJ1[index];
-                },
-                async dropCard() {
-                    if (this.cartaArrastrada) {
-                        this.cartaSeleccionada = this.cartaArrastrada;
-                        this.cartaArrastrada = null;
-                        let aliveMachine = [];
-                        // Verificar si todos los Pokémon de la máquina han sido derrotados
-                        for (let p of this.pockemonsMaquina) {
-                            if (!p.dead) {
-                                aliveMachine.push(p);
-                            }
-                        }
-                        if (aliveMachine.length === 0) {
-                            this.resultadoBatalla = `🔥 ¡${this.cartaSeleccionada.name} gana la batalla definitiva!`;
-                            this.battleFinished = true;
-                            this.mostrarModalResultado = true;
-                            this.pistaAudio = "batalla.mp3";
-                            return;
-                        }
-                        const indexMaquina = Math.floor(Math.random() * aliveMachine.length);
-                        this.cartaMaquina = aliveMachine[indexMaquina];
-                        // Obtener los movimientos del Pokémon seleccionado (si no se han procesado)
-                        await this.procesarMovimientos(this.cartaSeleccionada);
-                        this.playerHP = this.cartaSeleccionada.hp;
-                        this.machineHP = this.cartaMaquina.hp;
-                        this.battleLog = [];
-                        this.battleFinished = false;
-                        this.mostrarModalResultado = true;
-                        this.pistaAudio = "batalla.mp3";
-                    }
-                },
-                async procesarMovimientos(pokemon) {
-                    if (pokemon.movesWithPower) return;
-                    let randomMoves = [];
-                    let nummax = 22;
-                    while (randomMoves.length < nummax && pokemon.moves.length > 0) {
-                        let randomMove = pokemon.moves[Math.floor(Math.random() * pokemon.moves.length)];
-                        if (!randomMoves.find(m => m.name === randomMove.move.name)) {
-                            randomMoves.push({
-                                name: randomMove.move.name,
-                                url: randomMove.move.url
-                            });
-                        }
-                    }
-                    let movesWithPower = [];
-                    let count = 0;
-                    for (let move of randomMoves) {
-                        let response = await fetch(move.url);
-                        let moveData = await response.json();
-                        let power = moveData.power || 0;
-                        if (power !== 0) {
-                            movesWithPower.push({
-                                name: move.name,
-                                power: power
-                            });
-                            count++;
-                        }
-                        if (count >= 5) break;
-                    }
-                    pokemon.movesWithPower = movesWithPower;
-                },
-                async realizarAtaque(move) {
-                    if (this.battleFinished) return;
 
-                    // Ataque del jugador
-                    let damagePlayer = move.power + this.cartaSeleccionada.attack - (this.cartaMaquina.defense / 2);
-                    damagePlayer = Math.max(0, Math.round(damagePlayer));
-                    this.machineHP -= damagePlayer;
-                    this.battleLog.push(`${this.cartaSeleccionada.name} usa ${move.name} causando ${damagePlayer} de daño.`);
-
-                    if (this.machineHP <= 0) {
-                        this.machineHP = 0;
-                        this.cartaMaquina.dead = true;
-                        this.battleLog.push(`${this.cartaMaquina.name} ha sido derrotado.`);
-                        let aliveMachine = this.pockemonsMaquina.filter(p => !p.dead);
-                        if (aliveMachine.length > 0) {
-                            const index = Math.floor(Math.random() * aliveMachine.length);
-                            this.cartaMaquina = aliveMachine[index];
-                            this.machineHP = this.cartaMaquina.hp;
-                            this.battleLog.push(`Entra ${this.cartaMaquina.name} al combate.`);
-                        } else {
-                            this.resultadoBatalla = `🔥 ¡${this.cartaSeleccionada.name} gana la partida!`;
-                            this.battleFinished = true;
-                            return;
-                        }
+                // Sistema de batalla
+                dragStart(jugador, index) {
+                    const equipo = jugador === 'J1' ? this.pockemonsJ1 : this.pockemonsJ2;
+                    if (!equipo[index].dead) {
+                        this[`carta${jugador}`] = equipo[index];
                     }
+                },
 
-                    // Contraataque de la máquina
-                    if (!this.battleFinished) {
-                        let machineMoves = this.cartaMaquina.movesWithPower;
-                        let machineMove = machineMoves[Math.floor(Math.random() * machineMoves.length)];
-                        let damageMachine = machineMove.power + this.cartaMaquina.attack - (this.cartaSeleccionada.defense / 2);
-                        damageMachine = Math.max(0, Math.round(damageMachine));
-                        this.playerHP -= damageMachine;
-                        this.battleLog.push(`${this.cartaMaquina.name} usa ${machineMove.name} causando ${damageMachine} de daño.`);
-
-                        if (this.playerHP <= 0) {
-                            this.playerHP = 0;
-                            this.cartaSeleccionada.dead = true;
-                            this.battleLog.push(`${this.cartaSeleccionada.name} ha sido derrotado.`);
-                            
-                            let alivePlayer = this.pockemonsJ1.filter(p => !p.dead);
-                            if (alivePlayer.length > 0) {
-                                // Cerrar modal y resetear selección
-                                this.mostrarModalResultado = false;
-                                this.cartaSeleccionada = null;
-                                this.battleFinished = true;
-                            } else {
-                                this.resultadoBatalla = `💀 ¡Todos los Pokémon del jugador han sido derrotados!`;
-                                this.battleFinished = true;
-                            }
-                            return;
+                dropCard(jugador) {
+                    const carta = this[`carta${jugador}`];
+                    if (carta && !carta.dead) {
+                        this[`vida${jugador}`] = carta.hp;
+                        if (this.cartaJ1 && this.cartaJ2) {
+                            this.iniciarBatalla();
                         }
                     }
                 },
-                cerrarModalResultado() {
-                    this.mostrarModalResultado = false;
+
+                iniciarBatalla() {
+                    this.mostrarBatalla = true;
+                    this.batallaTerminada = false;
+                    this.registro = [];
+                    this.turno = Math.random() < 0.5 ? 'J1' : 'J2';
+                    this.pistaAudio = "batalla.mp3";
+                },
+
+                async realizarAtaque(ataque) {
+                    const atacante = this.turno === 'J1' ? this.cartaJ1 : this.cartaJ2;
+                    const defensor = this.turno === 'J1' ? this.cartaJ2 : this.cartaJ1;
+                    
+                    const danio = Math.max(0, Math.round(
+                        ataque.power + 
+                        atacante.attack - 
+                        (defensor.defense / 2)
+                    ));
+                    
+                    this[`vida${this.turno === 'J1' ? 'J2' : 'J1'}`] -= danio;
+                    this.registro.unshift(`${atacante.name} usa ${ataque.name} (${danio} daño)`);
+
+                    if (this.vidaJ1 <= 0 || this.vidaJ2 <= 0) {
+                        this.finalizarBatalla();
+                    } else {
+                        this.turno = this.turno === 'J1' ? 'J2' : 'J1';
+                    }
+                },
+
+                finalizarBatalla() {
+                    this.batallaTerminada = true;
+                    const ganador = this.vidaJ1 > 0 ? 'J1' : 'J2';
+                    this.resultado = `¡${this[`carta${ganador}`].name} gana!`;
+                    
+                    // Marcar Pokémon derrotado
+                    const perdedor = ganador === 'J1' ? this.cartaJ2 : this.cartaJ1;
+                    perdedor.dead = true;
+                },
+
+                cerrarBatalla() {
+                    this.mostrarBatalla = false;
+                    this.cartaJ1 = null;
+                    this.cartaJ2 = null;
                     this.pistaAudio = "inicio.mp3";
                 },
-                isCardLost(card) {
-                    return card && card.dead;
+
+                // Helpers
+                async procesarMovimientos(pokemon) {
+                    if (pokemon.movesWithPower.length) return;
+                    
+                    const moves = await Promise.all(
+                        pokemon.moves.slice(0, 15).map(async move => {
+                            const res = await fetch(move.move.url);
+                            const data = await res.json();
+                            return {
+                                name: move.move.name,
+                                power: data.power || 40
+                            };
+                        })
+                    );
+                    
+                    pokemon.movesWithPower = moves
+                        .filter(m => m.power > 0)
+                        .sort((a, b) => b.power - a.power)
+                        .slice(0, 5);
                 }
             },
             mounted() {
                 this.ObtenerPokemons();
             }
-        }).mount("#app");
+        }).mount('#app');
     </script>
 </body>
 
