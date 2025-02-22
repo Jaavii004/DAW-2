@@ -2,16 +2,15 @@ import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.sql.*;
-import java.util.*;
 
 public class AdminServlet extends HttpServlet {
 
     // Utility method to obtain a database connection
     private Connection getConnection() throws Exception {
         String dbUrl = "jdbc:mysql://localhost/java_store?allowPublicKeyRetrieval=true&useSSL=false";
-        String dbUser = "alumno";
+        String dbUser  = "alumno";
         String dbPass = "mipassword";
-        return DriverManager.getConnection(dbUrl, dbUser, dbPass);
+        return DriverManager.getConnection(dbUrl, dbUser , dbPass);
     }
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -43,18 +42,34 @@ public class AdminServlet extends HttpServlet {
                          int stock = rs.getInt("stock");
                          String photo = rs.getString("photo");
                          
-                         out.println("<html><head><title>Edit Product</title></head><body>");
+                         out.println("<html><head><title>Edit Product</title>");
+                         out.println("<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>");
+                         out.println("</head><body>");
+                         out.println("<div class='container mt-5'>");
                          out.println("<h2>Edit Product</h2>");
                          out.println("<form method='post' action='admin'>");
                          out.println("<input type='hidden' name='action' value='update'/>");
                          out.println("<input type='hidden' name='productId' value='" + productId + "'/>");
-                         out.println("Name: <input type='text' name='name' value='" + name + "' required/><br>");
-                         out.println("Price: <input type='number' step='0.01' name='price' value='" + price + "' required/><br>");
-                         out.println("Stock: <input type='number' name='stock' value='" + stock + "' required/><br>");
-                         out.println("Photo URL: <input type='text' name='photo' value='" + (photo != null ? photo : "") + "'/><br>");
-                         out.println("<input type='submit' value='Update Product'/>");
+                         out.println("<div class='form-group'>");
+                         out.println("<label for='name'>Name:</label>");
+                         out.println("<input type='text' class='form-control' name='name' value='" + name + "' required/>");
+                         out.println("</div>");
+                         out.println("<div class='form-group'>");
+                         out.println("<label for='price'>Price:</label>");
+                         out.println("<input type='number' step='0.01' class='form-control' name='price' value='" + price + "' required/>");
+                         out.println("</div>");
+                         out.println("<div class='form-group'>");
+                         out.println("<label for='stock'>Stock:</label>");
+                         out.println("<input type='number' class='form-control' name='stock' value='" + stock + "' required/>");
+                         out.println("</div>");
+                         out.println("<div class='form-group'>");
+                         out.println("<label for='photo'>Photo URL:</label>");
+                         out.println("<input type='text' class='form-control' name='photo' value='" + (photo != null ? photo : "") + "'/>");
+                         out.println("</div>");
+                         out.println("<button type='submit' class='btn btn-primary'>Update Product</button>");
                          out.println("</form>");
-                         out.println("<br><a href='admin'>Back to Admin Panel</a>");
+                         out.println("<br><a href='admin' class='btn btn-secondary'>Back to Admin Panel</a>");
+                         out.println("</div>");
                          out.println("</body></html>");
                      } else {
                          out.println("<p>Product not found.</p>");
@@ -77,7 +92,7 @@ public class AdminServlet extends HttpServlet {
                      PreparedStatement ps = conn.prepareStatement(sql);
                      ps.setInt(1, productId);
                      ps.executeUpdate();
-                     ps.close();
+ ps.close();
                      response.sendRedirect("admin");
                      return;
                  } catch (Exception e) {
@@ -91,10 +106,14 @@ public class AdminServlet extends HttpServlet {
          try (Connection conn = getConnection()) {
               Statement stmt = conn.createStatement();
               ResultSet rs = stmt.executeQuery("SELECT * FROM products");
-              out.println("<html><head><title>Admin Panel</title></head><body>");
+              out.println("<html><head><title>Admin Panel</title>");
+              out.println("<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>");
+              out.println("</head><body>");
+              out.println("<div class='container mt-5'>");
               out.println("<h2>Admin Panel - Manage Products</h2>");
-              out.println("<table border='1' cellpadding='5'>");
-              out.println("<tr><th>ID</th><th>Photo</th><th>Name</th><th>Price</th><th>Stock</th><th>Actions</th></tr>");
+              out.println("<table class='table table-bordered'>");
+              out.println("<thead class='thead-light'><tr><th>ID</th><th>Photo</th><th>Name</th><th>Price</th><th>Stock</th><th>Actions</th></tr></thead>");
+              out.println("<tbody>");
               while (rs.next()) {
                   int productId = rs.getInt("id");
                   String name = rs.getString("name");
@@ -109,14 +128,15 @@ public class AdminServlet extends HttpServlet {
                       out.println("<td>No Image</td>");
                   }
                   out.println("<td>" + name + "</td>");
-                  out.println("<td>" + price + "</td>");
+                  out.println("<td>" + String.format("%.2f", price) + "</td>");
                   out.println("<td>" + stock + "</td>");
                   out.println("<td>");
-                  out.println("<a href='admin?action=edit&productId=" + productId + "'>Edit</a> | ");
-                  out.println("<a href='admin?action=delete&productId=" + productId + "' onclick=\"return confirm('Are you sure?');\">Delete</a>");
+                  out.println("<a href='admin?action=edit&productId=" + productId + "' class='btn btn-warning btn-sm'>Edit</a> ");
+                  out.println("<a href='admin?action=delete&productId=" + productId + "' class='btn btn-danger btn-sm' onclick=\"return confirm('Are you sure?');\">Delete</a>");
                   out.println("</td>");
                   out.println("</tr>");
               }
+              out.println("</tbody>");
               out.println("</table>");
               rs.close();
               stmt.close();
@@ -125,14 +145,27 @@ public class AdminServlet extends HttpServlet {
               out.println("<h3>Add New Product</h3>");
               out.println("<form method='post' action='admin'>");
               out.println("<input type='hidden' name='action' value='add'/>");
-              out.println("Name: <input type='text' name='name' required/><br>");
-              out.println("Price: <input type='number' step='0.01' name='price' required/><br>");
-              out.println("Stock: <input type='number' name='stock' required/><br>");
-              out.println("Photo URL: <input type='text' name='photo'/><br>");
-              out.println("<input type='submit' value='Add Product'/>");
+              out.println("<div class='form-group'>");
+              out.println("<label for='name'>Name:</label>");
+              out.println("<input type='text' class='form-control' name='name' required/>");
+              out.println("</div>");
+              out.println("<div class='form-group'>");
+              out.println("<label for='price'>Price:</label>");
+              out.println("<input type='number' step='0.01' class='form-control' name='price' required/>");
+              out.println("</div>");
+              out.println("<div class='form-group'>");
+              out.println("<label for='stock'>Stock:</label>");
+              out.println("<input type='number' class='form-control' name='stock' required/>");
+              out.println("</div>");
+              out.println("<div class='form-group'>");
+              out.println("<label for='photo'>Photo URL:</label>");
+              out.println("<input type='text' class='form-control' name='photo'/>");
+              out.println("</div>");
+              out.println("<button type='submit' class='btn btn-success'>Add Product</button>");
               out.println("</form>");
               
-              out.println("<br><a href='products'>Back to Products</a>");
+              out.println("<br><a href='products' class='btn btn-secondary'>Back to Products</a>");
+              out.println("</div>");
               out.println("</body></html>");
          } catch(Exception e) {
               out.println("<p>Error connecting to the database: " + e.getMessage() + "</p>");

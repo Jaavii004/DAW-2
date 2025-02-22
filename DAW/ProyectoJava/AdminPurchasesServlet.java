@@ -8,9 +8,9 @@ public class AdminPurchasesServlet extends HttpServlet {
     // Método para obtener la conexión a la BD
     private Connection getConnection() throws Exception {
         String dbUrl = "jdbc:mysql://localhost/java_store?allowPublicKeyRetrieval=true&useSSL=false";
-        String dbUser = "alumno";
+        String dbUser  = "alumno";
         String dbPass = "mipassword";
-        return DriverManager.getConnection(dbUrl, dbUser, dbPass);
+        return DriverManager.getConnection(dbUrl, dbUser , dbPass);
     }
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -34,9 +34,13 @@ public class AdminPurchasesServlet extends HttpServlet {
            Statement stmt = conn.createStatement();
            ResultSet rs = stmt.executeQuery(sql);
            
-           out.println("<html><head><title>Admin - Purchases</title></head><body>");
+           out.println("<html><head><title>Admin - Purchases</title>");
+           out.println("<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>");
+           out.println("</head><body>");
+           out.println("<div class='container mt-5'>");
            out.println("<h2>Purchases List</h2>");
-           out.println("<table border='1' cellpadding='5'>");
+           out.println("<table class='table table-bordered'>");
+           out.println("<thead class='thead-light'>");
            out.println("<tr>");
            out.println("<th>Order ID</th>");
            out.println("<th>Customer Name</th>");
@@ -46,6 +50,8 @@ public class AdminPurchasesServlet extends HttpServlet {
            out.println("<th>Tracking Number</th>");
            out.println("<th>Actions</th>");
            out.println("</tr>");
+           out.println("</thead>");
+           out.println("<tbody>");
            
            while(rs.next()){
              int orderId = rs.getInt("order_id");
@@ -60,14 +66,16 @@ public class AdminPurchasesServlet extends HttpServlet {
              out.println("<td>" + customerName + "</td>");
              out.println("<td>" + customerEmail + "</td>");
              out.println("<td>" + orderDate + "</td>");
-             out.println("<td>" + total + "</td>");
+             out.println("<td>" + String.format("%.2f", total) + "</td>");
              out.println("<td>" + trackingNumber + "</td>");
-             out.println("<td><a href='adminOrderDetails?orderId=" + orderId + "'>View Details</a></td>");
+             out.println("<td><a href='adminOrderDetails?orderId=" + orderId + "' class='btn btn-info'>View Details</a></td>");
              out.println("</tr>");
            }
            
+           out.println("</tbody>");
            out.println("</table>");
-           out.println("<br><a href='admin'>Back to Admin Panel</a>");
+           out.println("<br><a href='admin' class='btn btn-secondary'>Back to Admin Panel</a>");
+           out.println("</div>");
            out.println("</body></html>");
            
            rs.close();

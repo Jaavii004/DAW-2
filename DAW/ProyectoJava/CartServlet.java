@@ -40,7 +40,10 @@ public class CartServlet extends HttpServlet {
             session.setAttribute("cart", cart);
         }
 
-        out.println("<html><head><title>Shopping Cart</title></head><body>");
+        out.println("<html><head><title>Shopping Cart</title>");
+        out.println("<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>");
+        out.println("</head><body>");
+        out.println("<div class='container mt-5'>");
         out.println("<h2>Your Shopping Cart</h2>");
 
         if (cart.isEmpty()) {
@@ -48,7 +51,8 @@ public class CartServlet extends HttpServlet {
         } else {
             double total = 0;
             out.println("<form method='post' action='cart'>");
-            out.println("<table border='1' cellpadding='5'>");
+            out.println("<table class='table table-bordered'>");
+            out.println("<thead class='thead-light'>");
             out.println("<tr>");
             out.println("<th>Product Name</th>");
             out.println("<th>Price</th>");
@@ -56,30 +60,36 @@ public class CartServlet extends HttpServlet {
             out.println("<th>Subtotal</th>");
             out.println("<th>Action</th>");
             out.println("</tr>");
+            out.println("</thead>");
+            out.println("<tbody>");
             for (CartItem item : cart) {
                 double subtotal = item.getPrice() * item.getQuantity();
                 total += subtotal;
                 out.println("<tr>");
                 out.println("<td>" + item.getProductName() + "</td>");
-                out.println("<td>" + item.getPrice() + "</td>");
-                out.println("<td><input type='number' name='quantity_" + item.getProductId() + "' value='" 
+                out.println("<td>" + String.format("%.2f", item.getPrice()) + "</td>");
+                out.println("<td><input type='number' class='form-control' name='quantity_" + item.getProductId() + "' value='" 
                             + item.getQuantity() + "' min='1'/></td>");
-                out.println("<td>" + subtotal + "</td>");
-                out.println("<td><button type='submit' name='remove' value='" + item.getProductId() + "'>Remove</button></td>");
+                out.println("<td>" + String.format("%.2f", subtotal) + "</td>");
+                out.println("<td><button type='submit' class='btn btn-danger' name='remove' value='" + item.getProductId() + "'>Remove</button></td>");
                 out.println("</tr>");
             }
-            out.println("<tr><td colspan='3'>Total:</td><td colspan='2'>" + total + "</td></tr>");
+            out.println("</tbody>");
+            out.println("<tfoot>");
+            out.println("<tr><td colspan='3'>Total:</td><td colspan='2'>" + String.format("%.2f", total) + "</td></tr>");
+            out.println("</tfoot>");
             out.println("</table>");
-            out.println("<br><input type='submit' name='update' value='Update Cart'/>");
+            out.println("<br><button type='submit' class='btn btn-primary' name='update'>Update Cart</button>");
             // Mostrar el botón de Checkout solo si el usuario ha iniciado sesión
             if (session.getAttribute("user") != null) {
-                out.println("<br><br><input type='submit' name='checkout' value='Checkout'/>");
+                out.println("<br><br><button type='submit' class='btn btn-success' name='checkout'>Checkout</button>");
             } else {
-                out.println("<br><br><a href='login'>Log in to Checkout</a>");
+                out.println("<br><br><a href='login' class='btn btn-info'>Log in to Checkout</a>");
             }
             out.println("</form>");
         }
-        out.println("<br><a href='products'>Continue Shopping</a>");
+        out.println("<br><a href='products' class='btn btn-secondary'>Continue Shopping</a>");
+        out.println("</div>");
         out.println("</body></html>");
     }
 
@@ -88,7 +98,7 @@ public class CartServlet extends HttpServlet {
             throws ServletException, IOException {
 
         HttpSession session = request.getSession();
-        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+        List <CartItem> cart = (List<CartItem>) session.getAttribute("cart");
         if (cart == null) {
             cart = new ArrayList<>();
             session.setAttribute("cart", cart);
@@ -158,11 +168,11 @@ public class CartServlet extends HttpServlet {
             
             // Parámetros de conexión a la base de datos
             String dbUrl = "jdbc:mysql://localhost/java_store?allowPublicKeyRetrieval=true&useSSL=false";
-            String dbUser = "alumno";
+            String dbUser  = "alumno";
             String dbPass = "mipassword";
             
             try {
-                Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPass);
+                Connection conn = DriverManager.getConnection(dbUrl, dbUser , dbPass);
                 conn.setAutoCommit(false);
                 
                 // Insertar en la tabla orders
@@ -206,10 +216,14 @@ public class CartServlet extends HttpServlet {
                 // Mostrar confirmación al usuario
                 response.setContentType("text/html");
                 PrintWriter out = response.getWriter();
-                out.println("<html><head><title>Order Confirmation</title></head><body>");
+                out.println("<html><head><title>Order Confirmation</title>");
+                out.println("<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>");
+                out.println("</head><body>");
+                out.println("<div class='container mt-5'>");
                 out.println("<h2>Thank you for your purchase!</h2>");
                 out.println("<p>Your order has been placed with tracking number: " + trackingNumber + "</p>");
-                out.println("<a href='products'>Continue Shopping</a>");
+                out.println("<a href='products' class='btn btn-secondary'>Continue Shopping</a>");
+                out.println("</div>");
                 out.println("</body></html>");
                 return;
                 
