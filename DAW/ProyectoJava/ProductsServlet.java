@@ -78,6 +78,8 @@ public class ProductsServlet extends HttpServlet {
                     out.println("<option value='" + i + "'>" + i + "</option>");
                 }
                 out.println("</select>");
+                out.println("</td>");
+                out.println("<td>");
                 out.println("<input type='submit' class='btn btn-primary mt-2' value='Add to Cart'/>");
                 out.println("</form>");
                 out.println("</td>");

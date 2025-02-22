@@ -2,15 +2,33 @@ import java.io.*;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.sql.*;
+import java.util.*;
 
 public class AdminServlet extends HttpServlet {
+
+    // Método auxiliar para imprimir el navbar en todas las páginas
+    private void printNavBar(PrintWriter out) {
+        out.println("<nav class='navbar navbar-expand-lg navbar-light bg-light'>");
+        out.println("  <a class='navbar-brand' href='menu'>MyStore</a>");
+        out.println("  <button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation'>");
+        out.println("    <span class='navbar-toggler-icon'></span>");
+        out.println("  </button>");
+        out.println("  <div class='collapse navbar-collapse' id='navbarNav'>");
+        out.println("    <ul class='navbar-nav'>");
+        out.println("      <li class='nav-item'><a class='nav-link' href='/'>Home</a></li>");
+        out.println("      <li class='nav-item'><a class='nav-link' href='/admin'>Admin</a></li>");
+        out.println("      <li class='nav-item'><a class='nav-link active' href='adminPurchases'>adminPurchases</a></li>");
+        out.println("    </ul>");
+        out.println("  </div>");
+        out.println("</nav>");
+    }
 
     // Utility method to obtain a database connection
     private Connection getConnection() throws Exception {
         String dbUrl = "jdbc:mysql://localhost/java_store?allowPublicKeyRetrieval=true&useSSL=false";
         String dbUser  = "alumno";
         String dbPass = "mipassword";
-        return DriverManager.getConnection(dbUrl, dbUser , dbPass);
+        return DriverManager.getConnection(dbUrl, dbUser, dbPass);
     }
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -26,7 +44,7 @@ public class AdminServlet extends HttpServlet {
          }
          
          String action = request.getParameter("action");
-         // If action is "edit", show the edit form for a specific product.
+         // Si se solicita editar, mostramos el formulario de edición
          if ("edit".equals(action)) {
              String productIdStr = request.getParameter("productId");
              if (productIdStr != null) {
@@ -45,6 +63,10 @@ public class AdminServlet extends HttpServlet {
                          out.println("<html><head><title>Edit Product</title>");
                          out.println("<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>");
                          out.println("</head><body>");
+                         
+                         // Imprimir el navbar
+                         printNavBar(out);
+                         
                          out.println("<div class='container mt-5'>");
                          out.println("<h2>Edit Product</h2>");
                          out.println("<form method='post' action='admin'>");
@@ -82,7 +104,7 @@ public class AdminServlet extends HttpServlet {
                  return;
              }
          }
-         // If action is "delete", process deletion and then redirect.
+         // Si se solicita eliminar, procesamos la eliminación
          else if ("delete".equals(action)) {
              String productIdStr = request.getParameter("productId");
              if (productIdStr != null) {
@@ -92,7 +114,7 @@ public class AdminServlet extends HttpServlet {
                      PreparedStatement ps = conn.prepareStatement(sql);
                      ps.setInt(1, productId);
                      ps.executeUpdate();
- ps.close();
+                     ps.close();
                      response.sendRedirect("admin");
                      return;
                  } catch (Exception e) {
@@ -102,13 +124,17 @@ public class AdminServlet extends HttpServlet {
              }
          }
          
-         // Default view: List products and show the "Add New Product" form.
+         // Vista por defecto: listado de productos y formulario para añadir nuevos productos.
          try (Connection conn = getConnection()) {
               Statement stmt = conn.createStatement();
               ResultSet rs = stmt.executeQuery("SELECT * FROM products");
               out.println("<html><head><title>Admin Panel</title>");
               out.println("<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>");
               out.println("</head><body>");
+              
+              // Imprimir el navbar
+              printNavBar(out);
+              
               out.println("<div class='container mt-5'>");
               out.println("<h2>Admin Panel - Manage Products</h2>");
               out.println("<table class='table table-bordered'>");
@@ -141,7 +167,7 @@ public class AdminServlet extends HttpServlet {
               rs.close();
               stmt.close();
               
-              // Form to add a new product
+              // Formulario para añadir un nuevo producto
               out.println("<h3>Add New Product</h3>");
               out.println("<form method='post' action='admin'>");
               out.println("<input type='hidden' name='action' value='add'/>");
@@ -166,6 +192,11 @@ public class AdminServlet extends HttpServlet {
               
               out.println("<br><a href='products' class='btn btn-secondary'>Back to Products</a>");
               out.println("</div>");
+              // Add Bootstrap JS and dependencies
+              out.println("<script src='https://code.jquery.com/jquery-3.5.1.slim.min.js'></script>");
+              out.println("<script src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js'></script>");
+              out.println("<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js'></script>");
+ 
               out.println("</body></html>");
          } catch(Exception e) {
               out.println("<p>Error connecting to the database: " + e.getMessage() + "</p>");
@@ -177,14 +208,14 @@ public class AdminServlet extends HttpServlet {
          HttpSession session = request.getSession(false);
          response.setContentType("text/html");
          PrintWriter out = response.getWriter();
-         // Verify that the user is admin.
+         // Verificar que el usuario sea admin.
          if (session == null || !"admin".equals(session.getAttribute("role"))) {
              response.sendRedirect("login");
              return;
          }
          String action = request.getParameter("action");
          if ("add".equals(action)) {
-             // Add a new product
+             // Añadir un nuevo producto
              String name = request.getParameter("name");
              double price = Double.parseDouble(request.getParameter("price"));
              int stock = Integer.parseInt(request.getParameter("stock"));
@@ -203,7 +234,7 @@ public class AdminServlet extends HttpServlet {
                   return;
              }
          } else if ("update".equals(action)) {
-             // Update an existing product
+             // Actualizar un producto existente
              int productId = Integer.parseInt(request.getParameter("productId"));
              String name = request.getParameter("name");
              double price = Double.parseDouble(request.getParameter("price"));

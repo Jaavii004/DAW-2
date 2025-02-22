@@ -10,7 +10,24 @@ public class AdminPurchasesServlet extends HttpServlet {
         String dbUrl = "jdbc:mysql://localhost/java_store?allowPublicKeyRetrieval=true&useSSL=false";
         String dbUser  = "alumno";
         String dbPass = "mipassword";
-        return DriverManager.getConnection(dbUrl, dbUser , dbPass);
+        return DriverManager.getConnection(dbUrl, dbUser, dbPass);
+    }
+    
+    // Método auxiliar para imprimir el navbar en todas las páginas
+    private void printNavBar(PrintWriter out) {
+        out.println("<nav class='navbar navbar-expand-lg navbar-light bg-light'>");
+        out.println("  <a class='navbar-brand' href='menu'>MyStore</a>");
+        out.println("  <button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation'>");
+        out.println("    <span class='navbar-toggler-icon'></span>");
+        out.println("  </button>");
+        out.println("  <div class='collapse navbar-collapse' id='navbarNav'>");
+        out.println("    <ul class='navbar-nav'>");
+        out.println("      <li class='nav-item'><a class='nav-link' href='/'>Home</a></li>");
+        out.println("      <li class='nav-item'><a class='nav-link' href='/admin'>Admin</a></li>");
+        out.println("      <li class='nav-item'><a class='nav-link active' href='adminPurchases'>adminPurchases</a></li>");
+        out.println("    </ul>");
+        out.println("  </div>");
+        out.println("</nav>");
     }
     
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -37,6 +54,10 @@ public class AdminPurchasesServlet extends HttpServlet {
            out.println("<html><head><title>Admin - Purchases</title>");
            out.println("<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>");
            out.println("</head><body>");
+           
+           // Imprimir el navbar
+           printNavBar(out);
+           
            out.println("<div class='container mt-5'>");
            out.println("<h2>Purchases List</h2>");
            out.println("<table class='table table-bordered'>");
@@ -76,6 +97,10 @@ public class AdminPurchasesServlet extends HttpServlet {
            out.println("</table>");
            out.println("<br><a href='admin' class='btn btn-secondary'>Back to Admin Panel</a>");
            out.println("</div>");
+           // Add Bootstrap JS and dependencies
+           out.println("<script src='https://code.jquery.com/jquery-3.5.1.slim.min.js'></script>");
+           out.println("<script src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js'></script>");
+           out.println("<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js'></script>");
            out.println("</body></html>");
            
            rs.close();
