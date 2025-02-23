@@ -23,46 +23,19 @@ public class MenuServlet extends HttpServlet {
         out.println("<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>");
         out.println("</head><body>");
 
-        // Obtener la ruta actual
-        String currentPath = request.getRequestURI();
-
-        // Navbar
+        // Navbar for navigation
         out.println("<nav class='navbar navbar-expand-lg navbar-light bg-light'>");
-        out.println("<a class='navbar-brand' href='menu'>Tienda Online</a>");
-        out.println("<button class='navbar-toggler' type='button' data-toggle='collapse' data-target='#navbarNav' aria-controls='navbarNav' aria-expanded='false' aria-label='Toggle navigation'>");
-        out.println("<span class='navbar-toggler-icon'></span>");
-        out.println("</button>");
-        out.println("<div class='collapse navbar-collapse' id='navbarNav'>");
-        out.println("<ul class='navbar-nav mr-auto'>");
-
-        // Función para determinar si un enlace está activo
-        out.println("<li class='nav-item " + (currentPath.endsWith("/menu") ? "active" : "") + "'>");
-        out.println("<a class='nav-link' href='menu'>Home</a>");
-        out.println("</li>");
-
-        out.println("<li class='nav-item " + (currentPath.contains("/products") ? "active" : "") + "'>");
-        out.println("<a class='nav-link' href='products'>Productos</a>");
-        out.println("</li>");
-
-        out.println("<li class='nav-item " + (currentPath.contains("/cart") ? "active" : "") + "'>");
-        out.println("<a class='nav-link' href='cart'>Carrito</a>");
-        out.println("</li>");
-
-        out.println("<li class='nav-item " + (currentPath.contains("/compras") ? "active" : "") + "'>");
-        out.println("<a class='nav-link' href='compras'>Mis Compras</a>");
-        out.println("</li>");
-
-
-        out.println("</ul>");
-        
-        // Logout a la derecha
-        out.println("<ul class='navbar-nav ml-auto'>");
-        out.println("<li class='nav-item'>");
-        out.println("<a class='nav-link text-danger' href='logout'>Cerrar Sesión (" + session.getAttribute("user") + ")</a>");
-        out.println("</li>");
-        out.println("</ul>");
-
-        out.println("</div></nav>");
+        out.println("  <a class='navbar-brand' href='menu'>MyStore</a>");
+        out.println("  <div class='collapse navbar-collapse'>");
+        out.println("    <ul class='navbar-nav'>");
+        out.println("      <li class='nav-item'><a class='nav-link active' href='menu'>Home</a></li>");
+        out.println("      <li class='nav-item'><a class='nav-link' href='products'>Products</a></li>");
+        out.println("      <li class='nav-item'><a class='nav-link' href='cart'>Cart</a></li>");
+        out.println("      <li class='nav-item'><a class='nav-link' href='purchases'>My Purchases</a></li>");
+        out.println("      <li class='nav-item'><a class='nav-link text-danger' href='logout'>Cerrar Sesión</a></li>");
+        out.println("    </ul>");
+        out.println("  </div>");
+        out.println("</nav>");
 
         out.println("<div class='container mt-5'>");
         out.println("<h1>Bienvenido a la Tienda Online</h1>");

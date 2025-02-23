@@ -22,6 +22,15 @@
     </servlet-mapping>
 
     <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>LogoutServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>RegisterServlet</servlet-name>
         <servlet-class>RegisterServlet</servlet-class>
     </servlet>
@@ -49,12 +58,21 @@
     </servlet-mapping>
 
     <servlet>
-        <servlet-name>ComprasServlet</servlet-name>
-        <servlet-class>ComprasServlet</servlet-class>
+        <servlet-name>PurchasesServlet</servlet-name>
+        <servlet-class>PurchasesServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ComprasServlet</servlet-name>
-        <url-pattern>/compras</url-pattern>
+        <servlet-name>PurchasesServlet</servlet-name>
+        <url-pattern>/purchases</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
+        <servlet-name>OrderDetailsServlet</servlet-name>
+        <servlet-class>OrderDetailsServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>OrderDetailsServlet</servlet-name>
+        <url-pattern>/orderDetails</url-pattern>
     </servlet-mapping>
 
     <servlet>

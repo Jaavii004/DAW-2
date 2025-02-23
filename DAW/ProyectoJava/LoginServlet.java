@@ -61,7 +61,7 @@ public class LoginServlet extends HttpServlet {
                 String userName = rs.getString("name");
                 int id = rs.getInt("id");
                 out.println("<h3>Login successful!</h3>");
-                out.println("<p>Welcome, " + id + "!</p>");
+                // out.println("<p>Welcome, " + id + "!</p>");
 
                 HttpSession session = request.getSession();
                 session.setAttribute("user", userName);

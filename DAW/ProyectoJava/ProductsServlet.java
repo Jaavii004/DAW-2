@@ -32,6 +32,23 @@ public class ProductsServlet extends HttpServlet {
             out.println("<html><head><title>Products</title>");
             out.println("<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>");
             out.println("</head><body>");
+
+            // ========== NAVBAR ==========
+             // Navbar for navigation
+             out.println("<nav class='navbar navbar-expand-lg navbar-light bg-light'>");
+             out.println("  <a class='navbar-brand' href='menu'>MyStore</a>");
+             out.println("  <div class='collapse navbar-collapse'>");
+             out.println("    <ul class='navbar-nav'>");
+             out.println("      <li class='nav-item'><a class='nav-link' href=''>Home</a></li>");
+             out.println("      <li class='nav-item'><a class='nav-link active' href='products'>Products</a></li>");
+             out.println("      <li class='nav-item'><a class='nav-link' href='cart'>Cart</a></li>");
+             out.println("      <li class='nav-item'><a class='nav-link' href='purchases'>My Purchases</a></li>");
+             out.println("      <li class='nav-item'><a class='nav-link text-danger' href='logout'>Cerrar Sesión</a></li>");
+             out.println("    </ul>");
+             out.println("  </div>");
+             out.println("</nav>");
+            // ========== FIN NAVBAR ==========
+
             out.println("<div class='container mt-5'>");
             out.println("<h2>Products List</h2>");
             out.println("<table class='table table-bordered'>");
