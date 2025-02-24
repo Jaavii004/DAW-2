@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +8,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
   <style>
-    /* Estilos */
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
     }
+
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
@@ -20,6 +21,7 @@
       padding: 20px;
       color: #333;
     }
+
     .container {
       max-width: 1400px;
       margin: 0 auto;
@@ -28,6 +30,7 @@
       padding: 20px;
       min-height: 90vh;
     }
+
     .mode-select {
       text-align: center;
       padding: 40px;
@@ -36,17 +39,20 @@
       max-width: 400px;
       margin: 100px auto;
     }
+
     .mode-select select {
       width: 100%;
       padding: 10px;
       margin: 20px 0;
       font-family: 'Press Start 2P', cursive;
     }
+
     .game-board {
       display: flex;
       gap: 20px;
       height: 100%;
     }
+
     .player-section {
       width: 250px;
       padding: 20px;
@@ -56,11 +62,13 @@
       flex-direction: column;
       gap: 15px;
     }
+
     .cards {
       display: flex;
       flex-direction: column;
       gap: 10px;
     }
+
     .card {
       background: white;
       border: 2px solid #ffd700;
@@ -72,32 +80,39 @@
       gap: 10px;
       transition: all 0.2s;
     }
+
     .card:hover {
       transform: translateX(5px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
+
     .card.dead {
       opacity: 0.5;
       border-color: red;
     }
+
     .card img {
       width: 60px;
       height: 60px;
       object-fit: contain;
     }
+
     .card-info {
       flex: 1;
       text-align: left;
     }
+
     .card-name {
       font-size: 14px;
       font-weight: bold;
       margin-bottom: 5px;
     }
+
     .stats {
       font-size: 12px;
       color: #666;
     }
+
     .battle-zone {
       flex: 1;
       padding: 20px;
@@ -108,6 +123,7 @@
       align-items: center;
       justify-content: center;
     }
+
     .battle-area {
       width: 100%;
       display: flex;
@@ -115,6 +131,7 @@
       align-items: center;
       margin: 20px 0;
     }
+
     .battle-slot {
       width: 180px;
       height: 220px;
@@ -126,14 +143,17 @@
       align-items: center;
       justify-content: center;
     }
+
     .battle-slot.filled {
       border-style: solid;
     }
+
     .battle-slot img {
       width: 100px;
       height: 100px;
       object-fit: contain;
     }
+
     .vs {
       font-size: 36px;
       font-weight: bold;
@@ -141,6 +161,7 @@
       font-family: 'Press Start 2P', cursive;
       margin: 0 20px;
     }
+
     .health-bar {
       width: 100%;
       height: 15px;
@@ -149,11 +170,13 @@
       overflow: hidden;
       margin: 10px 0;
     }
+
     .health-bar-fill {
       height: 100%;
       background: linear-gradient(90deg, #2ecc71, #27ae60);
       transition: width 0.3s;
     }
+
     .attacks {
       display: flex;
       gap: 10px;
@@ -161,6 +184,7 @@
       justify-content: center;
       margin-top: 20px;
     }
+
     .attack-btn {
       background: #4a90e2;
       color: white;
@@ -171,9 +195,11 @@
       font-family: 'Press Start 2P', cursive;
       font-size: 12px;
     }
+
     .attack-btn:hover {
       background: #357abd;
     }
+
     .btn {
       background: #4a90e2;
       color: white;
@@ -183,21 +209,24 @@
       cursor: pointer;
       font-family: 'Press Start 2P', cursive;
     }
+
     .btn:hover {
       background: #357abd;
     }
+
     .modal {
       position: fixed;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0, 0, 0, 0.7);
       display: flex;
       justify-content: center;
       align-items: center;
       z-index: 1000;
     }
+
     .modal-content {
       background: white;
       padding: 20px;
@@ -207,6 +236,7 @@
       overflow-y: auto;
       position: relative;
     }
+
     .modal-buttons {
       position: sticky;
       bottom: 0;
@@ -218,12 +248,14 @@
       gap: 10px;
       z-index: 2;
     }
+
     .pokemon-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
       gap: 15px;
       margin: 20px 0;
     }
+
     .pokemon-option {
       padding: 10px;
       border: 2px solid #ddd;
@@ -231,15 +263,18 @@
       text-align: center;
       cursor: pointer;
     }
+
     .pokemon-option.selected {
       border-color: #4a90e2;
       background: #f0f7ff;
     }
+
     .pokemon-option img {
       width: 80px;
       height: 80px;
       object-fit: contain;
     }
+
     .battle-message {
       font-family: 'Press Start 2P', cursive;
       font-size: 14px;
@@ -247,28 +282,36 @@
       margin: 10px 0;
       min-height: 20px;
     }
-    h1, h2, h3 {
+
+    h1,
+    h2,
+    h3 {
       font-family: 'Press Start 2P', cursive;
       color: #ff4444;
       margin-bottom: 15px;
     }
+
     @media (max-width: 1024px) {
       .game-board {
         flex-direction: column;
       }
+
       .player-section {
         width: 100%;
       }
+
       .cards {
         flex-direction: row;
         flex-wrap: wrap;
       }
+
       .card {
         width: calc(50% - 10px);
       }
     }
   </style>
 </head>
+
 <body>
   <div id="app" class="container">
     <!-- Selección de modo -->
@@ -288,12 +331,8 @@
       <div class="player-section">
         <h2>Jugador 1</h2>
         <div class="cards">
-          <div v-for="(pokemon, index) in equipoJ1" 
-               :key="'J1-'+index" 
-               class="card" 
-               :class="{dead: pokemon.muerto}"
-               draggable="true"
-               @dragstart="inicioArrastrar('J1', index, $event)">
+          <div v-for="(pokemon, index) in equipoJ1" :key="'J1-'+index" class="card" :class="{dead: pokemon.muerto}"
+            draggable="true" @dragstart="inicioArrastrar('J1', index, $event)">
             <img :src="pokemon.imagen" :alt="pokemon.nombre">
             <div class="card-info">
               <div class="card-name">{{ pokemon.nombre }}</div>
@@ -304,7 +343,7 @@
           </div>
         </div>
         <button v-if="equipoJ1.length < 5" class="btn" @click="abrirModal('J1')">
-            Seleccionar Equipo
+          Seleccionar Equipo
         </button>
       </div>
 
@@ -312,10 +351,7 @@
       <div class="battle-zone">
         <div class="battle-message">{{ mensajeBatalla }}</div>
         <div class="battle-area">
-          <div class="battle-slot" 
-               :class="{'filled': combateJ1}" 
-               @dragover.prevent
-               @drop="manejarSoltar('J1', $event)">
+          <div class="battle-slot" :class="{'filled': combateJ1}" @dragover.prevent @drop="manejarSoltar('J1', $event)">
             <div v-if="combateJ1">
               <img :src="combateJ1.imagen" :alt="combateJ1.nombre">
               <div class="card-name">{{ combateJ1.nombre }}</div>
@@ -331,10 +367,7 @@
 
           <div class="vs">VS</div>
 
-          <div class="battle-slot" 
-               :class="{'filled': combateJ2}" 
-               @dragover.prevent
-               @drop="manejarSoltar('J2', $event)">
+          <div class="battle-slot" :class="{'filled': combateJ2}" @dragover.prevent @drop="manejarSoltar('J2', $event)">
             <div v-if="combateJ2">
               <img :src="combateJ2.imagen" :alt="combateJ2.nombre">
               <div class="card-name">{{ combateJ2.nombre }}</div>
@@ -352,10 +385,8 @@
         <div v-if="batallaActiva && !batallaTerminada">
           <h3>Turno de {{ turno === 'J1' ? 'Jugador 1' : (modo === 'pvp' ? 'Jugador 2' : 'Máquina') }}</h3>
           <div class="attacks">
-            <button v-for="movimiento in movimientosActuales" 
-                    :key="movimiento.nombre"
-                    class="attack-btn"
-                    @click="atacar(movimiento)">
+            <button v-for="movimiento in movimientosActuales" :key="movimiento.nombre" class="attack-btn"
+              @click="atacar(movimiento)">
               {{ movimiento.nombre }} ({{ movimiento.poder }})
             </button>
           </div>
@@ -366,12 +397,8 @@
       <div class="player-section">
         <h2>{{ modo === 'pvp' ? 'Jugador 2' : 'Máquina' }}</h2>
         <div class="cards">
-          <div v-for="(pokemon, index) in equipoJ2" 
-               :key="'J2-'+index" 
-               class="card" 
-               :class="{dead: pokemon.muerto}"
-               draggable="true"
-               @dragstart="inicioArrastrar('J2', index, $event)">
+          <div v-for="(pokemon, index) in equipoJ2" :key="'J2-'+index" class="card" :class="{dead: pokemon.muerto}"
+            draggable="true" @dragstart="inicioArrastrar('J2', index, $event)">
             <img :src="pokemon.imagen" :alt="pokemon.nombre">
             <div class="card-info">
               <div class="card-name">{{ pokemon.nombre }}</div>
@@ -382,7 +409,7 @@
           </div>
         </div>
         <button v-if="modo === 'pvp' && equipoJ2.length < 5" class="btn" @click="abrirModal('J2')">
-            Seleccionar Equipo
+          Seleccionar Equipo
         </button>
       </div>
     </div>
@@ -393,11 +420,9 @@
         <h2>Selecciona 5 Pokémon</h2>
         <button class="btn" @click="seleccionAleatoria">Aleatorio</button>
         <div class="pokemon-grid">
-          <div v-for="pokemon in pokemonDisponibles" 
-               :key="pokemon.nombre"
-               class="pokemon-option"
-               :class="{selected: seleccionados.some(p => p.nombre === pokemon.nombre)}"
-               @click="alternarSeleccion(pokemon)">
+          <div v-for="pokemon in pokemonDisponibles" :key="pokemon.nombre" class="pokemon-option"
+            :class="{selected: seleccionados.some(p => p.nombre === pokemon.nombre)}"
+            @click="alternarSeleccion(pokemon)">
             <img :src="pokemon.imagen" :alt="pokemon.nombre">
             <div>{{ pokemon.nombre }}</div>
           </div>
@@ -413,7 +438,6 @@
   </div>
 
   <script>
-    // Función para obtener los detalles de un movimiento (traducido a español)
     async function obtenerDetallesMovimiento(urlMovimiento) {
       const respuesta = await fetch(urlMovimiento);
       const datosMovimiento = await respuesta.json();
@@ -425,11 +449,10 @@
       };
     }
 
-    // Función para obtener movimientos aleatorios válidos (con poder > 0)
     async function obtenerMovimientosAleatorios(movimientos, cantidad = 4) {
       let movimientosValidos = [];
       const mezclados = [...movimientos].sort(() => 0.5 - Math.random());
-      
+
       for (const movimiento of mezclados) {
         if (movimientosValidos.length >= cantidad) break;
         const detallesMovimiento = await obtenerDetallesMovimiento(movimiento.move.url);
@@ -437,11 +460,11 @@
           movimientosValidos.push(detallesMovimiento);
         }
       }
-      
+
       while (movimientosValidos.length < cantidad) {
         movimientosValidos.push({ nombre: "Placaje", poder: 40, precision: 100, tipo: "normal" });
       }
-      
+
       return movimientosValidos;
     }
 
@@ -461,30 +484,9 @@
           batallaActiva: false,
           turno: 'J1',
           batallaTerminada: false,
-          resultado: '',
           mensajeBatalla: '',
           pokemonDisponibles: [],
-          todosPokemon: [],
-          tablaTipos: {
-            fire: { strong: ['grass', 'ice', 'bug'], weak: ['water', 'rock', 'fire'] },
-            water: { strong: ['fire', 'ground', 'rock'], weak: ['grass', 'electric', 'water'] },
-            grass: { strong: ['water', 'ground', 'rock'], weak: ['fire', 'ice', 'poison'] },
-            electric: { strong: ['water', 'flying'], weak: ['ground', 'grass', 'electric'] },
-            ice: { strong: ['grass', 'ground', 'flying'], weak: ['fire', 'fighting', 'rock'] },
-            fighting: { strong: ['normal', 'ice', 'rock'], weak: ['flying', 'psychic', 'fairy'] },
-            poison: { strong: ['grass', 'fairy'], weak: ['ground', 'psychic'] },
-            ground: { strong: ['fire', 'electric', 'poison'], weak: ['water', 'grass', 'ice'] },
-            flying: { strong: ['grass', 'fighting', 'bug'], weak: ['electric', 'ice', 'rock'] },
-            psychic: { strong: ['fighting', 'poison'], weak: ['bug', 'ghost', 'dark'] },
-            bug: { strong: ['grass', 'psychic'], weak: ['fire', 'flying', 'rock'] },
-            rock: { strong: ['fire', 'ice', 'flying'], weak: ['water', 'grass', 'fighting'] },
-            ghost: { strong: ['psychic', 'ghost'], weak: ['dark', 'ghost'] },
-            dragon: { strong: ['dragon'], weak: ['ice', 'dragon', 'fairy'] },
-            dark: { strong: ['psychic', 'ghost'], weak: ['fighting', 'bug', 'fairy'] },
-            steel: { strong: ['ice', 'rock'], weak: ['fire', 'fighting', 'ground'] },
-            fairy: { strong: ['fighting', 'dragon', 'dark'], weak: ['poison', 'steel'] },
-            normal: { strong: [], weak: ['fighting', 'ghost'] }
-          }
+          todosPokemon: []
         }
       },
       methods: {
@@ -495,9 +497,7 @@
             this.todosPokemon = await Promise.all(datos.results.map(async (pokemon) => {
               const res = await fetch(pokemon.url);
               const datosPokemon = await res.json();
-              
               const movimientos = await obtenerMovimientosAleatorios(datosPokemon.moves);
-              
               return {
                 nombre: datosPokemon.name,
                 imagen: datosPokemon.sprites.other["official-artwork"].front_default || datosPokemon.sprites.front_default,
@@ -516,38 +516,11 @@
           }
         },
         iniciarSeleccion() {
-          if (this.modo === 'pve') {
-            const verificarPokemon = setInterval(() => {
-              if (this.pokemonDisponibles.length > 0) {
-                clearInterval(verificarPokemon);
-                // Si aún no se ha seleccionado el equipo del Jugador 1, se abre el modal
-                if (this.equipoJ1.length < 5) {
-                  this.abrirModal('J1');
-                  return;
-                }
-                // Si ya se seleccionó, se asigna el equipo de la máquina de forma aleatoria
-                const pokemonAleatorio = [...this.pokemonDisponibles]
-                  .sort(() => 0.5 - Math.random())
-                  .slice(0, 5);
-                this.equipoJ2 = pokemonAleatorio;
-                
-                this.combateJ1 = this.equipoJ1[0];
-                this.saludJ1 = this.combateJ1.hp;
-                this.combateJ2 = this.equipoJ2[0];
-                this.saludJ2 = this.combateJ2.hp;
-                
-                setTimeout(() => {
-                  this.iniciarBatalla();
-                }, 500);
-              }
-            }, 100);
+          if (this.modo === 'pvp' && this.equipoJ1.length < 5) {
+            this.abrirModal('J1');
+          } else if (this.modo === 'pve') {
+            this.abrirModal('J1');
           }
-        },
-        calcularEfectividad(tipoAtaque, tipoDefensa) {
-          let efectividad = 1;
-          if (this.tablaTipos[tipoAtaque].strong.includes(tipoDefensa)) efectividad *= 2;
-          if (this.tablaTipos[tipoAtaque].weak.includes(tipoDefensa)) efectividad *= 0.5;
-          return efectividad;
         },
         abrirModal(jugador) {
           this.jugadorActual = jugador;
@@ -578,24 +551,18 @@
           if (this.seleccionados.length === 5) {
             if (this.jugadorActual === 'J1') {
               this.equipoJ1 = [...this.seleccionados];
-              // Eliminar de la lista global los Pokémon elegidos para el Jugador 1
               this.pokemonDisponibles = this.pokemonDisponibles.filter(p => !this.equipoJ1.some(sel => sel.nombre === p.nombre));
-              if (this.modo === 'pve') {
-                const pokemonAleatorio = [...this.pokemonDisponibles]
-                  .sort(() => 0.5 - Math.random())
-                  .slice(0, 5);
-                this.equipoJ2 = pokemonAleatorio;
+              if (this.modo === 'pvp') this.abrirModal('J2');
+              else if (this.modo === 'pve') {
+                this.equipoJ2 = [...this.pokemonDisponibles].sort(() => 0.5 - Math.random()).slice(0, 5);
                 this.combateJ1 = this.equipoJ1[0];
                 this.saludJ1 = this.combateJ1.hp;
                 this.combateJ2 = this.equipoJ2[0];
                 this.saludJ2 = this.combateJ2.hp;
-                setTimeout(() => {
-                  this.iniciarBatalla();
-                }, 500);
+                setTimeout(() => this.iniciarBatalla(), 500);
               }
-            } else {
+            } else if (this.jugadorActual === 'J2') {
               this.equipoJ2 = [...this.seleccionados];
-              // Eliminar de la lista global los Pokémon elegidos para el Jugador 2
               this.pokemonDisponibles = this.pokemonDisponibles.filter(p => !this.equipoJ2.some(sel => sel.nombre === p.nombre));
             }
             this.cerrarModal();
@@ -611,20 +578,17 @@
         },
         manejarSoltar(jugadorObjetivo, evento) {
           if (this.batallaActiva) return;
-          
           const datos = JSON.parse(evento.dataTransfer.getData("application/json"));
           const { jugador, index } = datos;
-          
           if (jugador !== jugadorObjetivo) return;
-          
           const pokemon = jugador === 'J1' ? this.equipoJ1[index] : this.equipoJ2[index];
           if (pokemon.muerto) return;
-          
+
           if (jugadorObjetivo === 'J1') {
             this.combateJ1 = pokemon;
             this.saludJ1 = pokemon.hp;
             if (this.combateJ2) this.iniciarBatalla();
-          } else if (this.modo === 'pvp') {
+          } else {
             this.combateJ2 = pokemon;
             this.saludJ2 = pokemon.hp;
             if (this.combateJ1) this.iniciarBatalla();
@@ -632,24 +596,17 @@
         },
         iniciarBatalla() {
           if (!this.combateJ1 || !this.combateJ2) return;
-          
           this.batallaActiva = true;
           this.turno = Math.random() < 0.5 ? 'J1' : 'J2';
           this.mensajeBatalla = `¡Comienza la batalla entre ${this.combateJ1.nombre} y ${this.combateJ2.nombre}!`;
-          
-          if (this.modo === 'pve' && this.turno === 'J2') {
-            this.turnoMaquina();
-          }
+          if (this.modo === 'pve' && this.turno === 'J2') this.turnoMaquina();
         },
         async atacar(movimiento) {
           if (this.batallaTerminada) return;
-          
           const atacante = this.turno === 'J1' ? this.combateJ1 : this.combateJ2;
           const defensor = this.turno === 'J1' ? this.combateJ2 : this.combateJ1;
-          
-          // Se utiliza el poder del movimiento seleccionado
           const daño = movimiento.poder;
-          
+
           if (this.turno === 'J1') {
             this.saludJ2 = Math.max(0, this.saludJ2 - daño);
             this.mensajeBatalla = `${atacante.nombre} usa ${movimiento.nombre} y hace ${daño} de daño!`;
@@ -657,9 +614,9 @@
             this.saludJ1 = Math.max(0, this.saludJ1 - daño);
             this.mensajeBatalla = `${atacante.nombre} usa ${movimiento.nombre} y hace ${daño} de daño!`;
           }
-          
+
           await this.verificarEstadoBatalla();
-          
+
           if (!this.batallaTerminada) {
             this.turno = this.turno === 'J1' ? 'J2' : 'J1';
             if (this.modo === 'pve' && this.turno === 'J2') {
@@ -670,12 +627,8 @@
         },
         turnoMaquina() {
           if (this.batallaTerminada) return;
-          const mejorMovimiento = this.seleccionarMejorMovimiento();
+          const mejorMovimiento = this.combateJ2.movimientos[0];
           this.atacar(mejorMovimiento);
-        },
-        seleccionarMejorMovimiento() {
-          // Selecciona el primer movimiento (lógica básica)
-          return this.combateJ2.movimientos[0];
         },
         async verificarEstadoBatalla() {
           if (this.saludJ1 <= 0 || this.saludJ2 <= 0) {
@@ -683,84 +636,39 @@
             const ganador = this.saludJ1 > 0 ? this.combateJ1 : this.combateJ2;
             const perdedor = this.saludJ1 > 0 ? this.combateJ2 : this.combateJ1;
             const jugadorPerdedor = this.saludJ1 > 0 ? 'J2' : 'J1';
-            
-            if (this.saludJ1 <= 0 && this.combateJ1) {
+
+            if (this.saludJ1 <= 0) {
               this.combateJ1.muerto = true;
               this.combateJ1 = null;
               this.saludJ1 = 0;
-            } else if(this.combateJ2) {
+            } else {
               this.combateJ2.muerto = true;
               this.combateJ2 = null;
               this.saludJ2 = 0;
             }
-            
-            this.resultado = `¡${ganador.nombre} ha derrotado a ${perdedor.nombre}!`;
-            this.mensajeBatalla = this.resultado;
-            
+
+            this.mensajeBatalla = `¡${ganador.nombre} ha derrotado a ${perdedor.nombre}!`;
+
             await new Promise(resolve => setTimeout(resolve, 1500));
-            
+
             const tieneVivosJ1 = this.equipoJ1.some(p => !p.muerto);
             const tieneVivosJ2 = this.equipoJ2.some(p => !p.muerto);
             if (!tieneVivosJ1 || !tieneVivosJ2) {
               this.mensajeBatalla = `¡${tieneVivosJ1 ? 'Jugador 1' : (this.modo === 'pvp' ? 'Jugador 2' : 'Máquina')} gana el juego!`;
               return;
             }
-            
+
             this.batallaTerminada = false;
             this.batallaActiva = false;
-            
+
             if (this.modo === 'pve' && jugadorPerdedor === 'J2') {
               const pokemonVivos = this.equipoJ2.filter(p => !p.muerto);
               if (pokemonVivos.length > 0) {
-                const index = Math.floor(Math.random() * pokemonVivos.length);
-                this.combateJ2 = pokemonVivos[index];
+                this.combateJ2 = pokemonVivos[Math.floor(Math.random() * pokemonVivos.length)];
                 this.saludJ2 = this.combateJ2.hp;
                 this.iniciarBatalla();
               }
             }
-          }
-        },
-        cerrarBatalla() {
-          const tieneVivosJ1 = this.equipoJ1.some(p => !p.muerto);
-          const tieneVivosJ2 = this.equipoJ2.some(p => !p.muerto);
-          if (!tieneVivosJ1 || !tieneVivosJ2) {
-            return;
-          }
-          
-          this.batallaActiva = false;
-          this.combateJ1 = null;
-          this.combateJ2 = null;
-          this.batallaTerminada = false;
-          this.mensajeBatalla = '';
-          this.resultado = '';
-          
-          if (this.modo === 'pve') {
-            const pokemonVivos = this.equipoJ2.filter(p => !p.muerto);
-            if (pokemonVivos.length > 0) {
-              const index = Math.floor(Math.random() * pokemonVivos.length);
-              this.combateJ2 = pokemonVivos[index];
-              this.saludJ2 = this.combateJ2.hp;
-            }
-          }
-        },
-        seleccionarEquipoAutomatico(jugador) {
-          const disponibles = [...this.pokemonDisponibles];
-          const pokemonAleatorio = [];
-          for (let i = 0; i < 5 && disponibles.length > 0; i++) {
-            const index = Math.floor(Math.random() * disponibles.length);
-            pokemonAleatorio.push(disponibles.splice(index, 1)[0]);
-          }
-          if (jugador === 'J1') {
-            this.equipoJ1 = pokemonAleatorio;
-          } else {
-            this.equipoJ2 = pokemonAleatorio;
-          }
-        },
-        seleccionarSiguientePokemonAutomatico(jugador) {
-          const pokemonVivos = this[`equipo${jugador}`].filter(p => !p.muerto);
-          if (pokemonVivos.length > 0) {
-            this[`combate${jugador}`] = pokemonVivos[0];
-            this[`salud${jugador}`] = this[`combate${jugador}`].hp;
           }
         }
       },
