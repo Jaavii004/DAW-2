@@ -7,88 +7,74 @@ include_once __DIR__ ."/traitDB.php";
 
 class Incidencia {
     use TraitDB;
+    public static $contador = 1;
     private $codigo;
-    private $descripcion;
+    private $problema;
     private $estado;
-    private $fecha_creacion;
-    private $fecha_cierre;
-    private $solucion;
+    private $puesto;
+    private $resolucion;
 
-    public function __construct($codigo, $descripcion, $estado, $fecha_creacion, $fecha_cierre = null, $solucion = null) {
+    public function __construct($codigo, $problema, $resolucion, $puesto, $estado = "pendiente") {
         $this->codigo = $codigo;
-        $this->descripcion = $descripcion;
+        $this->problema = $problema;
+        $this->resolucion = $resolucion;
+        $this->puesto = $puesto;
         $this->estado = $estado;
-        $this->fecha_creacion = $fecha_creacion;
-        $this->fecha_cierre = $fecha_cierre ? $fecha_cierre : null;
-        $this->solucion = $solucion;
     }
 
-    public static function resetearBD() {
-        $conn = self::connectDB();
-        $conn->exec("DROP TABLE IF EXISTS incidencias");
-        $conn->exec("CREATE TABLE incidencias (
-            codigo INT PRIMARY KEY,
-            descripcion TEXT NOT NULL,
-            estado ENUM('pendiente', 'resuelta') DEFAULT 'pendiente',
-            fecha_creacion DATETIME NOT NULL,
-            fecha_cierre DATETIME,
-            solucion TEXT
-        )");
-    }
-
-    public static function creaIncidencia($codigo, $descripcion) {
-        $sql = "INSERT INTO incidencias (codigo, descripcion, fecha_creacion) 
-                VALUES (:codigo, :descripcion, NOW())";
-
+    public static function creaIncidencia($puesto, $problema) {
+        $sql = "INSERT INTO INCIDENCIA (CODIGO, PROBLEMA, PUESTO, ESTADO) 
+            VALUES (:CODIGO, :PROBLEMA, :PUESTO, 'pendiente')";
+    
         $params = [
-            ':codigo' => $codigo,
-            ':descripcion' => $descripcion
+            ':CODIGO' => static::$contador,
+            ':PROBLEMA' => $problema,
+            ':PUESTO' => $puesto
         ];
     
         try {
             $result = self::queryPreparadaDB($sql, $params);
             
             if ($result) {
-                echo "La incidencia $codigo creada correctamente.\n";
-
-                return self::obtenerPorCodigo($codigo);
+                echo "La incidencia " . static::$contador . " creada correctamente.\n";
+                static::$contador++;
+                return self::obtenerPorCodigo(static::$contador - 1);
             } else {
-                echo "La incidencia $codigo no se ha podido crear.\n";
+                echo "La incidencia " . static::$contador . " no se ha podido crear.\n";
                 return false;
             }
         } catch (PDOException $e) {
             echo "Error al crear la consulta: " . $e->getMessage();
             return false;
         }
-    }
+    }    
 
     private static function obtenerPorCodigo($codigo) {
-        $sql = "SELECT * FROM incidencias WHERE codigo = :codigo";
-        $params = [':codigo' => $codigo];
+        $sql = "SELECT * FROM INCIDENCIA WHERE CODIGO = :CODIGO";
+        $params = [':CODIGO' => $codigo];
         $result = self::queryPreparadaDB($sql, $params);
         
         if (!empty($result)) {
             $row = $result[0];
             return new static(
-                $row['codigo'],
-                $row['descripcion'],
-                $row['estado'],
-                $row['fecha_creacion'],
-                $row['fecha_cierre'],
-                $row['solucion']
+                $row['CODIGO'],
+                $row['PROBLEMA'],
+                $row['RESOLUCION'],
+                $row['PUESTO'],
+                $row['ESTADO']
             );
         }
         return null;
     }
 
-    public function resuelve($solucion) {
-        $sql = "UPDATE incidencias 
-                SET estado = 'resuelta', solucion = :solucion, fecha_cierre = NOW() 
-                WHERE codigo = :codigo";
+    public function resuelve($resolucion) {
+        $sql = "UPDATE INCIDENCIA 
+                SET ESTADO = 'resuelta', RESOLUCION = :RESOLUCION
+                WHERE CODIGO = :CODIGO";
         
         $params = [
-            ':solucion' => $solucion,
-            ':codigo' => $this->getCodigo()
+            ':RESOLUCION' => $resolucion,
+            ':CODIGO' => $this->getCodigo()
         ];
         
         if (self::queryPreparadaDB($sql, $params)) {
@@ -109,42 +95,47 @@ class Incidencia {
     }
 
     public static function leeTodasIncidencias() {
-        $sql = "SELECT * FROM incidencias";
+        $sql = "SELECT * FROM INCIDENCIA";
         $result = self::queryPreparadaDB($sql, []);
         
         foreach ($result as $row) {
-            $incidencia = new self(
-                $row['codigo'],
-                $row['descripcion'],
-                $row['estado'],
-                $row['fecha_creacion'],
-                $row['fecha_cierre'],
-                $row['solucion']
+            $incidencia = new static(
+                $row['CODIGO'],
+                $row['PROBLEMA'],
+                $row['ESTADO'],
+                $row['RESOLUCION'],
+                $row['PUESTO']
             );
             echo $incidencia;
         }
     }
 
-    public function actualizaIncidencia($nueva_descripcion, $nueva_solucion, $nuevo_estado) {
-        $sql = "UPDATE incidencias SET ";
-        $params = [':codigo' => $this->getCodigo()];
+    public function actualizaIncidencia($nuevo_puesto, $nueva_resolucion, $nuevo_problema, $nuevo_estado){
+        $sql = "UPDATE INCIDENCIA SET ";
+        $params = [':CODIGO' => $this->getCodigo()];
         $quieresActualizar = false;
 
-        if (!empty($nueva_descripcion)) {
-            $sql .= "descripcion = :descripcion";
-            $params[':descripcion'] = $nueva_descripcion;
+        if (!empty($nuevo_problema)) {
+            $sql .= "PROBLEMA = :PROBLEMA";
+            $params[':PROBLEMA'] = $nuevo_problema;
             $quieresActualizar = true;
         }
         
-        if (!empty($nueva_solucion)) {
-            $sql .= "solucion = :solucion";
-            $params[':solucion'] = $nueva_solucion;
+        if (!empty($nueva_resolucion)) {
+            $sql .= "RESOLUCION = :RESOLUCION";
+            $params[':RESOLUCION'] = $nueva_resolucion;
             $quieresActualizar = true;
         }
         
         if (!empty($nuevo_estado) && in_array($nuevo_estado, ['pendiente', 'resuelta'])) {
-            $sql .= "estado = :estado";
-            $params[':estado'] = $nuevo_estado;
+            $sql .= "ESTADO = :ESTADO";
+            $params[':ESTADO'] = $nuevo_estado;
+            $quieresActualizar = true;
+        }
+
+        if (!empty($nuevo_puesto)) {
+            $sql .= "PUESTO = :PUESTO";
+            $params[':PUESTO'] = $nuevo_puesto;
             $quieresActualizar = true;
         }
 
@@ -153,7 +144,7 @@ class Incidencia {
             return false;
         }
 
-        $sql .= " WHERE codigo = :codigo";
+        $sql .= " WHERE CODIGO = :CODIGO";
         if (self::queryPreparadaDB($sql, $params)) {
             echo "Incidencia actualizada.\n";
             self::leeIncidencia($this->getCodigo());
@@ -163,8 +154,8 @@ class Incidencia {
     }
 
     public function borraIncidencia() {
-        $sql = "DELETE FROM incidencias WHERE codigo = :codigo";
-        $params = [':codigo' => $this->getCodigo()];
+        $sql = "DELETE FROM INCIDENCIA WHERE CODIGO = :CODIGO";
+        $params = [':CODIGO' => $this->getCodigo()];
         
         if (self::queryPreparadaDB($sql, $params)) {
             echo "La incidencia" . $this->getCodigo() . " se ha borrado correctamente.\n";
@@ -175,24 +166,23 @@ class Incidencia {
     }
 
     public static function getPendientes() {
-        $sql = "SELECT COUNT(*) as total FROM incidencias WHERE estado = 'pendiente'";
+        $sql = "SELECT COUNT(*) AS TOTAL FROM INCIDENCIA WHERE ESTADO = 'pendiente'";
         $result = self::queryPreparadaDB($sql, []);
-        return $result[0]['total'] . "\n";
+        return $result[0]['TOTAL'] . "\n";
     }
 
     public function __toString() {
         $output = "Código: {$this->getCodigo()}\n";
-        $output .= "Descripción: {$this->descripcion}\n";
+        $output .= "Descripción: {$this->problema}\n";
         $output .= "Estado: {$this->estado}\n";
-        $output .= "Fecha creación: " . $this->fecha_creacion . "\n";
-        
+    
         if ($this->estado === 'resuelta') {
-            $output .= "Fecha cierre: " . $this->fecha_cierre . "\n";
-            $output .= "Solución: {$this->solucion}\n";
+            $output .= "Solución: {$this->resolucion}\n";
         }
-        
+    
         return $output . "\n";
     }
+    
 
     public function getCodigo() {
         return $this->codigo;

@@ -3,201 +3,201 @@
  * @autor Silvia Vilar
  * Ejercicio 2. Consultas
  */
-include_once __DIR__ . '\..\..\db.php';
+// include_once __DIR__ . '\..\..\db.php';
 
-// Verifica si se ha enviado el formulario
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Conecta a la base de datos (ajusta los detalles de la conexión según tu configuración)
+// // Verifica si se ha enviado el formulario
+// if ($_SERVER["REQUEST_METHOD"] === "POST") {
+//     // Conecta a la base de datos (ajusta los detalles de la conexión según tu configuración)
     
 
-    // Determina el tipo de consulta
+//     // Determina el tipo de consulta
   
 
-    switch () {
-            //consultas de Clientes
-        case 'ClientePorDni':
-            //Datos de cliente por DNI
+//     switch () {
+//             //consultas de Clientes
+//         case 'ClientePorDni':
+//             //Datos de cliente por DNI
            
-            break;
+//             break;
 
-        case 'ListadoClientes':
-            //Listado de todos los clientes ordenados por dni de cliente
+//         case 'ListadoClientes':
+//             //Listado de todos los clientes ordenados por dni de cliente
             
-            break;
+//             break;
 
-        case 'ClientesDadapoblacion':
-            //Datos de Clientes de una Población seleccionada ordenados por dni de cliente
+//         case 'ClientesDadapoblacion':
+//             //Datos de Clientes de una Población seleccionada ordenados por dni de cliente
             
-            break;
-        case 'ListadoClientesPorPoblacion':
-            //Listado de Clientes de una población seleccionada ordenados por población
+//             break;
+//         case 'ListadoClientesPorPoblacion':
+//             //Listado de Clientes de una población seleccionada ordenados por población
             
-            break;
+//             break;
 
-        case 'NumeroClientesPorPoblacion':
-            //Listado de Clientes de una población seleccionada ordenados por población
+//         case 'NumeroClientesPorPoblacion':
+//             //Listado de Clientes de una población seleccionada ordenados por población
             
-            break;
+//             break;
 
-        case 'ListadoClientesConCompras':
-            //Datos de Clientes que han realizado compras ordenados por dni de cliente
+//         case 'ListadoClientesConCompras':
+//             //Datos de Clientes que han realizado compras ordenados por dni de cliente
             
-            break;
-        case 'ListadoClientesSinCompras':
-            //Datos de Clientes que no han realizado compras ordenados por dni de cliente
+//             break;
+//         case 'ListadoClientesSinCompras':
+//             //Datos de Clientes que no han realizado compras ordenados por dni de cliente
            
-            break;
-        case 'ListadoClientesConComprasDadaPoblacion':
-            //Datos de Clientes que han realizado compras de una población seleccionada ordenados por dni de cliente
+//             break;
+//         case 'ListadoClientesConComprasDadaPoblacion':
+//             //Datos de Clientes que han realizado compras de una población seleccionada ordenados por dni de cliente
             
-            break;
-        case 'ListadoClientesSinComprasDadaPoblacion':
-            //Datos de Clientes que no han realizado compras de una población seleccionada ordenados por dni de cliente
+//             break;
+//         case 'ListadoClientesSinComprasDadaPoblacion':
+//             //Datos de Clientes que no han realizado compras de una población seleccionada ordenados por dni de cliente
             
-            break;
-        case 'ListadoClientesConComprasValencia':
-            //Datos de Clientes que han realizado compras con algún cliente de la población de Valencia ordenados por dni de cliente
+//             break;
+//         case 'ListadoClientesConComprasValencia':
+//             //Datos de Clientes que han realizado compras con algún cliente de la población de Valencia ordenados por dni de cliente
             
-            break;
+//             break;
 
-        case 'ListadoClientesConTresOMasCompras':
-            //Listado de clientes que han realizado 3 o más compras ordenados por dni de cliente
+//         case 'ListadoClientesConTresOMasCompras':
+//             //Listado de clientes que han realizado 3 o más compras ordenados por dni de cliente
            
-            break;
-        case 'ListadoClientesConTresComprasOMasPorPoblacion':
-            //Listado de clientes que han realizado 3 compras o más de una población seleccionada ordenados por dni de cliente
+//             break;
+//         case 'ListadoClientesConTresComprasOMasPorPoblacion':
+//             //Listado de clientes que han realizado 3 compras o más de una población seleccionada ordenados por dni de cliente
            
-            break;
+//             break;
 
-            //Consultas con proveedores
-        case 'ProveedorPorNif':
-            //Datos de proveedor por NIF
+//             //Consultas con proveedores
+//         case 'ProveedorPorNif':
+//             //Datos de proveedor por NIF
            
-            break;
+//             break;
 
-        case 'ListadoProveedores':
-            //Listado de todos los proveedores ordenados por nif de proveedor
+//         case 'ListadoProveedores':
+//             //Listado de todos los proveedores ordenados por nif de proveedor
             
-            break;
+//             break;
 
-        case 'ProveedoresEmpiezanPorTexto':
-            //Datos de proveedores que empiezan por un texto seleccionado ordenados por nif de proveedor
+//         case 'ProveedoresEmpiezanPorTexto':
+//             //Datos de proveedores que empiezan por un texto seleccionado ordenados por nif de proveedor
            
-            break;
+//             break;
 
-        case 'ProveedoresProductosPvpMayor1000':
-            //Datos de proveedores con productos con precio mayor a 1000€ ordenados por nif de proveedor
+//         case 'ProveedoresProductosPvpMayor1000':
+//             //Datos de proveedores con productos con precio mayor a 1000€ ordenados por nif de proveedor
             
-            break;
+//             break;
 
-            //Consultas con productos
-        case 'ProductoPorCodProd':
-            //Datos de producto por COD_PROD
+//             //Consultas con productos
+//         case 'ProductoPorCodProd':
+//             //Datos de producto por COD_PROD
             
-            break;
+//             break;
 
-        case 'ListadoProductos':
-            //Listado de todos los productos ordenados por codigo de producto
+//         case 'ListadoProductos':
+//             //Listado de todos los productos ordenados por codigo de producto
            
-            break;
+//             break;
 
-        case 'ProductosPvpMenorOIgual100':
-            //Datos de productos con precio menor a 100 ordenados por codigo de producto
+//         case 'ProductosPvpMenorOIgual100':
+//             //Datos de productos con precio menor a 100 ordenados por codigo de producto
             
-            break;
+//             break;
 
-        case 'ProductosPVPMayorPromedio':
-            //Productos con precio mayor al promedio ordenados por codigo de producto
+//         case 'ProductosPVPMayorPromedio':
+//             //Productos con precio mayor al promedio ordenados por codigo de producto
             
-            break;
+//             break;
 
-        case 'PvpMaximoProductos':
-            //PVP máximo de los productos
+//         case 'PvpMaximoProductos':
+//             //PVP máximo de los productos
            
-            break;
+//             break;
 
-        case 'PvpMinimoProductos':
-            //PVP mínimo de los productos
+//         case 'PvpMinimoProductos':
+//             //PVP mínimo de los productos
           
-            break;
+//             break;
 
-        case 'PvpPromedioProductos':
-            //PVP promedio de los productos
+//         case 'PvpPromedioProductos':
+//             //PVP promedio de los productos
            
-            break;
+//             break;
 
-        case "ProductosNombreContieneTexto":
-            //Productos cuyo nombre contiene un texto dado ordenados por codigo de producto
+//         case "ProductosNombreContieneTexto":
+//             //Productos cuyo nombre contiene un texto dado ordenados por codigo de producto
            
-            break;
+//             break;
 
-        //consultas con compras
-        case 'ListadoCompras':
-            //Listado de todas las compras mostrando nombre y apellidos de cliente, código y nombre de producto, nombre de proveedor, fecha y unidades ordenados por dni de cliente y código de producto
+//         //consultas con compras
+//         case 'ListadoCompras':
+//             //Listado de todas las compras mostrando nombre y apellidos de cliente, código y nombre de producto, nombre de proveedor, fecha y unidades ordenados por dni de cliente y código de producto
             
-            break;
+//             break;
 
-        case 'ComprasDeAnyo':
-            //Datos de compras a partir de un año dado ordenados por fecha
+//         case 'ComprasDeAnyo':
+//             //Datos de compras a partir de un año dado ordenados por fecha
             
-            break;
+//             break;
 
-        case 'ComprasDeCliente':
-            //Datos de compras de un cliente dado ordenados por dni de cliente
+//         case 'ComprasDeCliente':
+//             //Datos de compras de un cliente dado ordenados por dni de cliente
             
-            break;
+//             break;
 
-        case 'ComprasDeProducto':
-            //Datos de compras de un producto dado ordenados por código de producto
+//         case 'ComprasDeProducto':
+//             //Datos de compras de un producto dado ordenados por código de producto
             
-            break;
+//             break;
 
-        case 'ComprasDeProveedor':
-            //Datos de compras de un proveedor dado ordenados por nif de proveedor
+//         case 'ComprasDeProveedor':
+//             //Datos de compras de un proveedor dado ordenados por nif de proveedor
            
-            break;
+//             break;
 
-        case 'ComprasDePoblacion':
-            //Datos de compras de una población dada ordenados por población
+//         case 'ComprasDePoblacion':
+//             //Datos de compras de una población dada ordenados por población
             
-            break;
+//             break;
 
-        case 'ComprasDeClientesValencia':
-            //Datos de compras con algún cliente de la población de Valencia ordenados por dni de cliente   
+//         case 'ComprasDeClientesValencia':
+//             //Datos de compras con algún cliente de la población de Valencia ordenados por dni de cliente   
            
-            break;
+//             break;
 
-        case 'ComprasConIgualOMasDe2Unidades':
-            //Datos de compras con igual o más de 2 unidades ordenados por dni de cliente
+//         case 'ComprasConIgualOMasDe2Unidades':
+//             //Datos de compras con igual o más de 2 unidades ordenados por dni de cliente
            
-            break;
+//             break;
 
-        case 'ComprasConMasDe3productos':
-            //Datos de compras con más de 3 productos ordenados por dni de cliente
+//         case 'ComprasConMasDe3productos':
+//             //Datos de compras con más de 3 productos ordenados por dni de cliente
           
-            break;
+//             break;
 
-        case 'ComprasMinimo10Unidades':
-            //Datos de compras con un mínimo de 10 unidades ordenados por dni de cliente
+//         case 'ComprasMinimo10Unidades':
+//             //Datos de compras con un mínimo de 10 unidades ordenados por dni de cliente
             
-            break;
+//             break;
 
-        default:
-            break;
-    }
+//         default:
+//             break;
+//     }
 
-    // Ejecuta la consulta si está definida
-    if (isset($consulta)) {
-        //ejecutamos la consulta con los parámetros (si los hay) y obtenemos un vector asociativo
+//     // Ejecuta la consulta si está definida
+//     if (isset($consulta)) {
+//         //ejecutamos la consulta con los parámetros (si los hay) y obtenemos un vector asociativo
 
-    }
+//     }
 
     // Cierra la conexión (iguala a null)
     
 
     // Devuelve los resultados como JSON si hay resultados
     
-}
+// }
 ?>
 
 <html>
