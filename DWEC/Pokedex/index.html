@@ -2,686 +2,411 @@
 <html lang="es">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Batalla Pokémon</title>
-  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-      min-height: 100vh;
-      padding: 20px;
-      color: #333;
-    }
-
-    .container {
-      max-width: 1400px;
-      margin: 0 auto;
-      background: rgba(255, 255, 255, 0.95);
-      border-radius: 20px;
-      padding: 20px;
-      min-height: 90vh;
-    }
-
-    .mode-select {
-      text-align: center;
-      padding: 40px;
-      background: #fff;
-      border-radius: 15px;
-      max-width: 400px;
-      margin: 100px auto;
-    }
-
-    .mode-select select {
-      width: 100%;
-      padding: 10px;
-      margin: 20px 0;
-      font-family: 'Press Start 2P', cursive;
-    }
-
-    .game-board {
-      display: flex;
-      gap: 20px;
-      height: 100%;
-    }
-
-    .player-section {
-      width: 250px;
-      padding: 20px;
-      background: #f5f5f5;
-      border-radius: 15px;
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .cards {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .card {
-      background: white;
-      border: 2px solid #ffd700;
-      border-radius: 10px;
-      padding: 10px;
-      cursor: grab;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      transition: all 0.2s;
-    }
-
-    .card:hover {
-      transform: translateX(5px);
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .card.dead {
-      opacity: 0.5;
-      border-color: red;
-    }
-
-    .card img {
-      width: 60px;
-      height: 60px;
-      object-fit: contain;
-    }
-
-    .card-info {
-      flex: 1;
-      text-align: left;
-    }
-
-    .card-name {
-      font-size: 14px;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    .stats {
-      font-size: 12px;
-      color: #666;
-    }
-
-    .battle-zone {
-      flex: 1;
-      padding: 20px;
-      background: #fff;
-      border-radius: 15px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .battle-area {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 20px 0;
-    }
-
-    .battle-slot {
-      width: 180px;
-      height: 220px;
-      border: 3px dashed #ff4444;
-      border-radius: 15px;
-      padding: 15px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .battle-slot.filled {
-      border-style: solid;
-    }
-
-    .battle-slot img {
-      width: 100px;
-      height: 100px;
-      object-fit: contain;
-    }
-
-    .vs {
-      font-size: 36px;
-      font-weight: bold;
-      color: #ffd700;
-      font-family: 'Press Start 2P', cursive;
-      margin: 0 20px;
-    }
-
-    .health-bar {
-      width: 100%;
-      height: 15px;
-      background: #e0e0e0;
-      border-radius: 10px;
-      overflow: hidden;
-      margin: 10px 0;
-    }
-
-    .health-bar-fill {
-      height: 100%;
-      background: linear-gradient(90deg, #2ecc71, #27ae60);
-      transition: width 0.3s;
-    }
-
-    .attacks {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-top: 20px;
-    }
-
-    .attack-btn {
-      background: #4a90e2;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-family: 'Press Start 2P', cursive;
-      font-size: 12px;
-    }
-
-    .attack-btn:hover {
-      background: #357abd;
-    }
-
-    .btn {
-      background: #4a90e2;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-family: 'Press Start 2P', cursive;
-    }
-
-    .btn:hover {
-      background: #357abd;
-    }
-
-    .modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.7);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 1000;
-    }
-
-    .modal-content {
-      background: white;
-      padding: 20px;
-      border-radius: 15px;
-      max-width: 90%;
-      max-height: 80vh;
-      overflow-y: auto;
-      position: relative;
-    }
-
-    .modal-buttons {
-      position: sticky;
-      bottom: 0;
-      background: white;
-      padding: 15px;
-      border-top: 1px solid #eee;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      z-index: 2;
-    }
-
-    .pokemon-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      gap: 15px;
-      margin: 20px 0;
-    }
-
-    .pokemon-option {
-      padding: 10px;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      text-align: center;
-      cursor: pointer;
-    }
-
-    .pokemon-option.selected {
-      border-color: #4a90e2;
-      background: #f0f7ff;
-    }
-
-    .pokemon-option img {
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
-    }
-
-    .battle-message {
-      font-family: 'Press Start 2P', cursive;
-      font-size: 14px;
-      color: #ff4444;
-      margin: 10px 0;
-      min-height: 20px;
-    }
-
-    h1,
-    h2,
-    h3 {
-      font-family: 'Press Start 2P', cursive;
-      color: #ff4444;
-      margin-bottom: 15px;
-    }
-
-    @media (max-width: 1024px) {
-      .game-board {
-        flex-direction: column;
-      }
-
-      .player-section {
-        width: 100%;
-      }
-
-      .cards {
-        flex-direction: row;
-        flex-wrap: wrap;
-      }
-
-      .card {
-        width: calc(50% - 10px);
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Batalla Pokémon</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body>
-  <div id="app" class="container">
-    <!-- Selección de modo -->
-    <div v-if="!modo" class="mode-select">
-      <h1>BATALLA POKÉMON</h1>
-      <select v-model="modo">
-        <option disabled value="">Selecciona modo</option>
-        <option value="pvp">Jugador vs Jugador</option>
-        <option value="pve">Jugador vs Máquina</option>
-      </select>
-      <button @click="iniciarSeleccion" class="btn">Comenzar</button>
+    <div id="app" class="container">
+        <!-- Selección de modo -->
+        <div v-if="!modo" class="mode-select">
+            <h1>BATALLA POKÉMON</h1>
+            <select v-model="modo">
+                <option disabled value="">Selecciona modo</option>
+                <option value="pvp">Jugador vs Jugador</option>
+                <option value="pve">Jugador vs Máquina</option>
+            </select>
+            <button @click="iniciarSeleccion" class="btn">Comenzar</button>
+        </div>
+
+        <!-- Tablero de juego -->
+        <div v-else class="game-board">
+            <!-- Jugador 1 -->
+            <div class="player-section">
+                <h2>Jugador 1</h2>
+                <div class="cards">
+                    <div v-for="(pokemon, index) in equipoJ1" :key="'J1-'+index" class="card"
+                        :class="{dead: pokemon.muerto}" draggable="true"
+                        @dragstart="inicioArrastrar('J1', index, $event)">
+                        <img :src="pokemon.imagen" :alt="pokemon.nombre">
+                        <div class="card-info">
+                            <div class="card-name">{{ pokemon.nombre }}</div>
+                            <div class="stats">
+                                HP: {{ pokemon.hp }} | ATK: {{ pokemon.ataque }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button v-if="equipoJ1.length < 5" class="btn" @click="abrirModal('J1')">
+                    Seleccionar Equipo
+                </button>
+            </div>
+
+            <!-- Zona de batalla -->
+            <div class="battle-zone">
+                <img src="img/Pokemon_Stadium.svg" alt="">
+
+                <div class="battle-message">{{ mensajeBatalla }}</div>
+                <div class="battle-area">
+                    <div class="battle-slot" :class="{'filled': combateJ1}" @dragover.prevent
+                        @drop="manejarSoltar('J1', $event)">
+                        <div v-if="combateJ1">
+                            <img :src="combateJ1.imagen" :alt="combateJ1.nombre">
+                            <div class="card-name">{{ combateJ1.nombre }}</div>
+                            <div class="health-bar">
+                                <div class="health-bar-fill" :style="{ width: (saludJ1 / combateJ1.hp * 100) + '%' }">
+                                </div>
+                            </div>
+                            <div>{{ saludJ1 }} / {{ combateJ1.hp }}</div>
+                        </div>
+                        <div v-else>
+                            <span>Arrastra Pokémon</span>
+                        </div>
+                    </div>
+
+                    <div class="vs">VS</div>
+
+                    <div class="battle-slot" :class="{'filled': combateJ2}" @dragover.prevent
+                        @drop="manejarSoltar('J2', $event)">
+                        <div v-if="combateJ2">
+                            <img :src="combateJ2.imagen" :alt="combateJ2.nombre">
+                            <div class="card-name">{{ combateJ2.nombre }}</div>
+                            <div class="health-bar">
+                                <div class="health-bar-fill" :style="{ width: (saludJ2 / combateJ2.hp * 100) + '%' }">
+                                </div>
+                            </div>
+                            <div>{{ saludJ2 }} / {{ combateJ2.hp }}</div>
+                        </div>
+                        <div v-else>
+                            <span>{{ modo === 'pvp' ? 'Arrastra Pokémon' : 'Pokémon Máquina' }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div v-if="batallaActiva && !batallaTerminada">
+                    <h3>Turno de {{ turno === 'J1' ? 'Jugador 1' : (modo === 'pvp' ? 'Jugador 2' : 'Máquina') }}</h3>
+                    <div class="attacks">
+                        <button v-for="movimiento in movimientosActuales" :key="movimiento.nombre" class="attack-btn"
+                            @click="atacar(movimiento)">
+                            {{ movimiento.nombre }} ({{ movimiento.poder }})
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Jugador 2 / Máquina -->
+            <div class="player-section">
+                <h2>{{ modo === 'pvp' ? 'Jugador 2' : 'Máquina' }}</h2>
+                <div class="cards">
+                    <div v-for="(pokemon, index) in equipoJ2" :key="'J2-'+index" class="card"
+                        :class="{dead: pokemon.muerto}" draggable="true"
+                        @dragstart="inicioArrastrar('J2', index, $event)">
+                        <img :src="pokemon.imagen" :alt="pokemon.nombre">
+                        <div class="card-info">
+                            <div class="card-name">{{ pokemon.nombre }}</div>
+                            <div class="stats">
+                                HP: {{ pokemon.hp }} | ATK: {{ pokemon.ataque }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button v-if="modo === 'pvp' && equipoJ2.length < 5" class="btn" @click="abrirModal('J2')">
+                    Seleccionar Equipo
+                </button>
+                <!-- Música de fondo y control -->
+                <div class="music-controls">
+                    <audio ref="audioPlayer" :src="musica" preload="auto"></audio>
+                    <button @click="togglePlayPause" class="btn">
+                        {{ isPlaying ? 'Pausa' : 'Reproducir' }}
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de selección -->
+        <div class="modal" v-if="mostrarModal">
+            <div class="modal-content">
+                <h2>Selecciona 5 Pokémon</h2>
+                <button class="btn" @click="seleccionAleatoria">Aleatorio</button>
+                <div class="pokemon-grid">
+                    <div v-for="pokemon in pokemonDisponibles" :key="pokemon.nombre" class="pokemon-option"
+                        :class="{selected: seleccionados.some(p => p.nombre === pokemon.nombre)}"
+                        @click="alternarSeleccion(pokemon)">
+                        <img :src="pokemon.imagen" :alt="pokemon.nombre">
+                        <div>{{ pokemon.nombre }}</div>
+                    </div>
+                </div>
+                <div class="modal-buttons">
+                    <button class="btn" @click="confirmarSeleccion" :disabled="seleccionados.length !== 5">
+                        Confirmar ({{ seleccionados.length }}/5)
+                    </button>
+                    <button class="btn" @click="cerrarModal">Cancelar</button>
+                </div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- Tablero de juego -->
-    <div v-else class="game-board">
-      <!-- Jugador 1 -->
-      <div class="player-section">
-        <h2>Jugador 1</h2>
-        <div class="cards">
-          <div v-for="(pokemon, index) in equipoJ1" :key="'J1-'+index" class="card" :class="{dead: pokemon.muerto}"
-            draggable="true" @dragstart="inicioArrastrar('J1', index, $event)">
-            <img :src="pokemon.imagen" :alt="pokemon.nombre">
-            <div class="card-info">
-              <div class="card-name">{{ pokemon.nombre }}</div>
-              <div class="stats">
-                HP: {{ pokemon.hp }} | ATK: {{ pokemon.ataque }}
-              </div>
-            </div>
-          </div>
-        </div>
-        <button v-if="equipoJ1.length < 5" class="btn" @click="abrirModal('J1')">
-          Seleccionar Equipo
-        </button>
-      </div>
-
-      <!-- Zona de batalla -->
-      <div class="battle-zone">
-        <div class="battle-message">{{ mensajeBatalla }}</div>
-        <div class="battle-area">
-          <div class="battle-slot" :class="{'filled': combateJ1}" @dragover.prevent @drop="manejarSoltar('J1', $event)">
-            <div v-if="combateJ1">
-              <img :src="combateJ1.imagen" :alt="combateJ1.nombre">
-              <div class="card-name">{{ combateJ1.nombre }}</div>
-              <div class="health-bar">
-                <div class="health-bar-fill" :style="{ width: (saludJ1 / combateJ1.hp * 100) + '%' }"></div>
-              </div>
-              <div>{{ saludJ1 }} / {{ combateJ1.hp }}</div>
-            </div>
-            <div v-else>
-              <span>Arrastra Pokémon</span>
-            </div>
-          </div>
-
-          <div class="vs">VS</div>
-
-          <div class="battle-slot" :class="{'filled': combateJ2}" @dragover.prevent @drop="manejarSoltar('J2', $event)">
-            <div v-if="combateJ2">
-              <img :src="combateJ2.imagen" :alt="combateJ2.nombre">
-              <div class="card-name">{{ combateJ2.nombre }}</div>
-              <div class="health-bar">
-                <div class="health-bar-fill" :style="{ width: (saludJ2 / combateJ2.hp * 100) + '%' }"></div>
-              </div>
-              <div>{{ saludJ2 }} / {{ combateJ2.hp }}</div>
-            </div>
-            <div v-else>
-              <span>{{ modo === 'pvp' ? 'Arrastra Pokémon' : 'Pokémon Máquina' }}</span>
-            </div>
-          </div>
-        </div>
-
-        <div v-if="batallaActiva && !batallaTerminada">
-          <h3>Turno de {{ turno === 'J1' ? 'Jugador 1' : (modo === 'pvp' ? 'Jugador 2' : 'Máquina') }}</h3>
-          <div class="attacks">
-            <button v-for="movimiento in movimientosActuales" :key="movimiento.nombre" class="attack-btn"
-              @click="atacar(movimiento)">
-              {{ movimiento.nombre }} ({{ movimiento.poder }})
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Jugador 2 / Máquina -->
-      <div class="player-section">
-        <h2>{{ modo === 'pvp' ? 'Jugador 2' : 'Máquina' }}</h2>
-        <div class="cards">
-          <div v-for="(pokemon, index) in equipoJ2" :key="'J2-'+index" class="card" :class="{dead: pokemon.muerto}"
-            draggable="true" @dragstart="inicioArrastrar('J2', index, $event)">
-            <img :src="pokemon.imagen" :alt="pokemon.nombre">
-            <div class="card-info">
-              <div class="card-name">{{ pokemon.nombre }}</div>
-              <div class="stats">
-                HP: {{ pokemon.hp }} | ATK: {{ pokemon.ataque }}
-              </div>
-            </div>
-          </div>
-        </div>
-        <button v-if="modo === 'pvp' && equipoJ2.length < 5" class="btn" @click="abrirModal('J2')">
-          Seleccionar Equipo
-        </button>
-      </div>
-    </div>
-
-    <!-- Modal de selección -->
-    <div class="modal" v-if="mostrarModal">
-      <div class="modal-content">
-        <h2>Selecciona 5 Pokémon</h2>
-        <button class="btn" @click="seleccionAleatoria">Aleatorio</button>
-        <div class="pokemon-grid">
-          <div v-for="pokemon in pokemonDisponibles" :key="pokemon.nombre" class="pokemon-option"
-            :class="{selected: seleccionados.some(p => p.nombre === pokemon.nombre)}"
-            @click="alternarSeleccion(pokemon)">
-            <img :src="pokemon.imagen" :alt="pokemon.nombre">
-            <div>{{ pokemon.nombre }}</div>
-          </div>
-        </div>
-        <div class="modal-buttons">
-          <button class="btn" @click="confirmarSeleccion" :disabled="seleccionados.length !== 5">
-            Confirmar ({{ seleccionados.length }}/5)
-          </button>
-          <button class="btn" @click="cerrarModal">Cancelar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    async function obtenerDetallesMovimiento(urlMovimiento) {
-      const respuesta = await fetch(urlMovimiento);
-      const datosMovimiento = await respuesta.json();
-      return {
-        nombre: datosMovimiento.name.replace('-', ' '),
-        poder: datosMovimiento.power || 0,
-        precision: datosMovimiento.accuracy || 100,
-        tipo: datosMovimiento.type.name
-      };
-    }
-
-    async function obtenerMovimientosAleatorios(movimientos, cantidad = 4) {
-      let movimientosValidos = [];
-      const mezclados = [...movimientos].sort(() => 0.5 - Math.random());
-
-      for (const movimiento of mezclados) {
-        if (movimientosValidos.length >= cantidad) break;
-        const detallesMovimiento = await obtenerDetallesMovimiento(movimiento.move.url);
-        if (detallesMovimiento.poder > 0) {
-          movimientosValidos.push(detallesMovimiento);
+    <script>
+        async function obtenerDetallesMovimiento(urlMovimiento) {
+            const respuesta = await fetch(urlMovimiento);
+            const datosMovimiento = await respuesta.json();
+            return {
+                nombre: datosMovimiento.name.replace('-', ' '),
+                poder: datosMovimiento.power || 0,
+                precision: datosMovimiento.accuracy || 100,
+                tipo: datosMovimiento.type.name
+            };
         }
-      }
 
-      while (movimientosValidos.length < cantidad) {
-        movimientosValidos.push({ nombre: "Placaje", poder: 40, precision: 100, tipo: "normal" });
-      }
+        async function obtenerMovimientosAleatorios(movimientos, cantidad = 4) {
+            let movimientosValidos = [];
+            const mezclados = [...movimientos].sort(() => 0.5 - Math.random());
 
-      return movimientosValidos;
-    }
+            for (const movimiento of mezclados) {
+                if (movimientosValidos.length >= cantidad) break;
+                const detallesMovimiento = await obtenerDetallesMovimiento(movimiento.move.url);
+                if (detallesMovimiento.poder > 0) {
+                    movimientosValidos.push(detallesMovimiento);
+                }
+            }
 
-    Vue.createApp({
-      data() {
-        return {
-          modo: null,
-          mostrarModal: false,
-          jugadorActual: null,
-          seleccionados: [],
-          equipoJ1: [],
-          equipoJ2: [],
-          combateJ1: null,
-          combateJ2: null,
-          saludJ1: 0,
-          saludJ2: 0,
-          batallaActiva: false,
-          turno: 'J1',
-          batallaTerminada: false,
-          mensajeBatalla: '',
-          pokemonDisponibles: [],
-          todosPokemon: []
+            while (movimientosValidos.length < cantidad) {
+                movimientosValidos.push({ nombre: "Placaje", poder: 40, precision: 100, tipo: "normal" });
+            }
+
+            return movimientosValidos;
         }
-      },
-      methods: {
-        async obtenerPokemon() {
-          try {
-            const respuesta = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
-            const datos = await respuesta.json();
-            this.todosPokemon = await Promise.all(datos.results.map(async (pokemon) => {
-              const res = await fetch(pokemon.url);
-              const datosPokemon = await res.json();
-              const movimientos = await obtenerMovimientosAleatorios(datosPokemon.moves);
-              return {
-                nombre: datosPokemon.name,
-                imagen: datosPokemon.sprites.other["official-artwork"].front_default || datosPokemon.sprites.front_default,
-                hp: datosPokemon.stats[0].base_stat,
-                ataque: datosPokemon.stats[1].base_stat,
-                defensa: datosPokemon.stats[2].base_stat,
-                movimientos: movimientos,
-                muerto: false,
-                tipo: datosPokemon.types[0].type.name
-              };
-            }));
-            this.pokemonDisponibles = [...this.todosPokemon];
-          } catch (error) {
-            console.error("Error al obtener los Pokémon:", error);
-            this.mensajeBatalla = "Error cargando los Pokémon. Por favor, recarga la página.";
-          }
-        },
-        iniciarSeleccion() {
-          if (this.modo === 'pvp' && this.equipoJ1.length < 5) {
-            this.abrirModal('J1');
-          } else if (this.modo === 'pve') {
-            this.abrirModal('J1');
-          }
-        },
-        abrirModal(jugador) {
-          this.jugadorActual = jugador;
-          this.mostrarModal = true;
-          this.seleccionados = jugador === 'J1' ? [...this.equipoJ1] : [...this.equipoJ2];
-        },
-        cerrarModal() {
-          this.mostrarModal = false;
-          this.seleccionados = [];
-        },
-        alternarSeleccion(pokemon) {
-          const index = this.seleccionados.findIndex(p => p.nombre === pokemon.nombre);
-          if (index >= 0) {
-            this.seleccionados.splice(index, 1);
-          } else if (this.seleccionados.length < 5) {
-            this.seleccionados.push(pokemon);
-          }
-        },
-        seleccionAleatoria() {
-          this.seleccionados = [];
-          const grupoDisponible = [...this.pokemonDisponibles];
-          while (this.seleccionados.length < 5 && grupoDisponible.length > 0) {
-            const index = Math.floor(Math.random() * grupoDisponible.length);
-            this.seleccionados.push(grupoDisponible.splice(index, 1)[0]);
-          }
-        },
-        confirmarSeleccion() {
-          if (this.seleccionados.length === 5) {
-            if (this.jugadorActual === 'J1') {
-              this.equipoJ1 = [...this.seleccionados];
-              this.pokemonDisponibles = this.pokemonDisponibles.filter(p => !this.equipoJ1.some(sel => sel.nombre === p.nombre));
-              if (this.modo === 'pvp') this.abrirModal('J2');
-              else if (this.modo === 'pve') {
-                this.equipoJ2 = [...this.pokemonDisponibles].sort(() => 0.5 - Math.random()).slice(0, 5);
-                this.combateJ1 = this.equipoJ1[0];
-                this.saludJ1 = this.combateJ1.hp;
-                this.combateJ2 = this.equipoJ2[0];
-                this.saludJ2 = this.combateJ2.hp;
-                setTimeout(() => this.iniciarBatalla(), 500);
-              }
-            } else if (this.jugadorActual === 'J2') {
-              this.equipoJ2 = [...this.seleccionados];
-              this.pokemonDisponibles = this.pokemonDisponibles.filter(p => !this.equipoJ2.some(sel => sel.nombre === p.nombre));
+
+        Vue.createApp({
+            data() {
+                return {
+                    modo: null,
+                    mostrarModal: false,
+                    jugadorActual: null,
+                    seleccionados: [],
+                    equipoJ1: [],
+                    equipoJ2: [],
+                    combateJ1: null,
+                    combateJ2: null,
+                    saludJ1: 0,
+                    saludJ2: 0,
+                    batallaActiva: false,
+                    turno: 'J1',
+                    batallaTerminada: false,
+                    mensajeBatalla: '',
+                    pokemonDisponibles: [],
+                    todosPokemon: [],
+                    musica: 'audios/inicio.mp3'
+                }
+            },
+            methods: {
+                async obtenerPokemon() {
+                    try {
+                        const respuesta = await fetch("https://pokeapi.co/api/v2/pokemon?limit=151");
+                        const datos = await respuesta.json();
+                        this.todosPokemon = await Promise.all(datos.results.map(async (pokemon) => {
+                            const res = await fetch(pokemon.url);
+                            const datosPokemon = await res.json();
+                            const movimientos = await obtenerMovimientosAleatorios(datosPokemon.moves);
+                            return {
+                                nombre: datosPokemon.name,
+                                imagen: datosPokemon.sprites.other["official-artwork"].front_default || datosPokemon.sprites.front_default,
+                                hp: datosPokemon.stats[0].base_stat,
+                                ataque: datosPokemon.stats[1].base_stat,
+                                defensa: datosPokemon.stats[2].base_stat,
+                                movimientos: movimientos,
+                                muerto: false,
+                                tipo: datosPokemon.types[0].type.name
+                            };
+                        }));
+                        this.pokemonDisponibles = [...this.todosPokemon];
+                    } catch (error) {
+                        console.error("Error al obtener los Pokémon:", error);
+                        this.mensajeBatalla = "Error cargando los Pokémon. Por favor, recarga la página.";
+                    }
+                },
+                iniciarSeleccion() {
+                    if (this.modo === 'pvp' && this.equipoJ1.length < 5) {
+                        this.abrirModal('J1');
+                    } else if (this.modo === 'pve') {
+                        this.abrirModal('J1');
+                    }
+                },
+                abrirModal(jugador) {
+                    this.jugadorActual = jugador;
+                    this.mostrarModal = true;
+                    this.seleccionados = jugador === 'J1' ? [...this.equipoJ1] : [...this.equipoJ2];
+                },
+                cerrarModal() {
+                    this.mostrarModal = false;
+                    this.seleccionados = [];
+                },
+                alternarSeleccion(pokemon) {
+                    const index = this.seleccionados.findIndex(p => p.nombre === pokemon.nombre);
+                    if (index >= 0) {
+                        this.seleccionados.splice(index, 1);
+                    } else if (this.seleccionados.length < 5) {
+                        this.seleccionados.push(pokemon);
+                    }
+                },
+                seleccionAleatoria() {
+                    this.seleccionados = [];
+                    const grupoDisponible = [...this.pokemonDisponibles];
+                    while (this.seleccionados.length < 5 && grupoDisponible.length > 0) {
+                        const index = Math.floor(Math.random() * grupoDisponible.length);
+                        this.seleccionados.push(grupoDisponible.splice(index, 1)[0]);
+                    }
+                },
+                confirmarSeleccion() {
+                    if (this.seleccionados.length === 5) {
+                        if (this.jugadorActual === 'J1') {
+                            this.equipoJ1 = [...this.seleccionados];
+                            this.pokemonDisponibles = this.pokemonDisponibles.filter(p => !this.equipoJ1.some(sel => sel.nombre === p.nombre));
+                            if (this.modo === 'pvp') this.abrirModal('J2');
+                            else if (this.modo === 'pve') {
+                                this.equipoJ2 = [...this.pokemonDisponibles].sort(() => 0.5 - Math.random()).slice(0, 5);
+                                this.combateJ1 = this.equipoJ1[0];
+                                this.saludJ1 = this.combateJ1.hp;
+                                this.combateJ2 = this.equipoJ2[0];
+                                this.saludJ2 = this.combateJ2.hp;
+                                setTimeout(() => this.iniciarBatalla(), 500);
+                            }
+                        } else if (this.jugadorActual === 'J2') {
+                            this.equipoJ2 = [...this.seleccionados];
+                            this.pokemonDisponibles = this.pokemonDisponibles.filter(p => !this.equipoJ2.some(sel => sel.nombre === p.nombre));
+                        }
+                        this.cerrarModal();
+                    }
+                },
+                inicioArrastrar(jugador, index, evento) {
+                    if (!this.batallaActiva) {
+                        const pokemon = jugador === 'J1' ? this.equipoJ1[index] : this.equipoJ2[index];
+                        if (!pokemon.muerto) {
+                            evento.dataTransfer.setData("application/json", JSON.stringify({ jugador, index }));
+                        }
+                    }
+                },
+                manejarSoltar(jugadorObjetivo, evento) {
+                    if (this.batallaActiva) return;
+                    const datos = JSON.parse(evento.dataTransfer.getData("application/json"));
+                    const { jugador, index } = datos;
+                    if (jugador !== jugadorObjetivo) return;
+                    const pokemon = jugador === 'J1' ? this.equipoJ1[index] : this.equipoJ2[index];
+                    if (pokemon.muerto) return;
+
+                    if (jugadorObjetivo === 'J1') {
+                        this.combateJ1 = pokemon;
+                        this.saludJ1 = pokemon.hp;
+                        if (this.combateJ2) this.iniciarBatalla();
+                    } else {
+                        this.combateJ2 = pokemon;
+                        this.saludJ2 = pokemon.hp;
+                        if (this.combateJ1) this.iniciarBatalla();
+                    }
+                },
+                togglePlayPause() {
+                    const audio = this.$refs.audioPlayer;
+                    if (this.isPlaying) {
+                        audio.pause();
+                    } else {
+                        audio.play();
+                    }
+                    this.isPlaying = !this.isPlaying;
+                },
+                iniciarBatalla() {
+                    if (!this.combateJ1 || !this.combateJ2) return;
+                    this.batallaActiva = true;
+                    this.turno = Math.random() < 0.5 ? 'J1' : 'J2';
+                    this.mensajeBatalla = `¡Comienza la batalla entre ${this.combateJ1.nombre} y ${this.combateJ2.nombre}!`;
+                    if (this.modo === 'pve' && this.turno === 'J2') this.turnoMaquina();
+                },
+                async atacar(movimiento) {
+                    if (this.batallaTerminada) return;
+                    const atacante = this.turno === 'J1' ? this.combateJ1 : this.combateJ2;
+                    const defensor = this.turno === 'J1' ? this.combateJ2 : this.combateJ1;
+                    const daño = movimiento.poder;
+
+                    if (this.turno === 'J1') {
+                        this.saludJ2 = Math.max(0, this.saludJ2 - daño);
+                        this.mensajeBatalla = `${atacante.nombre} usa ${movimiento.nombre} y hace ${daño} de daño!`;
+                    } else {
+                        this.saludJ1 = Math.max(0, this.saludJ1 - daño);
+                        this.mensajeBatalla = `${atacante.nombre} usa ${movimiento.nombre} y hace ${daño} de daño!`;
+                    }
+
+                    await this.verificarEstadoBatalla();
+
+                    if (!this.batallaTerminada) {
+                        this.turno = this.turno === 'J1' ? 'J2' : 'J1';
+                        if (this.modo === 'pve' && this.turno === 'J2') {
+                            await new Promise(resolve => setTimeout(resolve, 1000));
+                            this.turnoMaquina();
+                        }
+                    }
+                },
+                turnoMaquina() {
+                    if (this.batallaTerminada) return;
+                    const mejorMovimiento = this.combateJ2.movimientos[0];
+                    this.atacar(mejorMovimiento);
+                },
+                async verificarEstadoBatalla() {
+                    if (this.saludJ1 <= 0 || this.saludJ2 <= 0) {
+                        this.batallaTerminada = true;
+                        const ganador = this.saludJ1 > 0 ? this.combateJ1 : this.combateJ2;
+                        const perdedor = this.saludJ1 > 0 ? this.combateJ2 : this.combateJ1;
+                        const jugadorPerdedor = this.saludJ1 > 0 ? 'J2' : 'J1';
+
+                        if (this.saludJ1 <= 0) {
+                            this.combateJ1.muerto = true;
+                            this.combateJ1 = null;
+                            this.saludJ1 = 0;
+                        } else {
+                            this.combateJ2.muerto = true;
+                            this.combateJ2 = null;
+                            this.saludJ2 = 0;
+                        }
+
+                        this.mensajeBatalla = `¡${ganador.nombre} ha derrotado a ${perdedor.nombre}!`;
+
+                        await new Promise(resolve => setTimeout(resolve, 1500));
+
+                        const tieneVivosJ1 = this.equipoJ1.some(p => !p.muerto);
+                        const tieneVivosJ2 = this.equipoJ2.some(p => !p.muerto);
+                        if (!tieneVivosJ1 || !tieneVivosJ2) {
+                            this.mensajeBatalla = `¡${tieneVivosJ1 ? 'Jugador 1' : (this.modo === 'pvp' ? 'Jugador 2' : 'Máquina')} gana el juego!`;
+                            return;
+                        }
+
+                        this.batallaTerminada = false;
+                        this.batallaActiva = false;
+
+                        if (this.modo === 'pve' && jugadorPerdedor === 'J2') {
+                            const pokemonVivos = this.equipoJ2.filter(p => !p.muerto);
+                            if (pokemonVivos.length > 0) {
+                                this.combateJ2 = pokemonVivos[Math.floor(Math.random() * pokemonVivos.length)];
+                                this.saludJ2 = this.combateJ2.hp;
+                                this.iniciarBatalla();
+                            }
+                        }
+                    }
+                }
+            },
+            computed: {
+                movimientosActuales() {
+                    const pokemon = this.turno === 'J1' ? this.combateJ1 : this.combateJ2;
+                    return pokemon ? pokemon.movimientos : [];
+                }
+            },
+            mounted() {
+                this.obtenerPokemon();
             }
-            this.cerrarModal();
-          }
-        },
-        inicioArrastrar(jugador, index, evento) {
-          if (!this.batallaActiva) {
-            const pokemon = jugador === 'J1' ? this.equipoJ1[index] : this.equipoJ2[index];
-            if (!pokemon.muerto) {
-              evento.dataTransfer.setData("application/json", JSON.stringify({ jugador, index }));
-            }
-          }
-        },
-        manejarSoltar(jugadorObjetivo, evento) {
-          if (this.batallaActiva) return;
-          const datos = JSON.parse(evento.dataTransfer.getData("application/json"));
-          const { jugador, index } = datos;
-          if (jugador !== jugadorObjetivo) return;
-          const pokemon = jugador === 'J1' ? this.equipoJ1[index] : this.equipoJ2[index];
-          if (pokemon.muerto) return;
-
-          if (jugadorObjetivo === 'J1') {
-            this.combateJ1 = pokemon;
-            this.saludJ1 = pokemon.hp;
-            if (this.combateJ2) this.iniciarBatalla();
-          } else {
-            this.combateJ2 = pokemon;
-            this.saludJ2 = pokemon.hp;
-            if (this.combateJ1) this.iniciarBatalla();
-          }
-        },
-        iniciarBatalla() {
-          if (!this.combateJ1 || !this.combateJ2) return;
-          this.batallaActiva = true;
-          this.turno = Math.random() < 0.5 ? 'J1' : 'J2';
-          this.mensajeBatalla = `¡Comienza la batalla entre ${this.combateJ1.nombre} y ${this.combateJ2.nombre}!`;
-          if (this.modo === 'pve' && this.turno === 'J2') this.turnoMaquina();
-        },
-        async atacar(movimiento) {
-          if (this.batallaTerminada) return;
-          const atacante = this.turno === 'J1' ? this.combateJ1 : this.combateJ2;
-          const defensor = this.turno === 'J1' ? this.combateJ2 : this.combateJ1;
-          const daño = movimiento.poder;
-
-          if (this.turno === 'J1') {
-            this.saludJ2 = Math.max(0, this.saludJ2 - daño);
-            this.mensajeBatalla = `${atacante.nombre} usa ${movimiento.nombre} y hace ${daño} de daño!`;
-          } else {
-            this.saludJ1 = Math.max(0, this.saludJ1 - daño);
-            this.mensajeBatalla = `${atacante.nombre} usa ${movimiento.nombre} y hace ${daño} de daño!`;
-          }
-
-          await this.verificarEstadoBatalla();
-
-          if (!this.batallaTerminada) {
-            this.turno = this.turno === 'J1' ? 'J2' : 'J1';
-            if (this.modo === 'pve' && this.turno === 'J2') {
-              await new Promise(resolve => setTimeout(resolve, 1000));
-              this.turnoMaquina();
-            }
-          }
-        },
-        turnoMaquina() {
-          if (this.batallaTerminada) return;
-          const mejorMovimiento = this.combateJ2.movimientos[0];
-          this.atacar(mejorMovimiento);
-        },
-        async verificarEstadoBatalla() {
-          if (this.saludJ1 <= 0 || this.saludJ2 <= 0) {
-            this.batallaTerminada = true;
-            const ganador = this.saludJ1 > 0 ? this.combateJ1 : this.combateJ2;
-            const perdedor = this.saludJ1 > 0 ? this.combateJ2 : this.combateJ1;
-            const jugadorPerdedor = this.saludJ1 > 0 ? 'J2' : 'J1';
-
-            if (this.saludJ1 <= 0) {
-              this.combateJ1.muerto = true;
-              this.combateJ1 = null;
-              this.saludJ1 = 0;
-            } else {
-              this.combateJ2.muerto = true;
-              this.combateJ2 = null;
-              this.saludJ2 = 0;
-            }
-
-            this.mensajeBatalla = `¡${ganador.nombre} ha derrotado a ${perdedor.nombre}!`;
-
-            await new Promise(resolve => setTimeout(resolve, 1500));
-
-            const tieneVivosJ1 = this.equipoJ1.some(p => !p.muerto);
-            const tieneVivosJ2 = this.equipoJ2.some(p => !p.muerto);
-            if (!tieneVivosJ1 || !tieneVivosJ2) {
-              this.mensajeBatalla = `¡${tieneVivosJ1 ? 'Jugador 1' : (this.modo === 'pvp' ? 'Jugador 2' : 'Máquina')} gana el juego!`;
-              return;
-            }
-
-            this.batallaTerminada = false;
-            this.batallaActiva = false;
-
-            if (this.modo === 'pve' && jugadorPerdedor === 'J2') {
-              const pokemonVivos = this.equipoJ2.filter(p => !p.muerto);
-              if (pokemonVivos.length > 0) {
-                this.combateJ2 = pokemonVivos[Math.floor(Math.random() * pokemonVivos.length)];
-                this.saludJ2 = this.combateJ2.hp;
-                this.iniciarBatalla();
-              }
-            }
-          }
-        }
-      },
-      computed: {
-        movimientosActuales() {
-          const pokemon = this.turno === 'J1' ? this.combateJ1 : this.combateJ2;
-          return pokemon ? pokemon.movimientos : [];
-        }
-      },
-      mounted() {
-        this.obtenerPokemon();
-      }
-    }).mount('#app');
-  </script>
+        }).mount('#app');
+    </script>
 </body>
+
 </html>
