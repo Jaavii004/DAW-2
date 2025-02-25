@@ -119,7 +119,7 @@
                 </button>
                 <!-- Música de fondo y control -->
                 <div class="music-controls">
-                    <audio ref="audioPlayer" :src="musica" preload="auto"></audio>
+                    <audio ref="audioPlayer" :src="musica" preload="auto" loop ></audio>
                     <button @click="togglePlayPause" class="btn">
                         {{ isPlaying ? 'Pausa' : 'Reproducir' }}
                     </button>
