@@ -2,11 +2,8 @@
 /**
  * @author Silvia Vilar
  * Ej1UD9 - mainIncidencia.php
- */ 
+ */
 
-ini_set('display_errors', 1);  // Muestra los errores en el navegador
-error_reporting(E_ALL);        // Muestra todos los tipos de errores
- 
 include_once "Incidencia.php";
 Incidencia::resetearBD();
 $inc1 = Incidencia::creaIncidencia(105, "No tiene acceso a internet");
