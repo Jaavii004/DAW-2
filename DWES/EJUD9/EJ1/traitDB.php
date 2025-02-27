@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @Author: Javier Puertas
+ */
+
 require_once __DIR__ . "/db.php";
 trait traitDB {
     public static function connectDB() {
@@ -10,8 +14,6 @@ trait traitDB {
                 MYSQL_ROOT,
                 MYSQL_ROOT_PASSWORD
             );
-            // Configuramos PDO para que lance excepciones en caso de error
-            $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
             die("Conexión fallida: " . $e->getMessage());
         }
@@ -21,7 +23,7 @@ trait traitDB {
 
     public function execDB($sql) {
         //usa la conexion, ejecuta la sentencia y devuelve el numero de filas afectadas
-        $conn = $this->connectDB();
+        $conn = self::connectDB();
         $result = $conn->exec($sql);
         $conn = null;
         return $result;
@@ -30,11 +32,11 @@ trait traitDB {
     public static function queryPreparadaDB($sql, $parametros) {
         //usa la conexion, prepara la sentencia, la ejecuta con los parametros y devuelve el resultado con todas las filas del conjunto
         $conn = self::connectDB();
-        
+
         try {
             $stmt = $conn->prepare($sql);
             $stmt->execute($parametros);
-            
+
             if (stripos($sql, 'SELECT') === 0) {
                 return $stmt->fetchAll(PDO::FETCH_ASSOC);
             }

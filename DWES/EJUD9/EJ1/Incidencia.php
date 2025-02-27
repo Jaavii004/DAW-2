@@ -1,6 +1,6 @@
 <?php
 /**
- * 
+ * @Author: Javier Puertas
  */
 
 include_once __DIR__ ."/traitDB.php";
@@ -8,6 +8,7 @@ include_once __DIR__ ."/traitDB.php";
 class Incidencia {
     use TraitDB;
     public static $contador = 1;
+    public static $pendientes = 0;
     private $codigo;
     private $problema;
     private $estado;
@@ -27,11 +28,14 @@ class Incidencia {
     }
 
     public function setEstado($estado) {
-        if (in_array($estado, ['pendiente', 'resuelta'])) {
-            $this->estado = $estado;
-        } else {
-            echo "Estado inválido.\n";
+        if ($estado == 'pendiente' && $this->estado != 'pendiente') {
+            self::$pendientes++;
+        } 
+
+        if ($this->estado == 'pendiente' && $estado != 'pendiente') {
+            self::$pendientes--;
         }
+        $this->estado = $estado;
     }
 
     public function getPuesto() {
@@ -54,12 +58,15 @@ class Incidencia {
         return $this->codigo;
     }
 
-    public function __construct($codigo, $problema, $resolucion, $puesto, $estado = "pendiente") {
-        $this->codigo = $codigo;
+    public static function getPendientes() {
+        return self::$pendientes . "\n";
+    }
+
+    public function __construct($problema, $puesto) {
         $this->problema = $problema;
-        $this->resolucion = $resolucion;
         $this->puesto = $puesto;
-        $this->estado = $estado;
+        $this->estado = "pendiente";
+        $this->codigo = self::$contador;
     }
 
     public static function creaIncidencia($puesto, $problema) {
@@ -67,20 +74,21 @@ class Incidencia {
             VALUES (:CODIGO, :PROBLEMA, :PUESTO, 'pendiente')";
     
         $params = [
-            ':CODIGO' => static::$contador,
+            ':CODIGO' => self::$contador,
             ':PROBLEMA' => $problema,
             ':PUESTO' => $puesto
         ];
     
         try {
-            $result = static::queryPreparadaDB($sql, $params);
+            $result = self::queryPreparadaDB($sql, $params);
             
             if ($result) {
-                echo "La incidencia " . static::$contador . " creada correctamente.\n";
-                static::$contador++;
-                return static::obtenerPorCodigo(static::$contador - 1);
+                echo "La incidencia " . self::$contador . " creada correctamente.\n";
+                self::$contador++;
+                self::$pendientes++;
+                return self::obtenerPorCodigo(self::$contador - 1);
             } else {
-                echo "La incidencia " . static::$contador . " no se ha podido crear.\n";
+                echo "La incidencia " . self::$contador . " no se ha podido crear.\n";
                 return false;
             }
         } catch (PDOException $e) {
@@ -92,16 +100,13 @@ class Incidencia {
     private static function obtenerPorCodigo($codigo) {
         $sql = "SELECT * FROM INCIDENCIA WHERE CODIGO = :CODIGO";
         $params = [':CODIGO' => $codigo];
-        $result = static::queryPreparadaDB($sql, $params);
+        $result = self::queryPreparadaDB($sql, $params);
         
         if (!empty($result)) {
             $row = $result[0];
-            return new static(
+            return new self(
                 $row['CODIGO'],
-                $row['PROBLEMA'],
-                $row['RESOLUCION'],
-                $row['PUESTO'],
-                $row['ESTADO']
+                $row['PROBLEMA']
             );
         }
         return null;
@@ -119,6 +124,7 @@ class Incidencia {
         
         if (self::queryPreparadaDB($sql, $params)) {
             echo "Incidencia {$this->getCodigo()} resuelta.\n";
+            $this->setEstado('resuelta');
             return true;
         }
         echo "Error al resolver incidencia.\n";
@@ -126,7 +132,7 @@ class Incidencia {
     }
 
     public static function leeIncidencia($codigo) {
-        $incidencia = static::obtenerPorCodigo($codigo);
+        $incidencia = self::obtenerPorCodigo($codigo);
         if ($incidencia) {
             echo $incidencia;
         } else {
@@ -139,12 +145,9 @@ class Incidencia {
         $result = self::queryPreparadaDB($sql, []);
         
         foreach ($result as $row) {
-            $incidencia = new static(
+            $incidencia = new self(
                 $row['CODIGO'],
-                $row['PROBLEMA'],
-                $row['ESTADO'],
-                $row['RESOLUCION'],
-                $row['PUESTO']
+                $row['PROBLEMA']
             );
             echo $incidencia;
         }
@@ -203,12 +206,6 @@ class Incidencia {
         } else {
             echo "Error al borrar la incidencia " . $this->getCodigo() . ".\n";
         }
-    }
-
-    public static function getPendientes() {
-        $sql = "SELECT COUNT(*) AS TOTAL FROM INCIDENCIA WHERE ESTADO = 'pendiente'";
-        $result = self::queryPreparadaDB($sql, []);
-        return $result[0]['TOTAL'] . "\n";
     }
 
     public function __toString() {
