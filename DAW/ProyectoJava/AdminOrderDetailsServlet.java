@@ -5,15 +5,15 @@ import java.sql.*;
 
 public class AdminOrderDetailsServlet extends HttpServlet {
 
-    // Método para obtener la conexión a la BD
+    // Method to get the database connection
     private Connection getConnection() throws Exception {
         String dbUrl = "jdbc:mysql://localhost/java_store?allowPublicKeyRetrieval=true&useSSL=false";
-        String dbUser  = "alumno";
-        String dbPass = "mipassword";
+        String dbUser  = "student";
+        String dbPass = "mypassword";
         return DriverManager.getConnection(dbUrl, dbUser, dbPass);
     }
     
-    // Método auxiliar para imprimir el navbar en todas las páginas
+    // Helper method to print the navbar on all pages
     private void printNavBar(PrintWriter out) {
         out.println("<nav class='navbar navbar-expand-lg navbar-light bg-light'>");
         out.println("  <a class='navbar-brand' href='menu'>MyStore</a>");
@@ -22,9 +22,9 @@ public class AdminOrderDetailsServlet extends HttpServlet {
         out.println("  </button>");
         out.println("  <div class='collapse navbar-collapse' id='navbarNav'>");
         out.println("    <ul class='navbar-nav'>");
-        out.println("      <li class='nav-item'><a class='nav-link' href='menu'>Home</a></li>");  // Cambiado
-        out.println("      <li class='nav-item'><a class='nav-link' href='admin'>Admin</a></li>"); // Cambiado
-        out.println("      <li class='nav-item'><a class='nav-link active' href='adminPurchases'>Compras</a></li>");
+        out.println("      <li class='nav-item'><a class='nav-link' href='menu'>Home</a></li>");
+        out.println("      <li class='nav-item'><a class='nav-link' href='admin'>Admin</a></li>");
+        out.println("      <li class='nav-item'><a class='nav-link active' href='adminPurchases'>Purchases</a></li>");
         out.println("    </ul>");
         out.println("  </div>");
         out.println("</nav>");
@@ -60,7 +60,7 @@ public class AdminOrderDetailsServlet extends HttpServlet {
              out.println("<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>");
              out.println("</head><body>");
              
-             // Imprimir el navbar
+             // Print the navbar
              printNavBar(out);
              
              out.println("<div class='container mt-5'>");

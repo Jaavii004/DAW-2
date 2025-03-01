@@ -6,7 +6,7 @@ import java.sql.*;
 
 public class CartServlet extends HttpServlet {
 
-    // Clase interna para representar un ítem del carrito
+    // Inner class to represent a cart item
     public static class CartItem {
         private int productId;
         private String productName;
@@ -27,7 +27,7 @@ public class CartServlet extends HttpServlet {
         public void setQuantity(int quantity) { this.quantity = quantity; }
     }
 
-    // Muestra el carrito y calcula el total, shipping y muestra botón Checkout
+    // Displays the cart, calculates total, shipping, and shows Checkout button
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -44,19 +44,18 @@ public class CartServlet extends HttpServlet {
         out.println("<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>");
         out.println("</head><body>");
 
-                     // Navbar for navigation
-             out.println("<nav class='navbar navbar-expand-lg navbar-light bg-light'>");
-             out.println("  <a class='navbar-brand' href='menu'>MyStore</a>");
-             out.println("  <div class='collapse navbar-collapse'>");
-             out.println("    <ul class='navbar-nav'>");
-             out.println("      <li class='nav-item'><a class='nav-link' href=''>Home</a></li>");
-             out.println("      <li class='nav-item'><a class='nav-link' href='products'>Products</a></li>");
-             out.println("      <li class='nav-item'><a class='nav-link active' href='cart'>Cart</a></li>");
-             out.println("      <li class='nav-item'><a class='nav-link' href='purchases'>My Purchases</a></li>");
-             out.println("    </ul>");
-             out.println("  </div>");
-             out.println("</nav>");
-
+        // Navbar for navigation
+        out.println("<nav class='navbar navbar-expand-lg navbar-light bg-light'>");
+        out.println("  <a class='navbar-brand' href='menu'>MyStore</a>");
+        out.println("  <div class='collapse navbar-collapse'>");
+        out.println("    <ul class='navbar-nav'>");
+        out.println("      <li class='nav-item'><a class='nav-link' href=''>Home</a></li>");
+        out.println("      <li class='nav-item'><a class='nav-link' href='products'>Products</a></li>");
+        out.println("      <li class='nav-item'><a class='nav-link active' href='cart'>Cart</a></li>");
+        out.println("      <li class='nav-item'><a class='nav-link' href='purchases'>My Purchases</a></li>");
+        out.println("    </ul>");
+        out.println("  </div>");
+        out.println("</nav>");
 
         out.println("<div class='container mt-5'>");
         out.println("<h2>Your Shopping Cart</h2>");
@@ -113,7 +112,7 @@ public class CartServlet extends HttpServlet {
         out.println("</body></html>");
     }
 
-    // Procesa las acciones del carrito: add, remove, update y checkout
+    // Processes cart actions: add, remove, update, and checkout
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
@@ -169,13 +168,13 @@ public class CartServlet extends HttpServlet {
             }
         }
         else if (request.getParameter("checkout") != null) {
-            // Si no está logueado, redirige a login
+            // If not logged in, redirect to login
             if (session.getAttribute("user_id") == null) {
                 response.sendRedirect("login");
                 return;
             }
             
-            // Calcular totales
+            // Calculate totals
             double subtotal = 0.0;
             int totalQuantity = 0;
             for (CartItem item : cart) {
@@ -185,13 +184,13 @@ public class CartServlet extends HttpServlet {
             double shipping = 2.0 + totalQuantity * 1.0;
             double totalPrice = subtotal + shipping;
             
-            // Datos de conexión
+            // Database connection details
             String dbUrl = "jdbc:mysql://localhost/java_store?allowPublicKeyRetrieval=true&useSSL=false";
             String dbUser  = "alumno";
             String dbPass = "mipassword";
             
             try {
-                // Conexión y transacción
+                // Connection and transaction
                 Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPass);
                 conn.setAutoCommit(false);
                 
@@ -212,7 +211,7 @@ public class CartServlet extends HttpServlet {
                 generatedKeys.close();
                 orderStmt.close();
                 
-                // Insertar detalles del pedido
+                // Insert order details
                 String detailSql = "INSERT INTO order_details (order_id, product_id, quantity, subtotal) VALUES (?, ?, ?, ?)";
                 PreparedStatement detailStmt = conn.prepareStatement(detailSql);
                 for (CartItem item : cart) {
@@ -228,11 +227,11 @@ public class CartServlet extends HttpServlet {
                 conn.commit();
                 conn.close();
                 
-                // Vaciar el carrito tras el checkout
+                // Clear cart after checkout
                 cart.clear();
                 session.setAttribute("cart", cart);
                 
-                // Mostrar confirmación del pedido
+                // Show order confirmation
                 response.setContentType("text/html;charset=UTF-8");
                 PrintWriter outResp = response.getWriter();
                 outResp.println("<html><head><title>Order Confirmation</title>");

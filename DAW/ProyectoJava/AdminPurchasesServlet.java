@@ -5,11 +5,10 @@ import java.sql.*;
 
 public class AdminPurchasesServlet extends HttpServlet {
 
-    // Método para obtener la conexión a la BD
     private Connection getConnection() throws Exception {
         String dbUrl = "jdbc:mysql://localhost/java_store?allowPublicKeyRetrieval=true&useSSL=false";
-        String dbUser  = "alumno";
-        String dbPass = "mipassword";
+        String dbUser  = "student";
+        String dbPass = "mypassword";
         return DriverManager.getConnection(dbUrl, dbUser, dbPass);
     }
     
@@ -21,9 +20,9 @@ public class AdminPurchasesServlet extends HttpServlet {
         out.println("  </button>");
         out.println("  <div class='collapse navbar-collapse' id='navbarNav'>");
         out.println("    <ul class='navbar-nav'>");
-        out.println("      <li class='nav-item'><a class='nav-link' href='menu'>Home</a></li>");  // Cambiado
-        out.println("      <li class='nav-item'><a class='nav-link' href='admin'>Admin</a></li>"); // Cambiado
-        out.println("      <li class='nav-item'><a class='nav-link active' href='adminPurchases'>Compras</a></li>");
+        out.println("      <li class='nav-item'><a class='nav-link' href='menu'>Home</a></li>");
+        out.println("      <li class='nav-item'><a class='nav-link' href='admin'>Admin</a></li>");
+        out.println("      <li class='nav-item'><a class='nav-link active' href='adminPurchases'>Purchases</a></li>");
         out.println("    </ul>");
         out.println("  </div>");
         out.println("</nav>");
@@ -35,14 +34,12 @@ public class AdminPurchasesServlet extends HttpServlet {
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession(false);
-        // Solo admin puede acceder
         if (session == null || !"admin".equals(session.getAttribute("role"))) {
             response.sendRedirect("login");
             return;
         }
         
         try (Connection conn = getConnection()) {
-           // Consulta de pedidos con datos del cliente
            String sql = "SELECT o.id AS order_id, o.order_date, o.total, o.tracking_number, "
                       + "u.name AS customer_name, u.email AS customer_email "
                       + "FROM orders o JOIN users u ON o.user_id = u.id "
@@ -54,7 +51,6 @@ public class AdminPurchasesServlet extends HttpServlet {
            out.println("<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>");
            out.println("</head><body>");
            
-           // Imprimir el navbar
            printNavBar(out);
            
            out.println("<div class='container mt-5'>");
@@ -96,7 +92,6 @@ public class AdminPurchasesServlet extends HttpServlet {
            out.println("</table>");
            out.println("<br><a href='admin' class='btn btn-secondary'>Back to Admin Panel</a>");
            out.println("</div>");
-           // Add Bootstrap JS and dependencies
            out.println("<script src='https://code.jquery.com/jquery-3.5.1.slim.min.js'></script>");
            out.println("<script src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js'></script>");
            out.println("<script src='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js'></script>");

@@ -8,17 +8,17 @@ public class ProductsServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
-        // Verificar que el usuario esté logueado
+        // Verify that the user is logged in
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
-            response.sendRedirect("login"); // redirige a login si no hay sesión o usuario
+            response.sendRedirect("login"); // redirects to login if no session or user
             return;
         }
         
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
         
-        // Parámetros de conexión a la base de datos
+        // Database connection parameters
         String dbUrl = "jdbc:mysql://localhost/java_store?allowPublicKeyRetrieval=true&useSSL=false";
         String dbUser  = "alumno";
         String dbPass = "mipassword";
@@ -33,21 +33,19 @@ public class ProductsServlet extends HttpServlet {
             out.println("<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>");
             out.println("</head><body>");
 
-            // ========== NAVBAR ==========
-             // Navbar for navigation
-             out.println("<nav class='navbar navbar-expand-lg navbar-light bg-light'>");
-             out.println("  <a class='navbar-brand' href='menu'>MyStore</a>");
-             out.println("  <div class='collapse navbar-collapse'>");
-             out.println("    <ul class='navbar-nav'>");
-             out.println("      <li class='nav-item'><a class='nav-link' href=''>Home</a></li>");
-             out.println("      <li class='nav-item'><a class='nav-link active' href='products'>Products</a></li>");
-             out.println("      <li class='nav-item'><a class='nav-link' href='cart'>Cart</a></li>");
-             out.println("      <li class='nav-item'><a class='nav-link' href='purchases'>My Purchases</a></li>");
-             out.println("      <li class='nav-item'><a class='nav-link text-danger' href='logout'>Cerrar Sesión</a></li>");
-             out.println("    </ul>");
-             out.println("  </div>");
-             out.println("</nav>");
-            // ========== FIN NAVBAR ==========
+
+            out.println("<nav class='navbar navbar-expand-lg navbar-light bg-light'>");
+            out.println("  <a class='navbar-brand' href='menu'>MyStore</a>");
+            out.println("  <div class='collapse navbar-collapse'>");
+            out.println("    <ul class='navbar-nav'>");
+            out.println("      <li class='nav-item'><a class='nav-link' href=''>Home</a></li>");
+            out.println("      <li class='nav-item'><a class='nav-link active' href='products'>Products</a></li>");
+            out.println("      <li class='nav-item'><a class='nav-link' href='cart'>Cart</a></li>");
+            out.println("      <li class='nav-item'><a class='nav-link' href='purchases'>My Purchases</a></li>");
+            out.println("      <li class='nav-item'><a class='nav-link text-danger' href='logout'>Logout</a></li>");
+            out.println("    </ul>");
+            out.println("  </div>");
+            out.println("</nav>");
 
             out.println("<div class='container mt-5'>");
             out.println("<h2>Products List</h2>");
@@ -72,7 +70,7 @@ public class ProductsServlet extends HttpServlet {
                 String photo = rs.getString("photo");
                 
                 out.println("<tr>");
-                // Mostrar la imagen si existe, o un mensaje alternativo
+                // Display the image if it exists, or an alternative message
                 if (photo != null && !photo.trim().isEmpty()) {
                     out.println("<td><img src='" + photo + "' alt='" + name + "' class='img-fluid' width='100' height='100'/></td>");
                 } else {
@@ -83,13 +81,13 @@ public class ProductsServlet extends HttpServlet {
                 out.println("<td>" + stock + "</td>");
                 out.println("<td>");
                 out.println("<form action='cart' method='post'>");
-                // Campo oculto para indicar la acción "add"
+                // Hidden field to indicate the action "add"
                 out.println("<input type='hidden' name='action' value='add'/>");
-                // Campos ocultos para pasar la información del producto
+                // Hidden fields to pass product information
                 out.println("<input type='hidden' name='productId' value='" + productId + "'/>");
                 out.println("<input type='hidden' name='productName' value='" + name + "'/>");
                 out.println("<input type='hidden' name='price' value='" + price + "'/>");
-                // Dropdown para seleccionar cantidad (de 1 hasta el stock disponible)
+                // Dropdown to select quantity (from 1 to available stock)
                 out.println("<select name='quantity' class='form-control'>");
                 for (int i = 1; i <= stock; i++) {
                     out.println("<option value='" + i + "'>" + i + "</option>");

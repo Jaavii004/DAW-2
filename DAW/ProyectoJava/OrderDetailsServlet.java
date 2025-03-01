@@ -55,7 +55,7 @@ public class OrderDetailsServlet extends HttpServlet {
              out.println("      <li class='nav-item'><a class='nav-link' href='products'>Products</a></li>");
              out.println("      <li class='nav-item'><a class='nav-link' href='cart'>Cart</a></li>");
              out.println("      <li class='nav-item'><a class='nav-link active' href='purchases'>My Purchases</a></li>");
-             out.println("      <li class='nav-item'><a class='nav-link text-danger' href='logout'>Cerrar Sesión</a></li>");
+             out.println("      <li class='nav-item'><a class='nav-link text-danger' href='logout'>Logout</a></li>");
              out.println("    </ul>");
              out.println("  </div>");
              out.println("</nav>");
