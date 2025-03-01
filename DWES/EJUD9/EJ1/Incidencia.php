@@ -67,6 +67,7 @@ class Incidencia {
         $this->puesto = $puesto;
         $this->estado = "pendiente";
         $this->codigo = self::$contador;
+        $this->resolucion = "";
     }
 
     public static function creaIncidencia($puesto, $problema) {
@@ -104,10 +105,15 @@ class Incidencia {
         
         if (!empty($result)) {
             $row = $result[0];
-            return new self(
+            $inci = new self(
                 $row['CODIGO'],
                 $row['PROBLEMA']
             );
+            // 6 7 8 9 11
+            $inci->setEstado($row['ESTADO']);
+            $inci->setPuesto($row['PUESTO']);
+            $inci->setResolucion($row['RESOLUCION']);
+            return $inci;
         }
         return null;
     }
@@ -149,6 +155,9 @@ class Incidencia {
                 $row['CODIGO'],
                 $row['PROBLEMA']
             );
+            $incidencia->setEstado($row['ESTADO']);
+            $incidencia->setPuesto($row['PUESTO']);
+            $incidencia->setResolucion($row['RESOLUCION']);
             echo $incidencia;
         }
     }
