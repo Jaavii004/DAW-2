@@ -7,6 +7,42 @@ public class LoginServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("user") == null) {
+            Cookie[] cookies = request.getCookies();
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("user_id".equals(cookie.getName())) {
+                        int userId = Integer.parseInt(cookie.getValue());
+                        try {
+                            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/java_store?allowPublicKeyRetrieval=true&useSSL=false", "alumno", "mipassword");
+                            PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE id = ?");
+                            stmt.setInt(1, userId);
+                            ResultSet rs = stmt.executeQuery();
+
+                            if (rs.next()) {
+                                session = request.getSession(true);
+                                session.setAttribute("user", rs.getString("name"));
+                                session.setAttribute("role", rs.getString("role"));
+                                session.setAttribute("user_id", rs.getInt("id"));
+                            }
+
+                            rs.close();
+                            stmt.close();
+                            conn.close();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            }
+        }
+
+        if (session != null && session.getAttribute("user") != null) {
+            response.sendRedirect("home");
+            return;
+        }
+
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 
@@ -39,56 +75,36 @@ public class LoginServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
 
-        String dbUrl = "jdbc:mysql://localhost/java_store?allowPublicKeyRetrieval=true&useSSL=false";
-        String dbUser  = "alumno";
-        String dbPass = "mipassword";
-
         try {
-            Connection conn = DriverManager.getConnection(dbUrl, dbUser , dbPass);
-
+            Connection conn = DriverManager.getConnection("jdbc:mysql://localhost/java_store?allowPublicKeyRetrieval=true&useSSL=false", "alumno", "mipassword");
             PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE email = ? AND password = ?");
             stmt.setString(1, email);
             stmt.setString(2, password);
             ResultSet rs = stmt.executeQuery();
 
-            out.println("<html><head><title>Login Result</title>");
-            out.println("<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>");
-            out.println("</head><body>");
-            out.println("<div class='container mt-5'>");
-
             if (rs.next()) {
                 String role = rs.getString("role");
                 String userName = rs.getString("name");
                 int id = rs.getInt("id");
-                out.println("<h3>Login successful!</h3>");
 
                 HttpSession session = request.getSession();
                 session.setAttribute("user", userName);
                 session.setAttribute("role", role);
                 session.setAttribute("user_id", id);
 
-                if ("admin".equals(role)) {
-                    out.println("<h3>Welcome, Admin " + userName + "!</h3>");
-                    out.println("<p><a href='admin' class='btn btn-secondary'>Go to Admin Panel</a></p>");
-                } else {
-                    out.println("<h3>Welcome, " + userName + "!</h3>");
-                    out.println("<p><a href='products' class='btn btn-secondary'>Go to Products</a></p>");
-                    out.println("<p><a href='cart' class='btn btn-secondary'>Go to Cart</a></p>");
-                    out.println("<p><a href='purchases' class='btn btn-secondary'>Go to Purchases</a></p>");
-                    out.println("<p><a href='/' class='btn btn-secondary'>Go to Home</a></p>");
-                }
+                Cookie userCookie = new Cookie("user_id", String.valueOf(id));
+                userCookie.setMaxAge(7 * 24 * 60 * 60);
+                response.addCookie(userCookie);
+
+                response.sendRedirect("home");
             } else {
                 out.println("<h3 class='text-danger'>Invalid email or password. Try again.</h3>");
                 out.println("<p><a href='login' class='btn btn-primary'>Back to Login</a></p>");
             }
 
-            out.println("</div>");
-            out.println("</body></html>");
-
             rs.close();
             stmt.close();
             conn.close();
-
         } catch (Exception e) {
             out.println("<h3 class='text-danger'>Error connecting to the database.</h3>");
             e.printStackTrace(out);

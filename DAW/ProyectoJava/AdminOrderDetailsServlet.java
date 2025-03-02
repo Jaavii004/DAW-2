@@ -8,8 +8,8 @@ public class AdminOrderDetailsServlet extends HttpServlet {
     // Method to get the database connection
     private Connection getConnection() throws Exception {
         String dbUrl = "jdbc:mysql://localhost/java_store?allowPublicKeyRetrieval=true&useSSL=false";
-        String dbUser  = "student";
-        String dbPass = "mypassword";
+        String dbUser  = "alumno";
+        String dbPass = "mipassword";
         return DriverManager.getConnection(dbUrl, dbUser, dbPass);
     }
     
@@ -36,10 +36,39 @@ public class AdminOrderDetailsServlet extends HttpServlet {
          response.setContentType("text/html");
          PrintWriter out = response.getWriter();
          HttpSession session = request.getSession(false);
+         
+         // Check session or persistent login
+         if (session == null || session.getAttribute("user_id") == null) {
+             Cookie[] cookies = request.getCookies();
+             if (cookies != null) {
+                 for (Cookie cookie : cookies) {
+                     if ("user_id".equals(cookie.getName())) {
+                         session = request.getSession(true);
+                         session.setAttribute("user_id", cookie.getValue());
+                         // Fetch role from DB
+                         try (Connection conn = getConnection()) {
+                             String sql = "SELECT role FROM users WHERE id = ?";
+                             PreparedStatement ps = conn.prepareStatement(sql);
+                             ps.setInt(1, Integer.parseInt(cookie.getValue()));
+                             ResultSet rs = ps.executeQuery();
+                             if (rs.next()) {
+                                 session.setAttribute("role", rs.getString("role"));
+                             }
+                             rs.close();
+                             ps.close();
+                         } catch (Exception e) {
+                             out.println("<p>Error retrieving user role.</p>");
+                         }
+                     }
+                 }
+             }
+         }
+         
          if (session == null || !"admin".equals(session.getAttribute("role"))) {
              response.sendRedirect("login");
              return;
          }
+         
          String orderIdStr = request.getParameter("orderId");
          if (orderIdStr == null) {
              out.println("<p>No order ID provided.</p>");

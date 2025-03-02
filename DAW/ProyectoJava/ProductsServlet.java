@@ -11,8 +11,31 @@ public class ProductsServlet extends HttpServlet {
         // Verify that the user is logged in
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("user") == null) {
-            response.sendRedirect("login"); // redirects to login if no session or user
-            return;
+            // Look for cookies (e.g., a login cookie)
+            Cookie[] cookies = request.getCookies();
+            String userFromCookie = null;
+            String roleFromCookie = null;
+
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("user".equals(cookie.getName())) {
+                        userFromCookie = cookie.getValue();
+                    } else if ("role".equals(cookie.getName())) {
+                        roleFromCookie = cookie.getValue();
+                    }
+                }
+            }
+
+            // If no cookies are found, redirect to login
+            if (userFromCookie == null || roleFromCookie == null) {
+                response.sendRedirect("login");
+                return;
+            } else {
+                // Create session with cookie values if not already there
+                session = request.getSession(true);
+                session.setAttribute("user", userFromCookie);
+                session.setAttribute("role", roleFromCookie);
+            }
         }
         
         response.setContentType("text/html");
@@ -32,8 +55,7 @@ public class ProductsServlet extends HttpServlet {
             out.println("<html><head><title>Products</title>");
             out.println("<link rel='stylesheet' href='https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css'>");
             out.println("</head><body>");
-
-
+            
             out.println("<nav class='navbar navbar-expand-lg navbar-light bg-light'>");
             out.println("  <a class='navbar-brand' href='menu'>MyStore</a>");
             out.println("  <div class='collapse navbar-collapse'>");

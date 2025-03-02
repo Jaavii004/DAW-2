@@ -19,11 +19,34 @@ public class OrderDetailsServlet extends HttpServlet {
          response.setContentType("text/html");
          PrintWriter out = response.getWriter();
          HttpSession session = request.getSession(false);
-         
-         // Optionally check if user is logged in (and/or if they own this order)
+
+         // If no session or no user in session, check cookies
          if (session == null || session.getAttribute("user") == null) {
-             response.sendRedirect("login");
-             return;
+            // Look for cookies (e.g., a login cookie)
+            Cookie[] cookies = request.getCookies();
+            String userFromCookie = null;
+            String roleFromCookie = null;
+
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("user".equals(cookie.getName())) {
+                        userFromCookie = cookie.getValue();
+                    } else if ("role".equals(cookie.getName())) {
+                        roleFromCookie = cookie.getValue();
+                    }
+                }
+            }
+
+            // If no cookies are found, redirect to login
+            if (userFromCookie == null || roleFromCookie == null) {
+                response.sendRedirect("login");
+                return;
+            } else {
+                // Create session with cookie values if not already there
+                session = request.getSession(true);
+                session.setAttribute("user", userFromCookie);
+                session.setAttribute("role", roleFromCookie);
+            }
          }
          
          String orderIdStr = request.getParameter("orderId");

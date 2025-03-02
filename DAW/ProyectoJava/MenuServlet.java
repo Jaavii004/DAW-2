@@ -7,15 +7,41 @@ public class MenuServlet extends HttpServlet {
     public void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         
+        // Check if there is an active session first
         HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
-            response.sendRedirect("login");
-            return;
-        }
         
+        // If there's no session or the session user is null, check for cookies
+        if (session == null || session.getAttribute("user") == null) {
+            // Look for cookies (e.g., a login cookie)
+            Cookie[] cookies = request.getCookies();
+            String userFromCookie = null;
+            String roleFromCookie = null;
+
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if ("user".equals(cookie.getName())) {
+                        userFromCookie = cookie.getValue();
+                    } else if ("role".equals(cookie.getName())) {
+                        roleFromCookie = cookie.getValue();
+                    }
+                }
+            }
+
+            // If no cookies, redirect to login
+            if (userFromCookie == null || roleFromCookie == null) {
+                response.sendRedirect("login");
+                return;
+            } else {
+                // Set session attributes if cookies are found
+                session = request.getSession(true);
+                session.setAttribute("user", userFromCookie);
+                session.setAttribute("role", roleFromCookie);
+            }
+        }
+
         // Get user role from session
         String role = (String) session.getAttribute("role");
-        
+
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
 

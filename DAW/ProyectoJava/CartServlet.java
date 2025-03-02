@@ -35,8 +35,10 @@ public class CartServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
         List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+
+        // If cart is not found in session, check cookies
         if (cart == null) {
-            cart = new ArrayList<>();
+            cart = loadCartFromCookies(request);
             session.setAttribute("cart", cart);
         }
 
@@ -112,125 +114,133 @@ public class CartServlet extends HttpServlet {
         out.println("</body></html>");
     }
 
-    // Processes cart actions: add, remove, update, and checkout
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+protected void doPost(HttpServletRequest request, HttpServletResponse response)
+        throws ServletException, IOException {
 
-        HttpSession session = request.getSession();
-        List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
-        if (cart == null) {
-            cart = new ArrayList<>();
+    HttpSession session = request.getSession();
+    List<CartItem> cart = (List<CartItem>) session.getAttribute("cart");
+
+    // Si el carrito no está en la sesión, lo recuperamos de las cookies
+    if (cart == null) {
+        cart = loadCartFromCookies(request);
+        session.setAttribute("cart", cart);
+    }
+
+    String action = request.getParameter("action");
+
+    if (action != null && action.equals("add")) {
+        // Añadir producto al carrito
+        int productId = Integer.parseInt(request.getParameter("productId"));
+        String productName = request.getParameter("productName");
+        double price = Double.parseDouble(request.getParameter("price"));
+        int quantity = Integer.parseInt(request.getParameter("quantity"));
+        
+        boolean found = false;
+        for (CartItem item : cart) {
+            if (item.getProductId() == productId) {
+                item.setQuantity(item.getQuantity() + quantity);
+                found = true;
+                break;
+            }
+        }
+        if (!found) {
+            cart.add(new CartItem(productId, productName, price, quantity));
+        }
+    } 
+    else if (request.getParameter("remove") != null) {
+        // Eliminar un producto del carrito
+        int removeId = Integer.parseInt(request.getParameter("remove"));
+        Iterator<CartItem> it = cart.iterator();
+        while (it.hasNext()) {
+            CartItem item = it.next();
+            if (item.getProductId() == removeId) {
+                it.remove();
+                break;
+            }
+        }
+    } 
+    else if (request.getParameter("update") != null) {
+        // Actualizar la cantidad de productos en el carrito
+        for (CartItem item : cart) {
+            String paramName = "quantity_" + item.getProductId();
+            String quantityStr = request.getParameter(paramName);
+            if (quantityStr != null) {
+                try {
+                    int newQuantity = Integer.parseInt(quantityStr);
+                    if (newQuantity > 0) {
+                        item.setQuantity(newQuantity);
+                    }
+                } catch (NumberFormatException e) {}
+            }
+        }
+    }
+    else if (request.getParameter("checkout") != null) {
+        // Si no está autenticado, redirigir al login
+        if (session.getAttribute("user_id") == null) {
+            response.sendRedirect("login");
+            return;
+        }
+        
+        // Calcular totales
+        double subtotal = 0.0;
+        int totalQuantity = 0;
+        for (CartItem item : cart) {
+            subtotal += item.getPrice() * item.getQuantity();
+            totalQuantity += item.getQuantity();
+        }
+        double shipping = 2.0 + totalQuantity * 1.0;
+        double totalPrice = subtotal + shipping;
+
+        // Realizar conexión con la base de datos y procesar la orden
+        String dbUrl = "jdbc:mysql://localhost/java_store?allowPublicKeyRetrieval=true&useSSL=false";
+        String dbUser = "alumno";
+        String dbPass = "mipassword";
+
+        Connection conn = null;
+        PreparedStatement orderStmt = null;
+        ResultSet generatedKeys = null;
+        PreparedStatement detailStmt = null;
+
+        try {
+            // Establecer la conexión y la transacción
+            conn = DriverManager.getConnection(dbUrl, dbUser, dbPass);
+            conn.setAutoCommit(false);
+            
+            int userId = (Integer) session.getAttribute("user_id");
+            String trackingNumber = "TRK" + System.currentTimeMillis();
+            String orderSql = "INSERT INTO orders (user_id, total, tracking_number) VALUES (?, ?, ?)";
+            orderStmt = conn.prepareStatement(orderSql, Statement.RETURN_GENERATED_KEYS);
+            orderStmt.setInt(1, userId);
+            orderStmt.setDouble(2, totalPrice);
+            orderStmt.setString(3, trackingNumber);
+            orderStmt.executeUpdate();
+            
+            // Obtener el orderId generado
+            generatedKeys = orderStmt.getGeneratedKeys();
+            int orderId = 0;
+            if (generatedKeys.next()) {
+                orderId = generatedKeys.getInt(1); // Obtener el ID generado
+            }
+
+            // Insertar detalles de la orden
+            String detailSql = "INSERT INTO order_details (order_id, product_id, quantity, subtotal) VALUES (?, ?, ?, ?)";
+            detailStmt = conn.prepareStatement(detailSql);
+            for (CartItem item : cart) {
+                detailStmt.setInt(1, orderId);
+                detailStmt.setInt(2, item.getProductId());
+                detailStmt.setInt(3, item.getQuantity());
+                detailStmt.setDouble(4, item.getPrice() * item.getQuantity());
+                detailStmt.addBatch();
+            }
+            detailStmt.executeBatch();
+            
+            // Confirmar la transacción
+            conn.commit();
+            
+            // Limpiar el carrito
+            cart.clear();
             session.setAttribute("cart", cart);
-        }
-
-        String action = request.getParameter("action");
-        if (action != null && action.equals("add")) {
-            int productId = Integer.parseInt(request.getParameter("productId"));
-            String productName = request.getParameter("productName");
-            double price = Double.parseDouble(request.getParameter("price"));
-            int quantity = Integer.parseInt(request.getParameter("quantity"));
             
-            boolean found = false;
-            for (CartItem item : cart) {
-                if (item.getProductId() == productId) {
-                    item.setQuantity(item.getQuantity() + quantity);
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
-                cart.add(new CartItem(productId, productName, price, quantity));
-            }
-        } 
-        else if (request.getParameter("remove") != null) {
-            int removeId = Integer.parseInt(request.getParameter("remove"));
-            Iterator<CartItem> it = cart.iterator();
-            while(it.hasNext()){
-                CartItem item = it.next();
-                if(item.getProductId() == removeId) {
-                    it.remove();
-                    break;
-                }
-            }
-        } 
-        else if (request.getParameter("update") != null) {
-            for (CartItem item : cart) {
-                String paramName = "quantity_" + item.getProductId();
-                String quantityStr = request.getParameter(paramName);
-                if (quantityStr != null) {
-                    try {
-                        int newQuantity = Integer.parseInt(quantityStr);
-                        if (newQuantity > 0) {
-                            item.setQuantity(newQuantity);
-                        }
-                    } catch (NumberFormatException e) {}
-                }
-            }
-        }
-        else if (request.getParameter("checkout") != null) {
-            // If not logged in, redirect to login
-            if (session.getAttribute("user_id") == null) {
-                response.sendRedirect("login");
-                return;
-            }
-            
-            // Calculate totals
-            double subtotal = 0.0;
-            int totalQuantity = 0;
-            for (CartItem item : cart) {
-                subtotal += item.getPrice() * item.getQuantity();
-                totalQuantity += item.getQuantity();
-            }
-            double shipping = 2.0 + totalQuantity * 1.0;
-            double totalPrice = subtotal + shipping;
-            
-            // Database connection details
-            String dbUrl = "jdbc:mysql://localhost/java_store?allowPublicKeyRetrieval=true&useSSL=false";
-            String dbUser  = "alumno";
-            String dbPass = "mipassword";
-            
-            try {
-                // Connection and transaction
-                Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPass);
-                conn.setAutoCommit(false);
-                
-                int userId = (Integer) session.getAttribute("user_id");
-                String trackingNumber = "TRK" + System.currentTimeMillis();
-                String orderSql = "INSERT INTO orders (user_id, total, tracking_number) VALUES (?, ?, ?)";
-                PreparedStatement orderStmt = conn.prepareStatement(orderSql, Statement.RETURN_GENERATED_KEYS);
-                orderStmt.setInt(1, userId);
-                orderStmt.setDouble(2, totalPrice);
-                orderStmt.setString(3, trackingNumber);
-                orderStmt.executeUpdate();
-                
-                ResultSet generatedKeys = orderStmt.getGeneratedKeys();
-                int orderId = 0;
-                if (generatedKeys.next()) {
-                    orderId = generatedKeys.getInt(1);
-                }
-                generatedKeys.close();
-                orderStmt.close();
-                
-                // Insert order details
-                String detailSql = "INSERT INTO order_details (order_id, product_id, quantity, subtotal) VALUES (?, ?, ?, ?)";
-                PreparedStatement detailStmt = conn.prepareStatement(detailSql);
-                for (CartItem item : cart) {
-                    detailStmt.setInt(1, orderId);
-                    detailStmt.setInt(2, item.getProductId());
-                    detailStmt.setInt(3, item.getQuantity());
-                    detailStmt.setDouble(4, item.getPrice() * item.getQuantity());
-                    detailStmt.addBatch();
-                }
-                detailStmt.executeBatch();
-                detailStmt.close();
-                
-                conn.commit();
-                conn.close();
-                
-                // Clear cart after checkout
-                cart.clear();
-                session.setAttribute("cart", cart);
-                
                 // Show order confirmation
                 response.setContentType("text/html;charset=UTF-8");
                 PrintWriter outResp = response.getWriter();
@@ -247,13 +257,75 @@ public class CartServlet extends HttpServlet {
                 outResp.println("</div>");
                 outResp.println("</body></html>");
                 return;
-                
-            } catch (Exception e) {
+
+        } catch (SQLException e) {
+            // En caso de error, revertir la transacción
+            if (conn != null) {
+                try {
+                    conn.rollback();
+                } catch (SQLException rollbackEx) {
+                    rollbackEx.printStackTrace();
+                }
+            }
+            e.printStackTrace();
+            if (!response.isCommitted()) {
+                response.sendRedirect("error");
+            }
+        } finally {
+            // Cerrar recursos
+            try {
+                if (generatedKeys != null) generatedKeys.close();
+                if (orderStmt != null) orderStmt.close();
+                if (detailStmt != null) detailStmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
-        
-        session.setAttribute("cart", cart);
+    }
+
+    // Guardar el carrito en cookies si el usuario no está autenticado
+    if (session.getAttribute("user") == null) {
+        saveCartToCookies(cart, response);
+    }
+
+    // Solo redirigir si la respuesta no ha sido comprometida
+    if (!response.isCommitted()) {
         response.sendRedirect("cart");
+    }
+}
+
+
+    // Load cart from cookies (if any)
+    private List<CartItem> loadCartFromCookies(HttpServletRequest request) {
+        Cookie[] cookies = request.getCookies();
+        List<CartItem> cart = new ArrayList<>();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().startsWith("cart_item_")) {
+                    String cookieValue = cookie.getValue();
+                    String[] parts = cookieValue.split(":");
+                    if (parts.length == 4) {
+                        int productId = Integer.parseInt(parts[0]);
+                        String productName = parts[1];
+                        double price = Double.parseDouble(parts[2]);
+                        int quantity = Integer.parseInt(parts[3]);
+                        cart.add(new CartItem(productId, productName, price, quantity));
+                    }
+                }
+            }
+        }
+        return cart;
+    }
+
+    // Save cart to cookies
+    private void saveCartToCookies(List<CartItem> cart, HttpServletResponse response) {
+        for (CartItem item : cart) {
+            String cookieValue = item.getProductId() + ":" + item.getProductName() + ":" 
+                                + item.getPrice() + ":" + item.getQuantity();
+            Cookie cookie = new Cookie("cart_item_" + item.getProductId(), cookieValue);
+            cookie.setMaxAge(60 * 60 * 24);  // 1 day
+            response.addCookie(cookie);
+        }
     }
 }

@@ -5,10 +5,11 @@ import java.sql.*;
 
 public class AdminPurchasesServlet extends HttpServlet {
 
+    // Method to get the database connection
     private Connection getConnection() throws Exception {
         String dbUrl = "jdbc:mysql://localhost/java_store?allowPublicKeyRetrieval=true&useSSL=false";
-        String dbUser  = "student";
-        String dbPass = "mypassword";
+        String dbUser  = "alumno";
+        String dbPass = "mipassword";
         return DriverManager.getConnection(dbUrl, dbUser, dbPass);
     }
     
