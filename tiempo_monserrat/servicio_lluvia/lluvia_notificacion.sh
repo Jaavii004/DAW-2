@@ -1,22 +1,34 @@
 #!/bin/bash
 
-# URL de la página de meteorología
-URL="https://www.meteomontserrat.com/TiempoActual.htm"
+# URL del script PHP que devuelve los datos en JSON
+URL="https://gasolinerascercanas.es/chale/datos_tiempo.php"
 
-# Descargar el contenido HTML de la página
-HTML_CONTENT=$(curl -s "$URL")
+# Obtener el JSON devuelto por el script PHP
+JSON=$(curl -s "$URL")
 
-# Usamos grep y awk para extraer el valor de la lluvia (en mm) de la página HTML.
-RAIN_VALUE=$(echo "$HTML_CONTENT" | grep -oP '(?<=Tasa de Lluvia</td><td>)[^<]+' | head -n 1)
+# # Depuración: Mostrar el JSON obtenido
+# echo "JSON obtenido:"
+# echo "$JSON"
 
-# Comprobamos si la lluvia es mayor a 1mm
-if [[ $(echo "$RAIN_VALUE > 1" | bc -l) -eq 1 ]]; then
-    # Enviar una notificación si la lluvia supera 1mm
-    notify-send "¡Aviso! Lluvia detectada" "La lluvia es de $RAIN_VALUE mm."
+# Extraer la tasa de lluvia usando jq
+TASA_LLUVIA=$(echo "$JSON" | jq -r '.tasa_de_lluvia')
+
+echo "Tasa de lluvia (original): $TASA_LLUVIA"
+
+# Limpiar la cadena para quedarnos solo con el número (quitamos todo excepto dígitos y punto)
+NUM_TASA_LLUVIA=$(echo "$TASA_LLUVIA" | sed 's/[^0-9\.]//g')
+
+# Verificar si NUM_TASA_LLUVIA es un número válido
+if [[ -z "$NUM_TASA_LLUVIA" || ! "$NUM_TASA_LLUVIA" =~ ^[0-9]+(\.[0-9]+)?$ ]]; then
+    echo "Error: No se pudo obtener un valor numérico de tasa de lluvia válido."
+    exit 1
 fi
 
-# Comprobamos si la lluvia es mayor a 50mm para una notificación inmersiva
-if [[ $(echo "$RAIN_VALUE > 50" | bc -l) -eq 1 ]]; then
-    # Enviar una notificación inmersiva si la lluvia supera 50mm
-    notify-send --urgency=critical --icon=weather-storm "¡Alerta de Tormenta!" "Lluvia intensa: $RAIN_VALUE mm. ¡Toma precauciones!"
+# Realizar notificaciones en función del valor
+if (( $(echo "$NUM_TASA_LLUVIA > 0.5" | bc -l) )); then
+    notify-send "¡Aviso! Lluvia detectada" "La tasa de lluvia es de $NUM_TASA_LLUVIA mm/hr."
+fi
+
+if (( $(echo "$NUM_TASA_LLUVIA > 50" | bc -l) )); then
+    notify-send --urgency=critical --icon=weather-storm "¡Alerta de Tormenta!" "Lluvia intensa: $NUM_TASA_LLUVIA mm/hr. ¡Toma precauciones!"
 fi
