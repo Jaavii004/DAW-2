@@ -1,0 +1,10 @@
+[Unit]
+Description=Temporizador para el servicio de notificación de lluvia
+
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=5min
+Unit=lluvia_notificacion.service
+
+[Install]
+WantedBy=timers.target

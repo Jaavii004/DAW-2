@@ -1,0 +1,12 @@
+[Unit]
+Description=Servicio de notificación de lluvia
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/bin/bash /home/usuario/lluvia_notificacion.sh
+Restart=always
+RestartSec=300   # Esperar 5 minutos (300 segundos) antes de reiniciar el servicio
+
+[Install]
+WantedBy=multi-user.target
