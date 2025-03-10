@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TeamPro - Sistema de Gestión Deportiva</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Variables y reset */
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #3b82f6;
+            --text-color: #1f2937;
+            --light-text: #6b7280;
+            --background-color: #ffffff;
+            --light-background: #f3f4f6;
+            --border-color: #e5e7eb;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --border-radius: 8px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        /* Utilidades */
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            color: var(--light-text);
+            font-size: 1.1rem;
+        }
+
+        /* Header y Navegación */
+        header {
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(5px);
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo img {
+            height: 40px;
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .btn-demo {
+            background-color: var(--primary-color);
+            color: white !important;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 8rem 5% 5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .hero-content {
+            flex: 1;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            color: var(--text-color);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            color: var(--light-text);
+            margin-bottom: 2rem;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .hero-image {
+            flex: 1;
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: var(--border-radius);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 5rem 5%;
+            background-color: var(--light-background);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .feature-card h3 {
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+
+        .feature-card p {
+            color: var(--light-text);
+        }
+
+        /* Modules Section */
+        .modules {
+            padding: 5rem 5%;
+        }
+
+        .tabs {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .tab-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tab-btn {
+            padding: 1rem 2rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 500;
+            color: var(--light-text);
+            transition: var(--transition);
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-btn.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .module-content {
+            display: flex;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .module-image {
+            flex: 1;
+        }
+
+        .module-image img {
+            width: 100%;
+            border-radius: var(--border-radius);
+        }
+
+        .module-info {
+            flex: 1;
+        }
+
+        .module-info h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .module-info ul {
+            list-style: none;
+        }
+
+        .module-info li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .module-info li:before {
+            content: "•";
+            color: var(--primary-color);
+            position: absolute;
+            left: 0;
+        }
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 5rem 5%;
+            background-color: var(--light-background);
+        }
+
+        .testimonial-slider {
+            display: flex;
+            gap: 2rem;
+            overflow-x: auto;
+            padding: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .testimonial {
+            flex: 0 0 400px;
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .testimonial-content {
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .testimonial-author img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 5rem 5%;
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-color);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .pricing-card.popular {
+            transform: scale(1.05);
+            border-color: var(--primary-color);
+            position: relative;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-color);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: var(--border-radius);
+            font-size: 0.9rem;
+        }
+
+        .pricing-header {
+            margin-bottom: 2rem;
+        }
+
+        .price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--text-color);
+        }
+
+        .price span {
+            font-size: 1rem;
+            color: var(--light-text);
+        }
+
+        .pricing-features {
+            margin: 2rem 0;
+        }
+
+        .pricing-features ul {
+            list-style: none;
+        }
+
+        .pricing-features li {
+            margin-bottom: 1rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 5rem 5%;
+            background-color: var(--light-background);
+        }
+
+        .contact-container {
+            display: flex;
+            gap: 4rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .contact-form {
+            flex: 2;
+            background: white;
+            padding: 2rem;
+            border-radius: var(--border-radius);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
+            font-family: inherit;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .social-links a {
+            color: var(--text-color);
+            font-size: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--text-color);
+            color: white;
+            padding: 4rem 5% 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1.5rem;
+            color: white;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: var(--light-text);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 0.75rem;
+            border: none;
+            border-radius: var(--border-radius);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .module-content {
+                flex-direction: column;
+            }
+
+            .contact-container {
+                flex-direction: column;
+            }
+
+            .pricing-card.popular {
+                transform: none;
+            }
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feature-card,
+        .pricing-card,
+        .testimonial {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <img src="https://placehold.co/200x60?text=TeamPro" alt="TeamPro Logo">
+            </div>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+            <ul class="nav-links">
+                <li><a href="#inicio" class="active">Inicio</a></li>
+                <li><a href="#caracteristicas">Características</a></li>
+                <li><a href="#modulos">Módulos</a></li>
+                <li><a href="#precios">Precios</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+                <li><a href="#demo" class="btn-demo">Solicitar Demo</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <h1>Gestión integral para clubes deportivos</h1>
+            <p>La solución definitiva para administrar equipos, jugadores, competiciones y finanzas en un solo lugar.
+            </p>
+            <div class="hero-buttons">
+                <a href="#demo" class="btn btn-primary">Probar Demo</a>
+                <a href="#contacto" class="btn btn-secondary">Más Información</a>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="https://placehold.co/600x400?text=Dashboard+Preview" alt="Dashboard Preview">
+        </div>
+    </section>
+
+    <section class="features" id="caracteristicas">
+        <div class="section-header">
+            <h2>Características Principales</h2>
+            <p>Descubre todo lo que TeamPro puede hacer por tu club deportivo</p>
+        </div>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-users"></i>
+                </div>
+                <h3>Gestión de Equipos</h3>
+                <p>Administra múltiples equipos de diferentes categorías y niveles con facilidad.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-user-alt"></i>
+                </div>
+                <h3>Perfil de Jugadores</h3>
+                <p>Seguimiento completo de datos personales, estadísticas y evolución de cada jugador.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-calendar-alt"></i>
+                </div>
+                <h3>Competiciones</h3>
+                <p>Gestiona partidos, resultados y clasifica automáticamente en todas tus competiciones.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-chart-line"></i>
+                </div>
+                <h3>Estadísticas Avanzadas</h3>
+                <p>Análisis detallado del rendimiento individual y colectivo con gráficos interactivos.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-euro-sign"></i>
+                </div>
+                <h3>Gestión Financiera</h3>
+                <p>Control de salarios, cuotas y pagos para mantener saneadas tus finanzas.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-clipboard-list"></i>
+                </div>
+                <h3>Entrenamientos</h3>
+                <p>Programa y registra la asistencia a entrenamientos para mejorar la planificación.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="dashboard-preview">
+        <div class="section-header">
+            <h2>Una interfaz diseñada para entrenadores y directivos</h2>
+            <p>Accede a toda la información que necesitas con solo unos clics</p>
+        </div>
+        <div class="dashboard-image">
+            <img src="https://placehold.co/1200x600?text=Dashboard+Completo" alt="Dashboard Completo">
+        </div>
+    </section>
+
+    <section class="modules" id="modulos">
+        <div class="section-header">
+            <h2>Módulos del Sistema</h2>
+            <p>TeamPro se adapta a las necesidades de tu club deportivo</p>
+        </div>
+        <div class="tabs">
+            <div class="tab-nav">
+                <button class="tab-btn active" data-tab="equipos">Equipos</button>
+                <button class="tab-btn" data-tab="jugadores">Jugadores</button>
+                <button class="tab-btn" data-tab="competiciones">Competiciones</button>
+                <button class="tab-btn" data-tab="finanzas">Finanzas</button>
+                <button class="tab-btn" data-tab="entrenamientos">Entrenamientos</button>
+                <button class="tab-btn" data-tab="comunidad">Comunidad</button>
+            </div>
+
+            <div class="tab-content">
+                <div class="tab-pane active" id="equipos">
+                    <div class="module-content">
+                        <div class="module-image">
+                            <img src="https://placehold.co/600x400?text=Gestión+de+Equipos" alt="Gestión de Equipos">
+                        </div>
+                        <div class="module-info">
+                            <h3>Gestión completa de equipos</h3>
+                            <ul>
+                                <li>Registro detallado de equipos propios y rivales</li>
+                                <li>Información completa: nombre, barrio, ciudad, estadio</li>
+                                <li>Organización por categorías (Juveniles, Alevines, etc.)</li>
+                                <li>Clasificación por niveles (A, B, C...)</li>
+                                <li>Historial completo de temporadas</li>
+                                <li>Estadísticas comparativas entre equipos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="jugadores">
+                    <div class="module-content">
+                        <div class="module-image">
+                            <img src="https://placehold.co/600x400?text=Gestión+de+Jugadores"
+                                alt="Gestión de Jugadores">
+                        </div>
+                        <div class="module-info">
+                            <h3>Gestión de jugadores completa</h3>
+                            <ul>
+                                <li>Fichas detalladas de cada jugador</li>
+                                <li>Seguimiento de estado: Activo, Lesionado, Retirado</li>
+                                <li>Estadísticas individuales por temporada y competición</li>
+                                <li>Control de minutos jugados, goles y asistencias</li>
+                                <li>Historial médico y de lesiones</li>
+                                <li>Análisis de rendimiento con gráficos evolutivos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="competiciones">
+                    <div class="module-content">
+                        <div class="module-image">
+                            <img src="https://placehold.co/600x400?text=Competiciones" alt="Competiciones">
+                        </div>
+                        <div class="module-info">
+                            <h3>Control total de competiciones</h3>
+                            <ul>
+                                <li>Registro de partidos amistosos y competitivos</li>
+                                <li>Calendario automático de temporada</li>
+                                <li>Estadísticas detalladas de cada partido</li>
+                                <li>Seguimiento de posesión, tiros, córners y más</li>
+                                <li>Clasificaciones en tiempo real</li>
+                                <li>Comparativas con temporadas anteriores</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="finanzas">
+                    <div class="module-content">
+                        <div class="module-image">
+                            <img src="https://placehold.co/600x400?text=Gestión+Financiera" alt="Gestión Financiera">
+                        </div>
+                        <div class="module-info">
+                            <h3>Gestión financiera integral</h3>
+                            <ul>
+                                <li>Control de salarios de jugadores y entrenadores</li>
+                                <li>Gestión de cuotas y pagos</li>
+                                <li>Historial completo de transacciones</li>
+                                <li>Recordatorios automáticos de pagos pendientes</li>
+                                <li>Informes financieros personalizables</li>
+                                <li>Balance de ingresos y gastos por temporada</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="entrenamientos">
+                    <div class="module-content">
+                        <div class="module-image">
+                            <img src="https://placehold.co/600x400?text=Entrenamientos" alt="Entrenamientos">
+                        </div>
+                        <div class="module-info">
+                            <h3>Planificación de entrenamientos</h3>
+                            <ul>
+                                <li>Calendario de sesiones de entrenamiento</li>
+                                <li>Registro de asistencia de jugadores</li>
+                                <li>Planificación de ejercicios y objetivos</li>
+                                <li>Seguimiento de evolución física y técnica</li>
+                                <li>Reserva de instalaciones y recursos</li>
+                                <li>Notificaciones automáticas a jugadores</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="comunidad">
+                    <div class="module-content">
+                        <div class="module-image">
+                            <img src="https://placehold.co/600x400?text=Comunidad" alt="Comunidad">
+                        </div>
+                        <div class="module-info">
+                            <h3>Gestión de usuarios y comunidad</h3>
+                            <ul>
+                                <li>Perfiles para directivos, entrenadores y aficionados</li>
+                                <li>Sistema de comentarios en partidos y entrenamientos</li>
+                                <li>Notificaciones personalizables</li>
+                                <li>Foro de discusión interno</li>
+                                <li>Control de roles y permisos</li>
+                                <li>Conexión con redes sociales</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="section-header">
+            <h2>Lo que dicen nuestros clientes</h2>
+            <p>Clubes que ya confían en TeamPro</p>
+        </div>
+        <div class="testimonial-slider">
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    <p>"TeamPro ha cambiado completamente la forma en que gestionamos nuestro club. Ahora tenemos toda
+                        la información centralizada y el control financiero es mucho más sencillo."</p>
+                </div>
+                <div class="testimonial-author">
+                    <img src="https://placehold.co/80x80?text=JD" alt="Juan Director">
+                    <div>
+                        <h4>Juan Martínez</h4>
+                        <p>Director Deportivo - CD Atlético</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    <p>"Como entrenador, tener acceso a todas las estadísticas de mis jugadores me permite preparar
+                        mejor los partidos y entrenamientos. Una herramienta indispensable."</p>
+                </div>
+                <div class="testimonial-author">
+                    <img src="https://placehold.co/80x80?text=LF" alt="Luis Fernández">
+                    <div>
+                        <h4>Luis Fernández</h4>
+                        <p>Entrenador - Juvenil A - CF Victoria</p>
+                    </div>
+                </div>
+            </div>
+            <div class="testimonial">
+                <div class="testimonial-content">
+                    <p>"El control de pagos y cuotas nos ha ahorrado muchísimo tiempo y problemas. Ahora todos los
+                        padres reciben notificaciones automáticas y el seguimiento es perfecto."</p>
+                </div>
+                <div class="testimonial-author">
+                    <img src="https://placehold.co/80x80?text=MS" alt="María Sánchez">
+                    <div>
+                        <h4>María Sánchez</h4>
+                        <p>Tesorera - Escuela Municipal</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="pricing" id="precios">
+        <div class="section-header">
+            <h2>Planes y Precios</h2>
+            <p>Elige el plan que mejor se adapte a las necesidades de tu club</p>
+        </div>
+        <div class="pricing-grid">
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <h3>Básico</h3>
+                    <div class="price">29€<span>/mes</span></div>
+                </div>
+                <div class="pricing-features">
+                    <ul>
+                        <li><i class="fas fa-check"></i> 1 equipo</li>
+                        <li><i class="fas fa-check"></i> 30 jugadores</li>
+                        <li><i class="fas fa-check"></i> Gestión básica de jugadores</li>
+                        <li><i class="fas fa-check"></i> Calendario de partidos</li>
+                        <li><i class="fas fa-check"></i>
+                        <li><i class="fas fa-check"></i> Estadísticas básicas</li>
+                        <li><i class="fas fa-times"></i> Gestión financiera</li>
+                        <li><i class="fas fa-times"></i> Módulos avanzados</li>
+                    </ul>
+                </div>
+                <a href="#contacto" class="btn btn-primary">Empezar ahora</a>
+            </div>
+
+            <div class="pricing-card popular">
+                <div class="pricing-header">
+                    <div class="popular-badge">Más Popular</div>
+                    <h3>Profesional</h3>
+                    <div class="price">79€<span>/mes</span></div>
+                </div>
+                <div class="pricing-features">
+                    <ul>
+                        <li><i class="fas fa-check"></i> Hasta 5 equipos</li>
+                        <li><i class="fas fa-check"></i> 150 jugadores</li>
+                        <li><i class="fas fa-check"></i> Gestión avanzada de jugadores</li>
+                        <li><i class="fas fa-check"></i> Gestión de competiciones</li>
+                        <li><i class="fas fa-check"></i> Estadísticas avanzadas</li>
+                        <li><i class="fas fa-check"></i> Gestión financiera básica</li>
+                        <li><i class="fas fa-check"></i> Soporte prioritario</li>
+                    </ul>
+                </div>
+                <a href="#contacto" class="btn btn-primary">Empezar ahora</a>
+            </div>
+
+            <div class="pricing-card">
+                <div class="pricing-header">
+                    <h3>Enterprise</h3>
+                    <div class="price">Personalizado</div>
+                </div>
+                <div class="pricing-features">
+                    <ul>
+                        <li><i class="fas fa-check"></i> Equipos ilimitados</li>
+                        <li><i class="fas fa-check"></i> Jugadores ilimitados</li>
+                        <li><i class="fas fa-check"></i> Todas las características</li>
+                        <li><i class="fas fa-check"></i> API personalizada</li>
+                        <li><i class="fas fa-check"></i> Soporte 24/7</li>
+                        <li><i class="fas fa-check"></i> Personalización completa</li>
+                        <li><i class="fas fa-check"></i> Integración con otros sistemas</li>
+                    </ul>
+                </div>
+                <a href="#contacto" class="btn btn-primary">Contactar</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact" id="contacto">
+        <div class="section-header">
+            <h2>¿Interesado en TeamPro?</h2>
+            <p>Contáctanos para más información o solicita una demo personalizada</p>
+        </div>
+        <div class="contact-container">
+            <form class="contact-form">
+                <div class="form-group">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="club">Nombre del Club</label>
+                    <input type="text" id="club" name="club" required>
+                </div>
+                <div class="form-group">
+                    <label for="mensaje">Mensaje</label>
+                    <textarea id="mensaje" name="mensaje" rows="4" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Enviar Mensaje</button>
+            </form>
+            <div class="contact-info">
+                <h3>Información de Contacto</h3>
+                <div class="info-item">
+                    <i class="fas fa-phone"></i>
+                    <p>+34 900 123 456</p>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-envelope"></i>
+                    <p>info@teampro.com</p>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <p>Calle Deporte 123, 28001 Madrid</p>
+                </div>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>TeamPro</h4>
+                <p>La solución definitiva para la gestión de clubes deportivos.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Enlaces Rápidos</h4>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#caracteristicas">Características</a></li>
+                    <li><a href="#modulos">Módulos</a></li>
+                    <li><a href="#precios">Precios</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Términos y Condiciones</a></li>
+                    <li><a href="#">Política de Privacidad</a></li>
+                    <li><a href="#">Aviso Legal</a></li>
+                    <li><a href="#">Cookies</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Newsletter</h4>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Tu email">
+                    <button type="submit" class="btn btn-primary">Suscribirse</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 TeamPro. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+
+</html>
