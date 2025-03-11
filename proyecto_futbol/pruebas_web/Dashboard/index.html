@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Club Deportivo</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <img src="https://via.placeholder.com/50" alt="Logo" class="logo">
+                <h2>Club Deportivo</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="active"><a href="#dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+                    <li><a href="#equipos"><i class="fas fa-users"></i> Equipos</a></li>
+                    <li><a href="#jugadores"><i class="fas fa-running"></i> Jugadores</a></li>
+                    <li><a href="#entrenadores"><i class="fas fa-user-tie"></i> Entrenadores</a></li>
+                    <li><a href="#partidos"><i class="fas fa-futbol"></i> Partidos</a></li>
+                    <li><a href="#entrenamientos"><i class="fas fa-dumbbell"></i> Entrenamientos</a></li>
+                    <li><a href="#finanzas"><i class="fas fa-money-bill-wave"></i> Finanzas</a></li>
+                    <li><a href="#estadisticas"><i class="fas fa-chart-line"></i> Estadísticas</a></li>
+                </ul>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="#configuracion"><i class="fas fa-cog"></i> Configuración</a>
+                <a href="#logout"><i class="fas fa-sign-out-alt"></i> Cerrar sesión</a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Top Navigation Bar -->
+            <header class="top-navbar">
+                <button id="sidebar-toggle" class="sidebar-toggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="search-bar">
+                    <input type="text" placeholder="Buscar...">
+                    <button><i class="fas fa-search"></i></button>
+                </div>
+                <div class="user-info">
+                    <div class="notifications">
+                        <span class="notification-count">3</span>
+                        <i class="far fa-bell"></i>
+                    </div>
+                    <div class="user-profile">
+                        <img src="https://via.placeholder.com/40" alt="User">
+                        <span>Admin</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard Content -->
+            <section id="dashboard" class="page-content active">
+                <h1>Dashboard</h1>
+                <div class="date-time">
+                    <span id="current-date"></span>
+                </div>
+
+                <!-- Stats Overview -->
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <div class="stat-icon blue">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>Total Jugadores</h3>
+                            <p class="stat-number">127</p>
+                            <p class="stat-growth positive">+5% <span>último mes</span></p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon green">
+                            <i class="fas fa-futbol"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>Partidos Jugados</h3>
+                            <p class="stat-number">42</p>
+                            <p class="stat-growth positive">+12% <span>vs temporada anterior</span></p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon orange">
+                            <i class="fas fa-trophy"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>Victorias</h3>
+                            <p class="stat-number">28</p>
+                            <p class="stat-ratio">66% <span>efectividad</span></p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon purple">
+                            <i class="fas fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stat-details">
+                            <h3>Ingresos</h3>
+                            <p class="stat-number">€24,500</p>
+                            <p class="stat-growth positive">+8% <span>último trimestre</span></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Row -->
+                <div class="charts-container">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Rendimiento por Equipo</h3>
+                            <div class="chart-actions">
+                                <select class="chart-filter">
+                                    <option value="temporada_actual">Temporada Actual</option>
+                                    <option value="temporada_anterior">Temporada Anterior</option>
+                                </select>
+                                <button class="btn-icon"><i class="fas fa-ellipsis-v"></i></button>
+                            </div>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="teamPerformance"></canvas>
+                        </div>
+                    </div>
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Distribución de Jugadores</h3>
+                            <div class="chart-actions">
+                                <select class="chart-filter">
+                                    <option value="por_categoria">Por Categoría</option>
+                                    <option value="por_edad">Por Edad</option>
+                                </select>
+                                <button class="btn-icon"><i class="fas fa-ellipsis-v"></i></button>
+                            </div>
+                        </div>
+                        <div class="chart-body">
+                            <canvas id="playerDistribution"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity and Calendar -->
+                <div class="activity-calendar-container">
+                    <!-- Recent Activity -->
+                    <div class="recent-activity">
+                        <div class="section-header">
+                            <h3>Actividad Reciente</h3>
+                            <a href="#" class="view-all">Ver todo</a>
+                        </div>
+                        <div class="activity-list">
+                            <div class="activity-item">
+                                <div class="activity-icon green">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <p>Nuevo jugador <strong>Carlos Martínez</strong> se unió al equipo <strong>Juveniles A</strong></p>
+                                    <span class="time">Hace 2 horas</span>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon blue">
+                                    <i class="fas fa-trophy"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <p><strong>Infantiles B</strong> ganaron 3-1 contra <strong>CD Rivera</strong></p>
+                                    <span class="time">Ayer</span>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon orange">
+                                    <i class="fas fa-money-check"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <p>Cuota mensual recibida de <strong>15 jugadores</strong></p>
+                                    <span class="time">Hace 2 días</span>
+                                </div>
+                            </div>
+                            <div class="activity-item">
+                                <div class="activity-icon red">
+                                    <i class="fas fa-exclamation-triangle"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <p><strong>David García</strong> reportado como lesionado durante el entrenamiento</p>
+                                    <span class="time">Hace 3 días</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Calendar -->
+                    <div class="calendar-card">
+                        <div class="section-header">
+                            <h3>Calendario de Eventos</h3>
+                            <a href="#" class="view-all">Ver todo</a>
+                        </div>
+                        <div class="calendar-header">
+                            <button class="calendar-nav"><i class="fas fa-chevron-left"></i></button>
+                            <h4>Marzo 2025</h4>
+                            <button class="calendar-nav"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                        <div class="calendar-grid">
+                            <div class="calendar-day-names">
+                                <span>Lu</span>
+                                <span>Ma</span>
+                                <span>Mi</span>
+                                <span>Ju</span>
+                                <span>Vi</span>
+                                <span>Sa</span>
+                                <span>Do</span>
+                            </div>
+                            <div class="calendar-days">
+                                <!-- Semana 1 -->
+                                <div class="calendar-day prev-month">24</div>
+                                <div class="calendar-day prev-month">25</div>
+                                <div class="calendar-day prev-month">26</div>
+                                <div class="calendar-day prev-month">27</div>
+                                <div class="calendar-day prev-month">28</div>
+                                <div class="calendar-day">1</div>
+                                <div class="calendar-day">2</div>
+                                <!-- Semana 2 -->
+                                <div class="calendar-day">3</div>
+                                <div class="calendar-day">4</div>
+                                <div class="calendar-day">5</div>
+                                <div class="calendar-day">6</div>
+                                <div class="calendar-day">7</div>
+                                <div class="calendar-day has-event">8</div>
+                                <div class="calendar-day">9</div>
+                                <!-- Semana 3 -->
+                                <div class="calendar-day">10</div>
+                                <div class="calendar-day today">11</div>
+                                <div class="calendar-day has-event">12</div>
+                                <div class="calendar-day">13</div>
+                                <div class="calendar-day">14</div>
+                                <div class="calendar-day has-event">15</div>
+                                <div class="calendar-day">16</div>
+                                <!-- Semana 4 -->
+                                <div class="calendar-day">17</div>
+                                <div class="calendar-day has-event">18</div>
+                                <div class="calendar-day">19</div>
+                                <div class="calendar-day">20</div>
+                                <div class="calendar-day">21</div>
+                                <div class="calendar-day has-event">22</div>
+                                <div class="calendar-day">23</div>
+                                <!-- Semana 5 -->
+                                <div class="calendar-day">24</div>
+                                <div class="calendar-day">25</div>
+                                <div class="calendar-day">26</div>
+                                <div class="calendar-day has-event">27</div>
+                                <div class="calendar-day">28</div>
+                                <div class="calendar-day">29</div>
+                                <div class="calendar-day">30</div>
+                                <!-- Semana 6 -->
+                                <div class="calendar-day">31</div>
+                                <div class="calendar-day next-month">1</div>
+                                <div class="calendar-day next-month">2</div>
+                                <div class="calendar-day next-month">3</div>
+                                <div class="calendar-day next-month">4</div>
+                                <div class="calendar-day next-month">5</div>
+                                <div class="calendar-day next-month">6</div>
+                            </div>
+                        </div>
+                        <div class="upcoming-events">
+                            <h4>Próximos eventos</h4>
+                            <div class="event-item">
+                                <div class="event-date">
+                                    <span class="event-day">12</span>
+                                    <span class="event-month">MAR</span>
+                                </div>
+                                <div class="event-info">
+                                    <h5>Entrenamiento Cadetes A</h5>
+                                    <p><i class="fas fa-map-marker-alt"></i> Campo Municipal - 18:00</p>
+                                </div>
+                            </div>
+                            <div class="event-item">
+                                <div class="event-date">
+                                    <span class="event-day">15</span>
+                                    <span class="event-month">MAR</span>
+                                </div>
+                                <div class="event-info">
+                                    <h5>Partido vs CD Atlántico</h5>
+                                    <p><i class="fas fa-map-marker-alt"></i> Estadio Central - 17:30</p>
+                                </div>
+                            </div>
+                            <div class="event-item">
+                                <div class="event-date">
+                                    <span class="event-day">18</span>
+                                    <span class="event-month">MAR</span>
+                                </div>
+                                <div class="event-info">
+                                    <h5>Reunión de Entrenadores</h5>
+                                    <p><i class="fas fa-map-marker-alt"></i> Sala de Juntas - 20:00</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Team Performance Table -->
+                <div class="team-performance-table">
+                    <div class="section-header">
+                        <h3>Equipos - Rendimiento Actual</h3>
+                        <div class="table-actions">
+                            <div class="search-mini">
+                                <input type="text" placeholder="Buscar equipo...">
+                                <i class="fas fa-search"></i>
+                            </div>
+                            <div class="table-filters">
+                                <select>
+                                    <option value="todas">Todas las categorías</option>
+                                    <option value="juveniles">Juveniles</option>
+                                    <option value="cadetes">Cadetes</option>
+                                    <option value="infantiles">Infantiles</option>
+                                    <option value="alevines">Alevines</option>
+                                    <option value="benjamines">Benjamines</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="responsive-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Equipo</th>
+                                    <th>Categoría</th>
+                                    <th>P. Jugados</th>
+                                    <th>Victorias</th>
+                                    <th>Empates</th>
+                                    <th>Derrotas</th>
+                                    <th>Goles F</th>
+                                    <th>Goles C</th>
+                                    <th>Efectividad</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="team-name">
+                                        <div class="team-logo-name">
+                                            <div class="team-logo" style="background-color: #3498db;"></div>
+                                            <span>Juveniles A</span>
+                                        </div>
+                                    </td>
+                                    <td>Juveniles</td>
+                                    <td>12</td>
+                                    <td>8</td>
+                                    <td>2</td>
+                                    <td>2</td>
+                                    <td>24</td>
+                                    <td>10</td>
+                                    <td>
+                                        <div class="progress-bar">
+                                            <div class="progress-value" style="width: 72%">72%</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions-btn">
+                                            <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="team-name">
+                                        <div class="team-logo-name">
+                                            <div class="team-logo" style="background-color: #2ecc71;"></div>
+                                            <span>Cadetes B</span>
+                                        </div>
+                                    </td>
+                                    <td>Cadetes</td>
+                                    <td>14</td>
+                                    <td>10</td>
+                                    <td>1</td>
+                                    <td>3</td>
+                                    <td>35</td>
+                                    <td>14</td>
+                                    <td>
+                                        <div class="progress-bar">
+                                            <div class="progress-value" style="width: 75%">75%</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions-btn">
+                                            <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="team-name">
+                                        <div class="team-logo-name">
+                                            <div class="team-logo" style="background-color: #e74c3c;"></div>
+                                            <span>Infantiles A</span>
+                                        </div>
+                                    </td>
+                                    <td>Infantiles</td>
+                                    <td>10</td>
+                                    <td>4</td>
+                                    <td>3</td>
+                                    <td>3</td>
+                                    <td>16</td>
+                                    <td>14</td>
+                                    <td>
+                                        <div class="progress-bar">
+                                            <div class="progress-value" style="width: 55%">55%</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions-btn">
+                                            <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="team-name">
+                                        <div class="team-logo-name">
+                                            <div class="team-logo" style="background-color: #f39c12;"></div>
+                                            <span>Alevines C</span>
+                                        </div>
+                                    </td>
+                                    <td>Alevines</td>
+                                    <td>8</td>
+                                    <td>6</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td>22</td>
+                                    <td>8</td>
+                                    <td>
+                                        <div class="progress-bar">
+                                            <div class="progress-value" style="width: 81%">81%</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions-btn">
+                                            <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="team-name">
+                                        <div class="team-logo-name">
+                                            <div class="team-logo" style="background-color: #9b59b6;"></div>
+                                            <span>Benjamines B</span>
+                                        </div>
+                                    </td>
+                                    <td>Benjamines</td>
+                                    <td>6</td>
+                                    <td>2</td>
+                                    <td>2</td>
+                                    <td>2</td>
+                                    <td>10</td>
+                                    <td>12</td>
+                                    <td>
+                                        <div class="progress-bar">
+                                            <div class="progress-value" style="width: 50%">50%</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="table-actions-btn">
+                                            <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="table-footer">
+                        <div class="table-info">Mostrando 5 de 15 equipos</div>
+                        <div class="pagination">
+                            <button class="pagination-btn disabled"><i class="fas fa-chevron-left"></i></button>
+                            <button class="pagination-btn active">1</button>
+                            <button class="pagination-btn">2</button>
+                            <button class="pagination-btn">3</button>
+                            <button class="pagination-btn"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Equipos Content (Hidden by default) -->
+            <section id="equipos" class="page-content">
+                <h1>Gestión de Equipos</h1>
+                <!-- Contenido para equipos -->
+            </section>
+
+            <!-- Jugadores Content (Hidden by default) -->
+            <section id="jugadores" class="page-content">
+                <h1>Gestión de Jugadores</h1>
+                <!-- Contenido para jugadores -->
+            </section>
+
+            <!-- ...otros contenidos de secciones... -->
+
+        </main>
+    </div>
+
+    <script src="js/main.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/charts.js"></script>
+</body>
+</html>

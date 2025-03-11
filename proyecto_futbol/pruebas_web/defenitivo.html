@@ -1,0 +1,1924 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SportPro | Gestión Deportiva Avanzada</title>
+    <style>
+        /* Variables y configuración base */
+        :root {
+            --primary: #2D3FE7;
+            --primary-dark: #1E2B9F;
+            --primary-light: #E6E9FF;
+            --secondary: #00D4FF;
+            --accent: #FF6B6B;
+            --background: #FFFFFF;
+            --surface: #F8F9FE;
+            --surface-alt: #F0F2FC;
+            --text-primary: #1A1F36;
+            --text-secondary: #4F566B;
+            --text-tertiary: #97A0C3;
+            --success: #36B37E;
+            --warning: #FFAB00;
+            --error: #FF5630;
+            --border: #E5E8F0;
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 16px;
+            --shadow-sm: 0 2px 6px rgba(26, 31, 54, 0.08);
+            --shadow-md: 0 6px 12px rgba(26, 31, 54, 0.12);
+            --shadow-lg: 0 12px 24px rgba(26, 31, 54, 0.15);
+            --max-width: 1280px;
+            --header-height: 80px;
+            --transition: all 0.3s ease;
+            --container-padding: 0 5%;
+        }
+
+        /* Reset y estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+            color: var(--text-primary);
+            line-height: 1.6;
+            background-color: var(--background);
+            overflow-x: hidden;
+            font-size: 16px;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-family: 'Space Grotesk', sans-serif;
+            letter-spacing: -0.02em;
+            line-height: 1.3;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+        }
+
+        h2 {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+        }
+
+        h3 {
+            font-size: clamp(1.5rem, 3vw, 1.75rem);
+        }
+
+        h4 {
+            font-size: clamp(1.25rem, 2vw, 1.5rem);
+        }
+
+        p {
+            margin-bottom: 1.5rem;
+            color: var(--text-secondary);
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+        }
+
+        section {
+            padding: 5rem 5%;
+        }
+
+        .container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: var(--container-padding);
+        }
+
+        /* Utilidades */
+        .text-center {
+            text-align: center;
+        }
+
+        .section-padding {
+            padding: 6rem 5%;
+        }
+
+        /* Botones */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.875rem 1.75rem;
+            font-weight: 600;
+            border-radius: var(--radius-md);
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 10px rgba(45, 63, 231, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(45, 63, 231, 0.35);
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .cta-button {
+            background: var(--primary);
+            color: white !important;
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(45, 63, 231, 0.25);
+            transition: var(--transition);
+        }
+
+        .cta-button:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(45, 63, 231, 0.35);
+        }
+
+        /* Header y Navegación */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            box-shadow: var(--shadow-sm);
+        }
+
+        nav {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 5%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            letter-spacing: -0.02em;
+        }
+
+        .logo-text .accent {
+            color: var(--accent);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 600;
+            transition: var(--transition);
+            position: relative;
+            padding: 0.5rem 0;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: calc(var(--header-height) + 4rem) 5% 4rem;
+            display: grid;
+            grid-template-columns: minmax(300px, 1fr) minmax(300px, 1fr);
+            gap: 4rem;
+            align-items: center;
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .hero-content {
+            max-width: 600px;
+        }
+
+        .hero h1 {
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-fill-color: transparent;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-bottom: 3rem;
+            background-color: var(--surface);
+            padding: 1.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        .stat-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-tertiary);
+            font-weight: 500;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem 2rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .button.primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 10px rgba(45, 63, 231, 0.25);
+        }
+
+        .button.primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(45, 63, 231, 0.35);
+        }
+
+        .button.secondary {
+            background: var(--surface);
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .button.secondary:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .dashboard-preview {
+            position: relative;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 550px;
+        }
+
+        .dashboard-preview img {
+            width: 100%;
+            height: auto;
+            display: block;
+            object-fit: cover;
+        }
+
+        .floating-card {
+            position: absolute;
+            background: white;
+            padding: 1.25rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-md);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: transform 0.3s ease;
+            z-index: 1000;
+        }
+
+        .floating-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stats-card {
+            top: -2rem;
+            right: -2rem;
+        }
+
+        .player-card {
+            bottom: -2rem;
+            left: -2rem;
+        }
+
+        .card-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--radius-sm);
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+
+        .card-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-title {
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 0.875rem;
+        }
+
+        .card-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-tertiary);
+        }
+
+        /* Section Header */
+        .section-header {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 4rem;
+        }
+
+        .section-tag {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(45, 63, 231, 0.1);
+            color: var(--primary);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Features Section */
+        .features {
+            padding: 6rem 5%;
+            background: var(--surface);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--border);
+            text-align: center;
+            align-items: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary-light);
+        }
+
+        .feature-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: var(--radius-md);
+            background: var(--primary-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: auto;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .feature-list li::before {
+            content: "→";
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        /* Módulos & Tabs */
+        .tabs {
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .tab-nav {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+
+        .tab-btn {
+            padding: 1rem 2rem;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: var(--transition);
+            border-bottom: 2px solid transparent;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+        }
+
+        .tab-btn:hover {
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .tab-pane {
+            display: none;
+        }
+
+        .tab-pane.active {
+            display: block;
+            animation: fadeIn 0.5s ease forwards;
+        }
+
+        .module-content {
+            display: flex;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .module-image {
+            flex: 1;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+        }
+
+        .module-image:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .module-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: var(--radius-lg);
+        }
+
+        .module-info {
+            flex: 1;
+        }
+
+        .module-info h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .module-info ul {
+            list-style: none;
+        }
+
+        .module-info li {
+            margin-bottom: 1rem;
+            padding-left: 1.75rem;
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        .module-info li:before {
+            content: "✓";
+            color: var(--success);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        /* Dashboard Showcase */
+        .dashboard-showcase {
+            padding: 6rem 5%;
+            background: var(--background);
+        }
+
+        .dashboard-screens {
+            position: relative;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .dashboard-screens img {
+            width: 100%;
+            border-radius: var(--radius-lg);
+            transition: var(--transition);
+        }
+
+        .screen-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to right, rgba(45, 63, 231, 0.85), rgba(0, 212, 255, 0.85));
+            border-radius: var(--radius-lg);
+            opacity: 0;
+            transition: all 0.4s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .dashboard-screens:hover .screen-overlay {
+            opacity: 1;
+        }
+
+        .dashboard-screens:hover img {
+            transform: scale(1.05);
+        }
+
+        .screen-features {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: all 0.5s ease 0.1s;
+        }
+
+        .dashboard-screens:hover .screen-features {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .screen-feature {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .screen-feature i {
+            color: var(--background);
+            font-size: 1.5rem;
+        }
+
+        /* Pricing Section */
+        .pricing {
+            padding: 6rem 5%;
+            background: var(--surface);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .pricing-card {
+            background: white;
+            padding: 2.5rem 2rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            border: 1px solid var(--border);
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .pricing-card.popular {
+            position: relative;
+            border: 2px solid var(--primary);
+            transform: scale(1.05);
+            box-shadow: var(--shadow-lg);
+            z-index: 1;
+        }
+
+        .popular-badge {
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 4px 8px rgba(45, 63, 231, 0.25);
+        }
+
+        .pricing-header {
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+
+        .pricing-header h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin: 1.5rem 0 0.5rem;
+            line-height: 1;
+        }
+
+        .price span {
+            font-size: 1rem;
+            color: var(--text-tertiary);
+            font-weight: 500;
+        }
+
+        .pricing-features {
+            margin: 2rem 0;
+            flex-grow: 1;
+        }
+
+        .pricing-features ul {
+            list-style: none;
+            text-align: left;
+        }
+
+        .pricing-features li {
+            margin-bottom: 1rem;
+            padding-left: 1.75rem;
+            position: relative;
+            color: var(--text-secondary);
+        }
+
+        .pricing-features li i {
+            position: absolute;
+            left: 0;
+        }
+
+        .pricing-features .fa-check {
+            color: var(--success);
+        }
+
+        .pricing-features .fa-times {
+            color: var(--text-tertiary);
+        }
+
+        .pricing-card .btn {
+            margin-top: auto;
+            align-self: center;
+            min-width: 80%;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 6rem 5%;
+            background: var(--background);
+        }
+
+        .contact-container {
+            display: flex;
+            gap: 4rem;
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .contact-form {
+            flex: 2;
+            background: white;
+            padding: 2.5rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            transition: var(--transition);
+            font-size: 1rem;
+            font-family: inherit;
+            color: var(--text-primary);
+            background: var(--surface);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(45, 63, 231, 0.1);
+            background: white;
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .contact-form .btn {
+            margin-top: 1rem;
+            width: 100%;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .contact-info h3 {
+            font-size: 1.75rem;
+            margin-bottom: 2.5rem;
+            color: var(--text-primary);
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-item i {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--primary-light);
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+
+        .info-item p {
+            margin: 0;
+            color: var(--text-secondary);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .social-links a {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--surface);
+            color: var(--primary);
+            font-size: 1.5rem;
+            transition: var(--transition);
+            border: 1px solid var(--border);
+        }
+
+        .social-links a:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--text-primary);
+            color: white;
+            padding: 4rem 5% 2rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            max-width: var(--max-width);
+            margin: 0 auto;
+        }
+
+        .footer-section h4 {
+            color: white;
+            margin-bottom: 1.5rem;
+            font-size: 1.25rem;
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+
+        .footer-section h4::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+            border-radius: 5px;
+        }
+
+        .footer-section p {
+            color: var(--text-tertiary);
+            margin-bottom: 1rem;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-section a {
+            color: var(--text-tertiary);
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-section a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: none;
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            color: var(--text-primary);
+        }
+
+        .newsletter-form .btn {
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-md);
+            background: var(--primary);
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .newsletter-form .btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-tertiary);
+            font-size: 0.875rem;
+        }
+
+        /* Animaciones */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .feature-card,
+        .pricing-card,
+        .module-content {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+
+            .hero-content {
+                max-width: 100%;
+                order: 1;
+            }
+
+            .hero-visual {
+                order: 0;
+                margin-bottom: 2rem;
+            }
+
+            .hero-cta {
+                justify-content: center;
+            }
+
+            .module-content {
+                flex-direction: column;
+            }
+
+            .module-image,
+            .module-info {
+                width: 100%;
+            }
+
+            .contact-container {
+                flex-direction: column;
+            }
+
+            .contact-info {
+                margin-top: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .pricing-card.popular {
+                transform: none;
+            }
+
+            .floating-card {
+                display: none;
+            }
+
+            .tab-btn {
+                padding: 0.75rem 1rem;
+                font-size: 0.9rem;
+            }
+
+            .features-grid,
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Modo activo para los tabs */
+        #equipos.active,
+        #jugadores.active,
+        #competiciones.active,
+        #finanzas.active,
+        #entrenamientos.active,
+        #comunidad.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Mejoras adicionales para formularios */
+        input:focus,
+        textarea:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(45, 63, 231, 0.1);
+        }
+
+        /* Mejorar visibilidad de elementos de pricing */
+        .pricing-features li {
+            position: relative;
+            padding-left: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .pricing-features li i {
+            position: absolute;
+            left: 0;
+            top: 0.15rem;
+            font-size: 1.1rem;
+        }
+
+        .pricing-features .fa-check {
+            color: var(--success);
+        }
+
+        .pricing-features .fa-times {
+            color: var(--error);
+        }
+
+        /* Botones mejorados */
+        .btn {
+            padding: 1rem 2rem;
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            border: none;
+            display: inline-block;
+            text-align: center;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 10px rgba(45, 63, 231, 0.25);
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(45, 63, 231, 0.35);
+        }
+
+        /* Mejorar efecto hover en las cards */
+        .feature-card:hover .feature-icon,
+        .pricing-card:hover .pricing-header h3 {
+            transform: scale(1.05);
+        }
+
+        /* Mejoras para sección de módulos */
+        .tab-content {
+            position: relative;
+            min-height: 400px;
+        }
+
+        .tab-pane {
+            display: none;
+            position: absolute;
+            width: 100%;
+            top: 0;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .tab-pane.active {
+            display: block;
+            position: relative;
+            opacity: 1;
+        }
+
+        /* Mejoras para el responsive */
+        @media (max-width: 576px) {
+            h1 {
+                font-size: 2.25rem;
+            }
+
+            h2 {
+                font-size: 1.75rem;
+            }
+
+            section {
+                padding: 3rem 5%;
+            }
+
+            .button {
+                width: 100%;
+                margin-bottom: 1rem;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+            }
+
+            .footer-section {
+                text-align: center;
+            }
+
+            .footer-section h4::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            .social-links {
+                justify-content: center;
+            }
+
+            .module-info h3 {
+                font-size: 1.5rem;
+            }
+        }
+
+        /* Animaciones mejoradas */
+        @keyframes slideInTop {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .cta-button {
+            animation: pulse 2s infinite;
+        }
+
+        /* Mejorar aspecto visual del dashboard */
+        .dashboard-screens {
+            transition: transform 0.5s ease;
+        }
+
+        .dashboard-screens:hover {
+            transform: scale(1.02);
+        }
+
+        .dashboard-preview {
+            position: relative;
+            z-index: 1;
+            transition: all 0.5s ease;
+        }
+
+        .dashboard-preview:hover {
+            transform: translateY(-10px);
+        }
+
+        /* Elementos con efectos especiales */
+        .section-tag {
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .section-tag::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            transition: left 0.6s ease;
+            z-index: -1;
+        }
+
+        .section-tag:hover::before {
+            left: 100%;
+        }
+
+        /* Footer más atractivo */
+        .footer-section a {
+            position: relative;
+        }
+
+        .footer-section a::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: white;
+            transition: width 0.3s ease;
+        }
+
+        .footer-section a:hover::after {
+            width: 100%;
+        }
+
+        /* Mejora visual para el formulario de contacto */
+        .contact-form {
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-form::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-light);
+            border-radius: var(--radius-lg);
+            z-index: -1;
+            opacity: 0.5;
+        }
+
+        /* Modo oscuro de navegación para mejorar legibilidad al hacer scroll */
+        @media (prefers-reduced-motion: no-preference) {
+            header {
+                transition: background 0.3s ease, box-shadow 0.3s ease;
+            }
+
+            header.scrolled {
+                background: var(--text-primary);
+                box-shadow: var(--shadow-md);
+            }
+
+            header.scrolled .nav-links a {
+                color: white;
+            }
+
+            header.scrolled .logo-text {
+                color: white;
+            }
+        }
+
+        /* Mejorar organización de elementos en pantallas pequeñas */
+        @media (max-width: 576px) {
+            .pricing-grid {
+                display: flex;
+                flex-direction: column;
+                gap: 2rem;
+            }
+
+            .pricing-card {
+                width: 100%;
+            }
+
+            .pricing-card.popular {
+                order: -1;
+            }
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Funcionalidad para los tabs
+            const tabBtns = document.querySelectorAll('.tab-btn');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+
+            tabBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    // Eliminar active de todos los botones
+                    tabBtns.forEach(b => b.classList.remove('active'));
+
+                    // Añadir active al botón actual
+                    this.classList.add('active');
+
+                    // Mostrar el panel correspondiente
+                    const tabId = this.getAttribute('data-tab');
+
+                    tabPanes.forEach(pane => {
+                        pane.classList.remove('active');
+                        if (pane.id === tabId) {
+                            pane.classList.add('active');
+                        }
+                    });
+                });
+            });
+
+            // Toggle de menú móvil
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+
+            if (menuToggle) {
+                menuToggle.addEventListener('click', () => {
+                    navLinks.classList.toggle('show');
+                });
+            }
+
+            // Cambiar estilo del header al hacer scroll
+            window.addEventListener('scroll', () => {
+                const header = document.querySelector('header');
+                if (window.scrollY > 100) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+        });
+    </script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <span class="logo-text">Sport<span class="accent">Pro</span></span>
+            </div>
+            <div class="nav-links">
+                <a href="#inicio">Inicio</a>
+                <a href="#soluciones">Soluciones</a>
+                <a href="#funciones">Funciones</a>
+                <a href="#precios">Precios</a>
+                <a href="#contacto">Contacto</a>
+                <a href="#demo" class="cta-button">Prueba Gratuita</a>
+            </div>
+            <div class="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero" id="inicio">
+            <div class="hero-content">
+                <h1>Revoluciona la gestión de tu club deportivo</h1>
+                <p class="hero-subtitle">Una plataforma integral diseñada para optimizar cada aspecto de tu organización
+                    deportiva</p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number">500+</span>
+                        <span class="stat-label">Clubes Confían en Nosotros</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">50k+</span>
+                        <span class="stat-label">Jugadores Gestionados</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number">99%</span>
+                        <span class="stat-label">Satisfacción Cliente</span>
+                    </div>
+                </div>
+                <div class="hero-cta">
+                    <a href="#demo" class="button primary">Comenzar Ahora</a>
+                    <a href="#demo" class="button secondary">Ver Demo</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="dashboard-preview">
+                    <img src="https://lifemadrid.com/wp-content/uploads/Estadio_Santiago_Bernabeu.jpg"
+                        alt="Dashboard Preview">
+                </div>
+                <div class="floating-card stats-card">
+                    <div class="card-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="card-content">
+                        <span class="card-title">Rendimiento del Equipo</span>
+                        <div class="mini-chart"></div>
+                    </div>
+                </div>
+                <div class="floating-card player-card">
+                    <div class="card-icon">
+                        <i class="fas fa-user-alt"></i>
+                    </div>
+                    <div class="card-content">
+                        <span class="card-title">Gestión de Jugadores</span>
+                        <span class="card-subtitle">23 Activos</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="features" id="caracteristicas">
+            <div class="section-header">
+                <h2>Características Principales</h2>
+                <p>Descubre todo lo que TeamPro puede hacer por tu club deportivo</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3>Gestión de Equipos</h3>
+                    <p>Administra múltiples equipos de diferentes categorías y niveles con facilidad.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-alt"></i>
+                    </div>
+                    <h3>Perfil de Jugadores</h3>
+                    <p>Seguimiento completo de datos personales, estadísticas y evolución de cada jugador.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <h3>Competiciones</h3>
+                    <p>Gestiona partidos, resultados y clasifica automáticamente en todas tus competiciones.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Estadísticas Avanzadas</h3>
+                    <p>Análisis detallado del rendimiento individual y colectivo con gráficos interactivos.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-euro-sign"></i>
+                    </div>
+                    <h3>Gestión Financiera</h3>
+                    <p>Control de salarios, cuotas y pagos para mantener saneadas tus finanzas.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-clipboard-list"></i>
+                    </div>
+                    <h3>Entrenamientos</h3>
+                    <p>Programa y registra la asistencia a entrenamientos para mejorar la planificación.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="modules" id="modulos">
+            <div class="section-header">
+                <h2>Módulos del Sistema</h2>
+                <p>TeamPro se adapta a las necesidades de tu club deportivo</p>
+            </div>
+            <div class="tabs">
+                <div class="tab-nav">
+                    <button class="tab-btn active" data-tab="equipos">Equipos</button>
+                    <button class="tab-btn" data-tab="jugadores">Jugadores</button>
+                    <button class="tab-btn" data-tab="competiciones">Competiciones</button>
+                    <button class="tab-btn" data-tab="finanzas">Finanzas</button>
+                    <button class="tab-btn" data-tab="entrenamientos">Entrenamientos</button>
+                    <button class="tab-btn" data-tab="comunidad">Comunidad</button>
+                </div>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="equipos">
+                        <div class="module-content">
+                            <div class="module-image">
+                                <img src="https://placehold.co/600x400?text=Gestión+de+Equipos"
+                                    alt="Gestión de Equipos">
+                            </div>
+                            <div class="module-info">
+                                <h3>Gestión completa de equipos</h3>
+                                <ul>
+                                    <li>Registro detallado de equipos propios y rivales</li>
+                                    <li>Información completa: nombre, barrio, ciudad, estadio</li>
+                                    <li>Organización por categorías (Juveniles, Alevines, etc.)</li>
+                                    <li>Clasificación por niveles (A, B, C...)</li>
+                                    <li>Historial completo de temporadas</li>
+                                    <li>Estadísticas comparativas entre equipos</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="jugadores">
+                        <div class="module-content">
+                            <div class="module-image">
+                                <img src="https://placehold.co/600x400?text=Gestión+de+Jugadores"
+                                    alt="Gestión de Jugadores">
+                            </div>
+                            <div class="module-info">
+                                <h3>Gestión de jugadores completa</h3>
+                                <ul>
+                                    <li>Fichas detalladas de cada jugador</li>
+                                    <li>Seguimiento de estado: Activo, Lesionado, Retirado</li>
+                                    <li>Estadísticas individuales por temporada y competición</li>
+                                    <li>Control de minutos jugados, goles y asistencias</li>
+                                    <li>Historial médico y de lesiones</li>
+                                    <li>Análisis de rendimiento con gráficos evolutivos</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="competiciones">
+                        <div class="module-content">
+                            <div class="module-image">
+                                <img src="https://placehold.co/600x400?text=Competiciones" alt="Competiciones">
+                            </div>
+                            <div class="module-info">
+                                <h3>Control total de competiciones</h3>
+                                <ul>
+                                    <li>Registro de partidos amistosos y competitivos</li>
+                                    <li>Calendario automático de temporada</li>
+                                    <li>Estadísticas detalladas de cada partido</li>
+                                    <li>Seguimiento de posesión, tiros, córners y más</li>
+                                    <li>Clasificaciones en tiempo real</li>
+                                    <li>Comparativas con temporadas anteriores</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="finanzas">
+                        <div class="module-content">
+                            <div class="module-image">
+                                <img src="https://placehold.co/600x400?text=Gestión+Financiera"
+                                    alt="Gestión Financiera">
+                            </div>
+                            <div class="module-info">
+                                <h3>Gestión financiera integral</h3>
+                                <ul>
+                                    <li>Control de salarios de jugadores y entrenadores</li>
+                                    <li>Gestión de cuotas y pagos</li>
+                                    <li>Historial completo de transacciones</li>
+                                    <li>Recordatorios automáticos de pagos pendientes</li>
+                                    <li>Informes financieros personalizables</li>
+                                    <li>Balance de ingresos y gastos por temporada</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="entrenamientos">
+                        <div class="module-content">
+                            <div class="module-image">
+                                <img src="https://placehold.co/600x400?text=Entrenamientos" alt="Entrenamientos">
+                            </div>
+                            <div class="module-info">
+                                <h3>Planificación de entrenamientos</h3>
+                                <ul>
+                                    <li>Calendario de sesiones de entrenamiento</li>
+                                    <li>Registro de asistencia de jugadores</li>
+                                    <li>Planificación de ejercicios y objetivos</li>
+                                    <li>Seguimiento de evolución física y técnica</li>
+                                    <li>Reserva de instalaciones y recursos</li>
+                                    <li>Notificaciones automáticas a jugadores</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane" id="comunidad">
+                        <div class="module-content">
+                            <div class="module-image">
+                                <img src="https://placehold.co/600x400?text=Comunidad" alt="Comunidad">
+                            </div>
+                            <div class="module-info">
+                                <h3>Gestión de usuarios y comunidad</h3>
+                                <ul>
+                                    <li>Perfiles para directivos, entrenadores y aficionados</li>
+                                    <li>Sistema de comentarios en partidos y entrenamientos</li>
+                                    <li>Notificaciones personalizables</li>
+                                    <li>Foro de discusión interno</li>
+                                    <li>Control de roles y permisos</li>
+                                    <li>Conexión con redes sociales</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!--
+        <section class="dashboard-showcase">
+            <div class="section-header">
+                <span class="section-tag">Interface</span>
+                <h2>Una experiencia de usuario excepcional</h2>
+            </div>
+            <div class="dashboard-screens">
+                <img src="https://placehold.co/1200x600" alt="Dashboard Interface">
+                <div class="screen-overlay">
+                    <div class="screen-features">
+                        <div class="screen-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Interface Intuitiva</span>
+                        </div>
+                        <div class="screen-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Datos en Tiempo Real</span>
+                        </div>
+                        <div class="screen-feature">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Personalizable</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        -->
+
+
+        <section class="pricing" id="precios">
+            <div class="section-header">
+                <h2>Planes y Precios</h2>
+                <p>Elige el plan que mejor se adapte a las necesidades de tu club</p>
+            </div>
+            <div class="pricing-grid">
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Básico</h3>
+                        <div class="price">29€<span>/mes</span></div>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check"></i> 1 equipo</li>
+                            <li><i class="fas fa-check"></i> 30 jugadores</li>
+                            <li><i class="fas fa-check"></i> Gestión básica de jugadores</li>
+                            <li><i class="fas fa-check"></i> Calendario de partidos</li>
+                            <li><i class="fas fa-check"></i>
+                            <li><i class="fas fa-check"></i> Estadísticas básicas</li>
+                            <li><i class="fas fa-times"></i> Gestión financiera</li>
+                            <li><i class="fas fa-times"></i> Módulos avanzados</li>
+                        </ul>
+                    </div>
+                    <a href="#contacto" class="btn btn-primary">Empezar ahora</a>
+                </div>
+
+                <div class="pricing-card popular">
+                    <div class="pricing-header">
+                        <div class="popular-badge">Más Popular</div>
+                        <h3>Profesional</h3>
+                        <div class="price">79€<span>/mes</span></div>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check"></i> Hasta 5 equipos</li>
+                            <li><i class="fas fa-check"></i> 150 jugadores</li>
+                            <li><i class="fas fa-check"></i> Gestión avanzada de jugadores</li>
+                            <li><i class="fas fa-check"></i> Gestión de competiciones</li>
+                            <li><i class="fas fa-check"></i> Estadísticas avanzadas</li>
+                            <li><i class="fas fa-check"></i> Gestión financiera básica</li>
+                            <li><i class="fas fa-check"></i> Soporte prioritario</li>
+                        </ul>
+                    </div>
+                    <a href="#contacto" class="btn btn-primary">Empezar ahora</a>
+                </div>
+
+                <div class="pricing-card">
+                    <div class="pricing-header">
+                        <h3>Enterprise</h3>
+                        <div class="price">Personalizado</div>
+                    </div>
+                    <div class="pricing-features">
+                        <ul>
+                            <li><i class="fas fa-check"></i> Equipos ilimitados</li>
+                            <li><i class="fas fa-check"></i> Jugadores ilimitados</li>
+                            <li><i class="fas fa-check"></i> Todas las características</li>
+                            <li><i class="fas fa-check"></i> API personalizada</li>
+                            <li><i class="fas fa-check"></i> Soporte 24/7</li>
+                            <li><i class="fas fa-check"></i> Personalización completa</li>
+                            <li><i class="fas fa-check"></i> Integración con otros sistemas</li>
+                        </ul>
+                    </div>
+                    <a href="#contacto" class="btn btn-primary">Contactar</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact" id="contacto">
+            <div class="section-header">
+                <h2>¿Interesado en TeamPro?</h2>
+                <p>Contáctanos para más información o solicita una demo personalizada</p>
+            </div>
+            <div class="contact-container">
+                <form class="contact-form">
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" id="nombre" name="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="club">Nombre del Club</label>
+                        <input type="text" id="club" name="club" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="mensaje">Mensaje</label>
+                        <textarea id="mensaje" name="mensaje" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enviar Mensaje</button>
+                </form>
+                <div class="contact-info">
+                    <h3>Información de Contacto</h3>
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <p>+34 900 123 456</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <p>info@teampro.com</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <p>Calle Deporte 123, 28001 Madrid</p>
+                    </div>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>TeamPro</h4>
+                <p>La solución definitiva para la gestión de clubes deportivos.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Enlaces Rápidos</h4>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#caracteristicas">Características</a></li>
+                    <li><a href="#modulos">Módulos</a></li>
+                    <li><a href="#precios">Precios</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Términos y Condiciones</a></li>
+                    <li><a href="#">Política de Privacidad</a></li>
+                    <li><a href="#">Aviso Legal</a></li>
+                    <li><a href="#">Cookies</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Newsletter</h4>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Tu email">
+                    <button type="submit" class="btn btn-primary">Suscribirse</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 TeamPro. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+</body>
+
+</html>
